@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-
+import CourseCards from '../general/CourseCard'
 export default class HomePage extends Component {
     render() {
         return (
             <div>
-                <h2>home page</h2>
+                <CourseCards/>
+                <CourseCards/>
             </div>
         )
     }
