@@ -1,0 +1,32 @@
+.tabs {
+    overflow: auto;
+    padding: 15px 15px 0;
+}
+
+.tabs button {
+    background-color: inherit;
+    border: 2px solid #CCCCCC;
+    border-radius: 10px;
+    color: var(--theme-color);
+    cursor: pointer;
+    margin-left: 15px;
+    padding: 10px 15px;
+    transition: border-color .25s;
+}
+
+.tabs button:first-of-type {
+    margin-left: 0;
+}
+
+.tabs button:hover {
+    border-color: var(--theme-color);
+}
+
+.tabs button.active {
+    background-color: var(--theme-color);
+    color: white;
+}
+
+.tabs button span {
+    margin-left: 10px;
+}

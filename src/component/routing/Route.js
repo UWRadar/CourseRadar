@@ -21,7 +21,6 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
-                    <h2>Empty routing page</h2>
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={HomePage} />

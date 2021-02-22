@@ -1,4 +1,4 @@
-.course-title{
+.course-title {
     min-height: 6rem;
     min-width: 37%;
     background-image: url("../../img/IStest.jpg");
@@ -12,14 +12,14 @@
 
 .recom-cards {
     width: 90%;
-    margin: 1rem;
+    margin: 1rem auto;
     box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
     background-color: white;
     display: flex;
     border-radius: 8px;
 }
 
-.course-title-wrap{
+.course-title-wrap {
     background: rgba(110,89,164, 0.65);
     height:100%;
     width:100%;
@@ -30,23 +30,23 @@
     border-radius: 8px 0 0 8px;
 }
 
-.recom-description{
+.recom-description {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     text-align: left;
 }
 
-.recom-description h1{
+.recom-description h1 {
     margin-bottom: 0.5rem;
 }
 
-.describtion-tags{
+.describtion-tags {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 0.7rem;
 }
 
-h1{
+h1 {
     font-weight: 500;
     font-size: large;
 }
@@ -61,7 +61,7 @@ h1{
     text-align: center;
 }
 
-.tag p{
+.tag p {
     font-size: 0.7rem;
     font-weight: 500;
     padding: 0;
@@ -69,20 +69,11 @@ h1{
     color: white;
 }
 
-.course-title-wrap p{
+.course-title-wrap p {
     color: white;
     vertical-align: middle;
     font-size: 1.2rem;
     font-weight: 500;
-}
-
-@media screen and (min-width: 1023px) {
-    .course-title {
-        max-width: 100%;
-        width: 15rem;
-        background-image: url("../../img/IStest.jpg");
-
-    }
 }
 
 @media screen and (min-width: 767px) {
@@ -95,19 +86,17 @@ h1{
     }
 }
 
-@media screen and (min-width: 1023px) {
-    .recom-cards {
-        margin: 1rem;
+@media screen and (min-width: 900px) {
+    .course-card {
+        display: inline-block;
+    }
+
+    .recom-cards{
+        margin: 1rem 1rem 2rem 1rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
         background-color: white;
         flex-direction: column;
         width: 15rem;
-    }
-}
-
-@media screen and (min-width: 1023px) {
-    .recom-cards{
-        margin-bottom: 2rem;
     }
 
     .recom-container{
@@ -120,6 +109,12 @@ h1{
         padding-left: 8rem;
         margin-top: 1.5rem;
         align-items: start;
+    }
+
+    .course-title {
+        max-width: 100%;
+        width: 15rem;
+        background-image: url("../../img/IStest.jpg");
     }
 
     .course-title-wrap{
