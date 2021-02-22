@@ -5,7 +5,9 @@ export default class LoginPage extends Component {
     render() {
         return (
             <div class="login-container " aria-label="Seaching area">
-                <img src={logo} alt="Logo" />
+                <div id= "login-description" action="">
+                    <img src={logo} alt="Logo" /><p>用户可以收藏、点赞课评 </p><p>未来会根据收藏/浏览的课评进行推荐 </p>
+                </div>
                 <div id= "login-form" action="">
                     <input id="email" placeholder="邮箱" name="email" inputProps={{ 'aria-label': 'description' }} />
                     <input id="pass" placeholder="密码" name="passwd" inputProps={{ 'aria-label': 'description' }} />
