@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
 import HomePage from "../home/HomePage"
 import ProfilePage from "../profile/ProfilePage"
+import SurveyPage from "../survey/SurveyPage"
 export default class Routing extends Component {
 
     constructor() {
@@ -25,6 +26,7 @@ export default class Routing extends Component {
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={ProfilePage} />
+                        <Route path="/survey" component={SurveyPage} />
                         <Route path="/SearchResult" component={HomePage} />
                         <Route path="/CourseDetail/:courseName" component={HomePage} />
                     </Switch>
