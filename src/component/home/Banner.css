@@ -1,10 +1,27 @@
 .banner {
     align-items: center;
     background-image: linear-gradient(to right, var(--theme-color), transparent);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
     color: white;
     display: flex;
-    min-height: 150px;
+    height: inherit;
+    left: 0;
     padding: 20px;
+    position: absolute;
+    top: 0;
+    transition: left .5s;
+    width: 100%;
+}
+
+.banner.after {
+    left: 100%;
+}
+
+.banner.before {
+    left: -100%;
 }
 
 .banner button {
@@ -58,6 +75,17 @@
     width: 100%;
 }
 
+.banner-area {
+    height: inherit;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+}
+
+.banner-placeholder {
+    height: 390px;
+}
+
 @media screen and (max-width: 900px) {
     .banner {
         padding: 20px 10px;
@@ -73,6 +101,10 @@
 
     .banner .main {
         padding: 0 10px;
+    }
+
+    .banner-placeholder {
+        height: 200px;
     }
 
     .hide-on-mobile {
