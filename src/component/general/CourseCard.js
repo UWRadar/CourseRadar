@@ -12,58 +12,17 @@ const CourseCard = (props) => {
                 <div class="recom-description">
                     <h1>Introduction to the web design</h1>
                     <div class="describtion-tags">
-                        <div class="tag qsr">
+                        <div class="tag qsr"npnp>
                             <div class="tooltips" id="QSR">
                                 <p>QSR</p>
                                 <span class="tooltiptext"> Quantitative and Symbolic Reasoning</span>
                             </div>
-                           
                         </div>
-                        <div class="tag qsr">
-                            <div class="tooltips" id="NW">
-                                <p>NW</p>
-                                <span class="tooltiptext"> Natural World</span>
-                            </div>
-                        </div>
-{/*                         <div class="tag qsr">
-                            <div class="tooltips" id="C">
-                                <p>C</p>
-                                <span class="tooltiptext"> English Composition</span>
-                            </div>
-                        </div>
-
-                        <div class="tag qsr">
-                            <div class="tooltips" id="W">
-                                <p>W</p>
-                                <span class="tooltiptext"> Writing</span>
-                            </div>
-                        </div>
-
-                        <div class="tag qsr">
-                            <div class="tooltips" id="DIV">
-                            <p>DIV</p>
-                                <span class="tooltiptext"> Diversity</span>
-                            </div>
-                        </div>
-
-                        <div class="tag qsr">
-                            <div class="tooltips" id="IS">
-                                <p>I&S</p>
-                                <span class="tooltiptext"> Individuals and Societies</span>
-                            </div>
-                        </div>
-
-                        <div class="tag qsr">
-                            <div class="tooltips" id="VLPA">
-                                <p>VLPA</p>
-                                <span class="tooltiptext">  Visual, Literary, and Performing Arts</span>
-                            </div>
-                        </div>
- */}                            
+                            
                         <div class="tag credit">
                             <div class="tooltips" id="5cre">
                                 <p>5 </p>
-                                <span class="tooltiptext"> 5 Credits</span>
+                                <span class="tooltiptext"> 5 Credits </span>
                             </div>
                         </div>
                     </div>
