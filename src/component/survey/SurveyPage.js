@@ -1,8 +1,8 @@
 //import { Container, FormLabel } from "@material-ui/core"
 import React, { Component } from "react"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container, Row, Col, Form, Button }from 'react-bootstrap'
-//import "./SurveyPage.css"
+import { Container, Row, Col, Form, Button, Card }from 'react-bootstrap'
+import "./SurveyPage.css"
 import ImageManger from "../general/ImageManager"
 export default class SurveyPage extends Component {
     constructor(props) {
@@ -53,11 +53,12 @@ export default class SurveyPage extends Component {
     render() {
         return (
             <Container maxWidth="lg" fliud>
-                <Container>
+                <Container id='form-header'>
                     <h1>Course Evaluation Form</h1>
                 </Container>
                 <Container>
                     <Form className = 'survey-form' onSubmit= {(e) => this.handleSubmit(e)}>
+                        <Container id='form-box'>
                         <Form.Group as={Row} controlId='formYear'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Year:
@@ -124,7 +125,7 @@ export default class SurveyPage extends Component {
                             <Form.Label column sm={2} className="text-md-left">
                                 Course Name:
                             </Form.Label>
-                            <Col sm={2}>
+                            <Col sm={3}>
                                 <Form.Control
                                     type='text'
                                     placeholder="e.g.: CSE142"
@@ -318,7 +319,7 @@ export default class SurveyPage extends Component {
                             <Form.Label column sm={2} className="text-md-left">
                                 备注（姓名或所属社团名称）:
                             </Form.Label>
-                            <Col sm={2}>
+                            <Col sm={3}>
                                 <Form.Control
                                     type='text'
                                     placeholder="Optional"
@@ -340,9 +341,12 @@ export default class SurveyPage extends Component {
                                 />
                             </Col>
                         </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
+                        </Container>
+                        <Container id="btn-box">
+                            <Button variant="primary" type="submit" id="submit-btn" size="lg">
+                                Submit
+                            </Button>
+                        </Container>
                     </Form>            
                 </Container>
             </Container>
