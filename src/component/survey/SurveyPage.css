@@ -1,0 +1,27 @@
+body {
+    background-color: #c6b4d9;
+}
+
+#form-header {
+    color: white;
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+#form-box {
+    border: 2pt;
+    border-color: gray;
+    border-radius: 14pt;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    padding: 5%;
+}
+
+#btn-box {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+#submit-btn {
+    background-color: #5f247d;
+}

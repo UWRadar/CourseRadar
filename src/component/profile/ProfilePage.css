@@ -1,0 +1,93 @@
+.user-info{
+    padding: 1.7rem;
+    background-color: white;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.16), 0 2px 3px rgba(0,0,0,0.23);
+}
+
+#user-info-background{
+    height: 6rem;
+    background-image: url('../../img/user-info-background.png');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size:cover;
+    background-repeat: no-repeat;
+    margin-top: 0rem;
+    
+}
+
+#user-logo{
+    border-radius: 100%;
+    background-color: rgb(50, 0, 111);
+    height: 4.5rem;
+    width: 4.5rem;
+    text-align: center;
+    align-items: center;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.16), 0 2px 3px rgba(0,0,0,0.23);
+    margin-top: -4rem;
+    /* margin-left: -2rem; */
+
+}
+
+#user-logo-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+#user-info-logoout{
+    min-width: 5rem;
+    height:1.5rem;
+    border: 1px solid rgb(50, 0, 111) ;
+    color: rgb(50, 0, 111);
+    text-align: center;
+    border-radius: 2rem;
+    margin-top: -1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    cursor: pointer;
+}
+
+#user-info-logoout p{
+    margin:0;
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+#user-info-logoout:hover {
+    background-color: rgb(50, 0, 111);
+    color: white;
+}
+
+#user-info-detail h1{
+    margin-top: 1rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#user-info-detail p{
+    font-size:0.8rem;
+    color: rgba(65, 65, 66, 0.87);
+}
+
+.user-info-container{
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    margin-bottom: -0.5rem;
+}
+.user-info-container img{
+    width: 1.2rem;
+    margin-right: 0.3rem;
+}
+
+#user-sub-info{
+    display: flex;
+}
