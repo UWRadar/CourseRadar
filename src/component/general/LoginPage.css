@@ -1,0 +1,45 @@
+
+#logo {
+    max-width: 25vh;
+    max-height: 25vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#mainPage {
+    background-image: url("../../img/Login_bg.png");
+    background-position: center;
+    background-size: cover;
+}
+
+#loginButton {
+    background-color: #45035C;
+    color: white;
+    width: 30vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3vh;
+    margin-bottom: 0;
+}
+
+#signUpDiv {
+    display: flex;
+    width:30vmin;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: flex-end;
+    color:white;
+    background: transparent;
+}
+
+#signUpButton {
+    color: white;
+}
+.input {
+    display: flex;
+    justify-content: center;
+}
+
