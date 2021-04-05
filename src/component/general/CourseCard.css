@@ -69,7 +69,17 @@ h1 {
     color: white;
 }
 
-.course-title-wrap p {
+
+
+
+.tag span{
+    font-size: 0.7rem;
+    padding: 0;
+    margin: 0;
+}
+
+.course-title-wrap p{
+
     color: white;
     vertical-align: middle;
     font-size: 1.2rem;
@@ -122,5 +132,27 @@ h1 {
         height: 8rem;
         background: rgba(110, 89, 164, 0.719);
         border-radius: 8px 8px 0 0 ;
+    }
+}
+
+@media screen and (min-width: 1023px) {
+    .tooltips .tooltiptext {
+        visibility: hidden;
+        /* width: auto; */
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 3px 5px 3px;
+        border-radius: 6px;
+        position: absolute;
+        display: block;
+        z-index: 1;
+        white-space:nowrap;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .tooltips:hover .tooltiptext {
+        visibility: visible;
+        opacity: 0.7;
     }
 }

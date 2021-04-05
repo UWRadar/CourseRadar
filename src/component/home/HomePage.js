@@ -1,8 +1,29 @@
+import { RemoveShoppingCartSharp } from "@material-ui/icons"
 import React, { Component } from "react"
+
 import Banner from "./Banner"
 import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
+
+import CourseCards from "../general/CourseCard"
+import {Footer, BigFooter} from "../general/Footer"
+import Header from "../general/Header"
+import LoginPage from "../general/LoginPage"
+import LargeHeader from "../general/LargeHeader"
+
 export default class HomePage extends Component {
+    /* constructor(props) {
+        super(props)
+        this.state = {
+            openLoginWindow: true,
+        }
+    }
+
+    close = () => {
+        this.setState({
+            openLoginWindow: false,
+        })
+    }*/
     render() {
         const bannerItems = [{
             title: "华大课友冬季招新",
@@ -33,6 +54,7 @@ export default class HomePage extends Component {
 
         return (
             <div>
+                <LargeHeader />
                 <Banner
                     items={bannerItems}
                 />
@@ -42,6 +64,14 @@ export default class HomePage extends Component {
                 />
                 <CourseCard />
                 <CourseCard />
+
+
+                <CourseCards />
+                <CourseCards />
+                { /*<Footer />*/}
+                { /*<BigFooter /> */}
+                {/*<LoginPage close={this.closeLoginPage} pageStatus={this.state.openLoginWindow}/>*/}
+
             </div>
         )
     }
