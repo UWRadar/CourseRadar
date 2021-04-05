@@ -1,11 +1,11 @@
 import React, { Component } from "react"
-import Upper from "./Upper"
+import Description from "./Description"
 
 export default class CourseDescription extends Component {
     render() {
         return (
             <div>
-                <Upper />
+                <Description />
             </div>
         )
     }

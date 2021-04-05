@@ -22,9 +22,8 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
-                    <h2>Empty routing page</h2>
                     <Switch>
-                        <Route path="/" exact component={CourseDescription} />
+                        <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={HomePage} />
                         <Route path="/SearchResult" component={HomePage} />
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
