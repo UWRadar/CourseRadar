@@ -1,6 +1,5 @@
 //import { Container, FormLabel } from "@material-ui/core"
 import React, { Component } from "react"
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Container, Row, Col, Form, Button, Card }from 'react-bootstrap'
 import "./SurveyPage.css"
 import ImageManger from "../general/ImageManager"
