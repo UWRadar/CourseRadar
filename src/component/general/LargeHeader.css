@@ -1,0 +1,56 @@
+#large-header {
+    width: 100%;
+    height: auto;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    overflow: auto;
+    position: relative;
+    height: 11vh;
+}
+
+#search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 3px solid #5E4271;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.header-logo {
+    max-width: 10vmin;
+    max-height: 6vh;
+}
+
+#large-header-input {
+    width: 50vmin;
+    margin-left: 1vmin;
+}
+
+#search-icon {
+    position: relative;
+    ;
+}
+
+#right-upper-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 0.1;
+
+}
+
+.logo-with-characters > p {
+    margin: -1.5vh;
+    font-family: PingFang SC;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 42px;
+}
+#course-radar {
+    width: 30vmin;
+}

@@ -8,7 +8,7 @@
     }
 }
 
-header div {
+.small-header {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -16,7 +16,7 @@ header div {
     min-height: 4rem;
 }
 
-header img{
+.web-logo {
     max-width: 10rem;
     height: 3.5rem;
     padding: 0;
