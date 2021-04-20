@@ -1,22 +1,22 @@
 .login-container input, .login-container button{
     border-width: 0px;
-    padding: 10px; 
-    font-size: 1rem;   
+    padding: 10px;
+    font-size: 1rem;
     display: block;
 }
 
 .login-container input{
-    width: 60%; 
-    padding: 12px 20px; 
-    display: inline-block; 
-    border: 1px solid #ccc; 
+    width: 60%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
     box-sizing: border-box;
     text-align: start;
-    text-align-last: start;  
-    margin-bottom: 0.7rem;  
+    text-align-last: start;
+    margin-bottom: 0.7rem;
 }
 
-.login-container img{  
+.login-container img{
     height: 37%;
     width: 45%;
     margin-top: 7rem;
@@ -25,11 +25,11 @@
 
 
 .login-container button{
-    background-color:rgba(69, 3, 92, 0.7); 
-    color: white; 
-    padding: 14px 20px; 
-    border: none; 
-    cursor: pointer; 
+    background-color:rgba(69, 3, 92, 0.7);
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
     width: 60%;
     margin-bottom: 1rem;
 }
@@ -39,7 +39,7 @@
 }
 
 #sign-up, #sign-up-back{
-    background-color: transparent; 
+    background-color: transparent;
     color:white;
     width: 60%;
     text-align: end;
@@ -74,24 +74,24 @@
 }
 
 @media screen and (min-width: 1023px){
-    .login-container {  
+    .login-container {
         min-height: 74rem;
         margin-bottom: -1rem;
     }
 
-    .login-container img{  
+    .login-container img{
         width: 13rem;
     }
 
     .login-container input, .login-container button, #sign-up, #sign-up-back{
-        width: 45%; 
+        width: 45%;
     }
 
 }
 
 
 @media screen and (min-width: 762px){
-    .login-container img{  
+    .login-container img{
         width: 13rem;
     }
 
@@ -105,7 +105,3 @@
     text-align: start;
     padding-bottom: 10rem;
 }
-/* 
-#signup-form{
-    display: none;
-} */
