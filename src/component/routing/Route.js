@@ -3,6 +3,10 @@ import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
 import HomePage from "../home/HomePage"
 import CourseDescription from "../courseDescription/CourseDescription"
+import LoginPage from "../login/LoginPage"
+import ProfilePage from "../profile/ProfilePage"
+import SurveyPage from "../survey/SurveyPage"
+import LargeHeader from "../general/LargeHeader"
 export default class Routing extends Component {
 
     constructor() {
@@ -22,17 +26,19 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
+                    <LargeHeader />
                     <Switch>
                         <Route path="/" exact component={HomePage} />
-                        <Route path="/profile/:username" component={HomePage} />
+                        <Route path="/profile/:username" component={ProfilePage} />
+                        <Route path="/survey" component={SurveyPage} />
                         <Route path="/SearchResult" component={HomePage} />
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
+                        <Route path="/login" component={LoginPage}/>
                     </Switch>
                 </div>
             </Router>
         )
     }
-
 }
 
 function checkStatus(response) {
