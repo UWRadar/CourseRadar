@@ -1,5 +1,10 @@
-body {
+#survey {
     background-color: #c6b4d9;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 #form-header {

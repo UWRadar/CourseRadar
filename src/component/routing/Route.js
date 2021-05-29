@@ -5,6 +5,8 @@ import HomePage from "../home/HomePage"
 import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
 import SurveyPage from "../survey/SurveyPage"
+import LargeHeader from "../general/LargeHeader"
+import Footer from "../general/Footer"
 export default class Routing extends Component {
 
     constructor() {
@@ -24,6 +26,7 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
+                    <LargeHeader />
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={ProfilePage} />
@@ -32,6 +35,7 @@ export default class Routing extends Component {
                         <Route path="/CourseDetail/:courseName" component={HomePage} />
                         <Route path="/login" component={LoginPage}/>
                     </Switch>
+                    <Footer/>
                 </div>
             </Router>
         )

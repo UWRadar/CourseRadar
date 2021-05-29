@@ -1,12 +1,14 @@
 import React from "react"
 import "./Tabs.css"
+import ImageStorage from "../general/ImageStorage.js"
 const Tabs = (props) => {
     const tabItems = []
+    console.log(props)
     for (const key in props.items) {
         const thisProps = props.items[key]
         tabItems.push(
-            <button className={thisProps.id == props.active ? "active" : ""}>
-                <img src={thisProps.icon} alt />
+            <button id="trendy" className={thisProps.id == props.active ? "active" : ""}>
+                <img src={ImageStorage[thisProps.icon]} alt />
                 <span>{thisProps.text}</span>
             </button>
         )

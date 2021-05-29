@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core"
 import React, { Component } from "react"
 import "./ProfilePage.css"
-import ImageManger from "../general/ImageManager"
+import ImageStorage from "../general/ImageStorage"
 export default class ProfilePage extends Component {
 
 
@@ -22,7 +22,7 @@ export default class ProfilePage extends Component {
                             <div id='user-info-detail'>
                                 <h1>Hi, <span id='user-info-username'>Didntpay</span></h1>
                                 <div class='user-info-container'>
-                                    <img src={ImageManger.email}/>
+                                    <img src={ImageStorage.email}/>
                                     <p id='user-email'>weifengli2014@gmail.com</p>
                                 </div>
                                 <div id='user-sub-info'>

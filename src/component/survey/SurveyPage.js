@@ -51,7 +51,7 @@ export default class SurveyPage extends Component {
 
     render() {
         return (
-            <Container maxWidth="lg" fliud>
+            <div className="container-xxl" fliud id="survey">
                 <Container id='form-header'>
                     <h1>Course Evaluation Form</h1>
                 </Container>
@@ -348,7 +348,7 @@ export default class SurveyPage extends Component {
                         </Container>
                     </Form>            
                 </Container>
-            </Container>
+            </div>
         )
     }
 }
