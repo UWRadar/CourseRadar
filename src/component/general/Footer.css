@@ -54,7 +54,7 @@ footer div{
 }
 
 footer p{
-   margin:0; 
+   margin:0;
    font-size: 10px;
 }
 
@@ -113,8 +113,4 @@ footer p{
         margin-right: 3rem;
     }
 
-}
-
-.hide {
-    display: none;
 }
