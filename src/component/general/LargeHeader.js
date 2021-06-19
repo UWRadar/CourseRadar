@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import SortIcon from '@material-ui/icons/Sort';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import SearchDropDown from "./SearchFilter";
+import SearchFilter from "./SearchFilter";
 
 import "./LargeHeader.css"
 
@@ -19,11 +19,7 @@ export default function LargeHeader() {
                 <img src="./img/courseRadar.png" id="course-radar" alt="logo for course radar">
                 </img>
                 <div id="search-bar">
-                    <SearchDropDown/>
-                    <InputBase id="large-header-input"
-                        placeholder="想要找啥课啊..."
-                    />
-                    <SearchIcon id="search-icon"/>
+                    <SearchFilter/>
                 </div>
                 <div id="right-upper-icons">
                     <div class="logo-with-characters">
