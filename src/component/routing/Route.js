@@ -5,6 +5,7 @@ import HomePage from "../home/HomePage"
 import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
 import SurveyPage from "../survey/SurveyPage"
+import SearchResultPage from "../search-result-page/SearchResultPage"
 export default class Routing extends Component {
 
     constructor() {
@@ -28,7 +29,7 @@ export default class Routing extends Component {
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-                        <Route path="/SearchResult" component={HomePage} />
+                        <Route path="/SearchResult" component={SearchResultPage} />
                         <Route path="/CourseDetail/:courseName" component={HomePage} />
                         <Route path="/login" component={LoginPage}/>
                     </Switch>

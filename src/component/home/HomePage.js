@@ -11,7 +11,7 @@ import Header from "../general/Header"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 
-export default class HomePage extends Component {
+export default function HomePage() {
     /* constructor(props) {
         super(props)
         this.state = {
@@ -24,7 +24,7 @@ export default class HomePage extends Component {
             openLoginWindow: false,
         })
     }*/
-    render() {
+    // render() {
         const bannerItems = [{
             title: "华大课友冬季招新",
             subtitle: "Want You By Our Side",
@@ -75,4 +75,4 @@ export default class HomePage extends Component {
             </div>
         )
     }
-}
+// }

@@ -1,8 +1,0 @@
-#selection-icon {
-    display: flex;
-    align-items: center;
-}
-
-#selection-icon > img {
-    height: 3vh;
-}

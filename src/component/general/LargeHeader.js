@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import SortIcon from '@material-ui/icons/Sort';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import SearchDropDown from "../general/SearchDropDown";
+import SearchDropDown from "./SearchFilter";
 
 import "./LargeHeader.css"
 
@@ -39,4 +39,4 @@ export default function LargeHeader() {
             </AppBar>
         </div>
     )
-}   
+}
