@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Button, TextField, Checkbox } from '@material-ui/core'
+import { Button, TextField, Checkbox, MenuItem } from '@material-ui/core'
 import useFilterStatus from "../search-result-page/useFilterStates"
 import SearchIcon from '@material-ui/icons/Search';
 // import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
@@ -34,12 +34,14 @@ export default function SearchFilter() {
     //     setCreditType(newCreditType);
     // };
 
-    const [filters, setFilters] = useState({
+    const defaultFilter = {
         courseName: "cse",
         level: 100,
         credit: 5,
         creditType: "nw"
-    });
+    };
+
+    const [filters, setFilters] = useState(defaultFilter);
 
     const {courseName, level, credit, creditType} = filters;
 
@@ -62,23 +64,6 @@ export default function SearchFilter() {
 
     const filterItems = ["level", "credit", "creditType"];
 
-    const generateCheckboxArr = (array, curSelected, checked, tag) => {
-        const result = [];
-        for (const item in array) {
-            if (item === curSelected) {
-                result.push(
-                    <Checkbox
-                        checked={checked}
-                        className={`filter-sub-check-box ${tag}`}
-                        onChange={onChangeFilterCheckbox}
-                        id={item}
-                    />
-                )
-            }
-        }
-        return result;
-    }
-
     const selectedItem = (checkboxArr) => {
         for (const cb in checkboxArr) {
             if (cb.checked) {
@@ -87,12 +72,9 @@ export default function SearchFilter() {
         }
     }
 
-    const levelCheckbox = generateCheckboxArr(levels, filters.level, checked, "level");
-    const creditCheckbox = generateCheckboxArr(credits, filters.credit, checked, "credit");
-    const creditTypeCheckbox = generateCheckboxArr(creditTypes, filters.creditType, checked, "creditType");
-
     // Read checkbox status, call updateFilters to update the filter model
-    const onChangeFilterCheckbox = () => {
+    const onChangeFilterCheckbox = (event) => {
+        setChecked(event.target.checked);
         toggleIsFirstClick(false);
         const level = document.querySelectorAll(".level");
         const credit = document.querySelectorAll(".credit");
@@ -120,6 +102,28 @@ export default function SearchFilter() {
             creditType: filters.creditType
         });
     };
+
+    const generateCheckboxArr = (array, tag) => {
+        const result = [];
+        for (const item of array) {
+            const isDefault = item === defaultFilter[tag];
+            setChecked(isDefault); // TODO: useState indiv checkbxes, changestate on corresponding
+            console.log("@@@: " + item);
+            result.push(
+                <Checkbox
+                    checked={checked}
+                    className={`filter-sub-check-box ${tag}`}
+                    onChange={onChangeFilterCheckbox}
+                    id={item}
+                />
+            )
+        }
+        return result;
+    }
+
+    const levelCheckbox = generateCheckboxArr(levels, "level");
+    const creditCheckbox = generateCheckboxArr(credits, "credit");
+    const creditTypeCheckbox = generateCheckboxArr(creditTypes, "creditType");
 
     // Search query. onClickUpdateFilterBtn
     const searchFilters = () => {
@@ -178,27 +182,25 @@ export default function SearchFilter() {
 
     return (
         <div>
-            <Checkbox value="" >
-                {selectionIcon}
-            </Checkbox>
-            <Checkbox
+            {selectionIcon}
+            <MenuItem
                 value={filterItems[0]}
                 onChange={onChangeFilterCheckbox}
-                class="filter-items-check-box">
+                class="filter-items-menu-item">
                 {levelCheckbox}
-            </Checkbox>
-            <Checkbox
+            </MenuItem>
+            <MenuItem
                 value={filterItems[1]}
                 onChange={onChangeFilterCheckbox}
-                class="filter-items-check-box">
+                class="filter-items-menu-item">
                 {creditCheckbox}
-            </Checkbox>
-            <Checkbox
+            </MenuItem>
+            <MenuItem
                 value={filterItems[2]}
                 onChange={onChangeFilterCheckbox}
-                class="filter-items-check-box">
+                class="filter-items-menu-item">
                 {creditTypeCheckbox}
-            </Checkbox>
+            </MenuItem>
             <TextField
                 id="large-header-input"
                 placeholder="想要找啥课啊..."

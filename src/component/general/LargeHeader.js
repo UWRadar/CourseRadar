@@ -3,8 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
+
 
 import SortIcon from '@material-ui/icons/Sort';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
