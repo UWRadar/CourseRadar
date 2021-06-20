@@ -1,10 +1,11 @@
-import React, { useState } from "react"
-import { Button, TextField, Checkbox } from '@material-ui/core/Checkbox'
-import useFilterStates from "../search-result-page"
+import React, { useState, useEffect } from "react"
+import { Button, TextField, Checkbox } from '@material-ui/core'
+import useFilterStatus from "../search-result-page/useFilterStates"
 import SearchIcon from '@material-ui/icons/Search';
-import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
+// import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
 
 import "./SearchFilter.css"
+import SearchResultPage from "../search-result-page/SearchResultPage";
 
 export default function SearchFilter() {
     const selectionIcon = (
@@ -16,8 +17,31 @@ export default function SearchFilter() {
     const credits = [1, 2, 3, 4, 5];
     const creditTypes = ["c", "div", "i&s", "na", "nw", "qsr", "vlpa", "w"];
 
-    const getFilters = useFilterStates()[0];
-    const updateFilters = useFilterStates()[1];
+
+    // const [courseName, setCourseName] = useState("cse");
+    // const [level, setLevel] = useState(100);
+    // const [credit, setCredit] = useState(5);
+    // const [creditType, setCreditType] = useState("nw");
+
+    // const getFilters = () => {
+    //     return [courseName, level, credit, creditType];
+    // };
+
+    // const updateFilters = (newCourseName, newLevel, newCredit, newCreditType) => {
+    //     setCourseName(newCourseName);
+    //     setLevel(newLevel);
+    //     setCredit(newCredit);
+    //     setCreditType(newCreditType);
+    // };
+
+    const [filters, setFilters] = useState({
+        courseName: "cse",
+        level: 100,
+        credit: 5,
+        creditType: "nw"
+    });
+
+    const {courseName, level, credit, creditType} = filters;
 
     // Checkbox
     const [checked, setChecked] = useState(true);
@@ -41,15 +65,16 @@ export default function SearchFilter() {
     const generateCheckboxArr = (array, curSelected, checked, tag) => {
         const result = [];
         for (const item in array) {
-            if (item === curSelected)
-            result.push(
-                <Checkbox
-                    checked={checked}
-                    className={`filter-sub-check-box ${tag}`}
-                    onChange={onChangeFilterCheckbox}
-                    id={item}
-                />
-            )
+            if (item === curSelected) {
+                result.push(
+                    <Checkbox
+                        checked={checked}
+                        className={`filter-sub-check-box ${tag}`}
+                        onChange={onChangeFilterCheckbox}
+                        id={item}
+                    />
+                )
+            }
         }
         return result;
     }
@@ -62,9 +87,9 @@ export default function SearchFilter() {
         }
     }
 
-    const levelCheckbox = generateCheckboxArr(levels, getFilters[0], checked, "level");
-    const creditCheckbox = generateCheckboxArr(credits, getFilters[1], checked, "credit");
-    const creditTypeCheckbox = generateCheckboxArr(creditTypes, getFilters[2], checked, "creditType");
+    const levelCheckbox = generateCheckboxArr(levels, filters.level, checked, "level");
+    const creditCheckbox = generateCheckboxArr(credits, filters.credit, checked, "credit");
+    const creditTypeCheckbox = generateCheckboxArr(creditTypes, filters.creditType, checked, "creditType");
 
     // Read checkbox status, call updateFilters to update the filter model
     const onChangeFilterCheckbox = () => {
@@ -72,23 +97,82 @@ export default function SearchFilter() {
         const level = document.querySelectorAll(".level");
         const credit = document.querySelectorAll(".credit");
         const creditType = document.querySelectorAll(".creditType");
+        console.log("11111");
+        console.log(level);
+        console.log(credit);
+        console.log(creditType);
         const selectedlevel = selectedItem(level);
         const selectedCredit = selectedItem(credit);
         const selectedCreditType = selectedItem(creditType);
-        updateFilters(selectedlevel, selectedCredit, selectedCreditType, getFilters[3]);
+        setFilters({
+            courseName: filters.courseName,
+            level: selectedlevel,
+            credit: selectedCredit,
+            creditType: selectedCreditType
+        });
     };
 
     const onChangeCourseNameTextInput = (event) => {
-        updateFilters(getFilters[0], getFilters[1], getFilters[2], event.target.value);
+        setFilters({
+            courseName: event.target.value,
+            level: filters.level,
+            credit: filters.credit,
+            creditType: filters.creditType
+        });
     };
-
-    const baseUrl = "localhost:9000";
 
     // Search query. onClickUpdateFilterBtn
     const searchFilters = () => {
-        const url = baseUrl + "/api/search";
-        // TODO: validation
-        // TODO: finish this
+        const url = "/api/search";
+        let currentUrl = url;
+        console.log(filters);
+        let curCourseName = filters.courseName;
+        let curLevel = filters.level;
+        let curCredit = filters.credit;
+        let curCreditType = filters.creditType.toUpperCase();
+
+        //let [curCourseName, curLevel, curCredit, curCreditType] = getFilters;
+
+        // edit creditType
+        //curCreditType = curCreditType.toUpperCase();
+
+        // check courseName
+        if (curCourseName != "") {
+            if (currentUrl === url) {
+                currentUrl += "?";
+            }
+            currentUrl += "courseName=" + curCourseName;
+        }
+        // check level
+        if (curLevel != null) {
+            if (currentUrl === url) {
+                currentUrl += "?level=" + curLevel;
+            } else {
+                currentUrl += "&level=" + curLevel;
+            }
+        }
+        // check credit
+        if (curCredit != null) {
+            if (currentUrl === url) {
+                currentUrl += "?credit=" + curCredit;
+            } else {
+                currentUrl += "&credit=" + curCredit;
+            }
+        }
+        // check creditType
+        if (curCreditType != null) {
+            if (currentUrl === url) {
+                currentUrl += "?creditType=" + curCreditType;
+            } else {
+                currentUrl += "&creditType=" + curCreditType;
+            }
+        }
+        console.log(currentUrl);
+
+        fetch(currentUrl)
+            .then(checkStatus)
+            .then(res => res.json())
+            .then(SearchResultPage)
     };
 
 
@@ -99,16 +183,19 @@ export default function SearchFilter() {
             </Checkbox>
             <Checkbox
                 value={filterItems[0]}
+                onChange={onChangeFilterCheckbox}
                 class="filter-items-check-box">
                 {levelCheckbox}
             </Checkbox>
             <Checkbox
                 value={filterItems[1]}
+                onChange={onChangeFilterCheckbox}
                 class="filter-items-check-box">
                 {creditCheckbox}
             </Checkbox>
             <Checkbox
                 value={filterItems[2]}
+                onChange={onChangeFilterCheckbox}
                 class="filter-items-check-box">
                 {creditTypeCheckbox}
             </Checkbox>
@@ -124,4 +211,12 @@ export default function SearchFilter() {
             >Apply Filters</Button>
         </div>
     )
+}
+
+function checkStatus(response) {
+    if (response.ok) {
+        return response.text()
+    } else {
+        return Promise.reject(new Error(response.status + ": " + response.statusText))
+    }
 }

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function useFilterStatus() {
-  const [courseName, setCourseName] = useState("");
+  const [courseName, setCourseName] = useState("cse");
   const [level, setLevel] = useState(100);
   const [credit, setCredit] = useState(5);
-  const [creditType, setCreditType] = useState("na");
+  const [creditType, setCreditType] = useState("nw");
 
   const getFilters = () => {
     return [courseName, level, credit, creditType];
