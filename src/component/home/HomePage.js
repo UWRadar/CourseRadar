@@ -10,6 +10,7 @@ import {Footer, BigFooter} from "../general/Footer"
 import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
+import { NavLink } from "react-router-dom"
 
 export default class HomePage extends Component {
     /* constructor(props) {
