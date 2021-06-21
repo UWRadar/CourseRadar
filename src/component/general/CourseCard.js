@@ -5,11 +5,12 @@ import { NavLink } from 'react-router-dom'
 
 const CourseCard = (props) => {
     /* 需要有传进的props以显示对应的课程和正确链接 */
-    const name = "INFO";
+    const name = props.courseName.split(" ")[0].toUpperCase();
+    console.log(name);
     return (
         <NavLink 
-            to="/"
-            activeStyle={{
+            to={"/CourseDetail/" + props.courseName.replace("/\s/g", "")}
+            style={{
                 color: "black",
               }}>
             <div className="course-card">

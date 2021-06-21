@@ -44,19 +44,19 @@ export default class HomePage extends Component {
         }]
 
         const CourseTemp = [{
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"
         },
         {
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"
         },
         {
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"

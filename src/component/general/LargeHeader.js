@@ -25,21 +25,23 @@ export default function LargeHeader() {
                     />
                     <SearchIcon id="search-icon"/>
                 </div>
+                {/* 添加链接 */}
                 <div id="right-upper-icons">
+                <NavLink
+                    className="logo-with-characters"
+                    to="/survey"
+                    >
+                        <img src="./img/edit.png" id="pen" class="header-logo" alt="logo for filling forms"/>
+                        <p>填写课评</p> 
+                </NavLink>
                 
-                
-                <button type="button" class="logo-with-characters">
-                    <img src="./img/edit.png" id="pen" className="header-logo" alt="logo for filling forms"/>
-                    <p>填写课评</p>
-                </button>
-                
-
-                
-                <button type="button" class="logo-with-characters">
-                    <img src="./img/log-in.png" id="pen" className="header-logo" alt="logo for filling forms"/>
-                    <p>登陆</p>
-                </button>
-                
+                <NavLink
+                    to="/login"
+                    className="logo-with-characters"
+                    >
+                        <img src="./img/log-in.png" id="log-in" class="header-logo" alt="logo for logging in"/>
+                        <p>登录</p>
+                </NavLink>
 
                 </div>
 

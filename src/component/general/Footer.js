@@ -23,7 +23,7 @@ export default function Footer() {
             </div>
             <div id="login">
                     <img src="../img/log-in.png" alt="Logo for log-in" />
-                    <NavLink to="/loginPage"><p>用户登录</p></NavLink>
+                    <NavLink to="/login"><p>用户登录</p></NavLink>
                     
             </div>
         </footer>
