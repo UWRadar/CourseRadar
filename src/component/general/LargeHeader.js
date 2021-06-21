@@ -16,24 +16,26 @@ export default function LargeHeader() {
     return (
         <div>
             <AppBar id='large-header'>
-                <img src="./img/courseRadar.png" id="course-radar" alt="logo for course radar">
-                </img>
+                <img src="./img/original6.png" id="course-radar" alt="logo for course radar"></img>
+                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile"></img>
                 <div id="search-bar">
                     <SearchDropDown/>
                     <InputBase id="large-header-input"
-                        placeholder="想要找啥课啊..."
+                        placeholder="想要找什么课～..."
                     />
                     <SearchIcon id="search-icon"/>
                 </div>
                 <div id="right-upper-icons">
-                    <div class="logo-with-characters">
-                        <img src="./img/pen.png" id="pen" class="header-logo" alt="logo for filling forms"/>
+                
+                    <button type="button" class="logo-with-characters">
+                        <img src="./img/edit.png" id="pen" className="header-logo" alt="logo for filling forms"/>
                         <p>填写课评</p>
-                    </div>
-                    <div class="logo-with-characters">
-                        <img src="./img/log-in.png" id="log-in" class="header-logo" alt="logo for logging in"/>
-                        <p>登录</p>
-                    </div>
+                    </button>
+
+                    <button type="button" class="logo-with-characters">
+                        <img src="./img/log-in.png" id="pen" className="header-logo" alt="logo for filling forms"/>
+                        <p>填写课评</p>
+                    </button>
                 </div>
 
             </AppBar>

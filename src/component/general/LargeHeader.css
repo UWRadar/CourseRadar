@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+}
 #large-header {
     width: 100%;
     height: auto;
@@ -5,7 +8,7 @@
     color: black;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     overflow: auto;
     position: relative;
@@ -13,17 +16,18 @@
 }
 
 #search-bar {
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: center;
     border: 3px solid #5E4271;
-    box-sizing: border-box;
+    margin-left: 3;
     border-radius: 10px;
 }
 
 .header-logo {
-    max-width: 10vmin;
-    max-height: 6vh;
+    max-width: 8vmin;
+    max-height: 4vh;
+    align-content: left;
 }
 
 #large-header-input {
@@ -33,24 +37,76 @@
 
 #search-icon {
     position: relative;
-    ;
+    
 }
 
 #right-upper-icons {
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     flex-grow: 0.1;
 
 }
 
-.logo-with-characters > p {
-    margin: -1.5vh;
+.logo-with-characters {
+    padding-top: 3vh;
     font-family: PingFang SC;
     font-style: normal;
-    font-weight: 500;
-    line-height: 42px;
+    font-weight: 400;
+    line-height: 22px;
+    height: 60%;
+    width: 60%;
+    outline: none;
+    border: none;
+    background-color: white;
+    color: black;
 }
+
+.logo-with-characters:hover {
+    background-color: #fafafa;
+}
+
+.logo-with-characters:active{
+    border: none;
+}
+
+#large-header{
+    justify-content: center;
+}
+
 #course-radar {
-    width: 30vmin;
+    width: 60vmin;
+}
+
+#course-radar2 {
+    display: none;
+}
+@media screen and (min-width: 500px) {
+    #course-radar {
+        width: 30vmax;
+        margin-left: 2vw;
+    }
+    
+}
+
+
+@media screen and (min-width: 900px) {
+
+    #large-header{
+        justify-content: space-between;
+    }
+    #right-upper-icons{
+        display: flex;
+    }
+    #search-bar{
+        display: flex;
+    }
+    
+}
+
+@media screen and (min-width: 1023px) {
+    #course-radar {
+        width: 30vmin;
+        margin-left: 2vw;
+    }
 }

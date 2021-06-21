@@ -30,3 +30,7 @@
 .tabs button span {
     margin-left: 10px;
 }
+
+#trendy img {
+    width: 2rem;
+}
