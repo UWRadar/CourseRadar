@@ -43,7 +43,17 @@ export default function SearchFilter() {
 
     const [filters, setFilters] = useState(defaultFilter);
 
-    const {courseName, level, credit, creditType} = filters;
+    const [levelState, setLevelState] = useState(new Array(levels.length).fill(false));
+
+    const handleOnChangeLevel = (position) => {
+        const updatedLevel = levelState.map((item, index) =>
+            index === position ? !item : item
+        );
+
+        setLevelState(updatedLevel);
+        return false;
+
+    }
 
     // Checkbox
     const [checked, setChecked] = useState(true);
@@ -114,7 +124,7 @@ export default function SearchFilter() {
                     checked={checked}
                     className={`filter-sub-check-box ${tag}`}
                     onChange={onChangeFilterCheckbox}
-                    id={item}
+                    value={item}
                 />
             )
         }
@@ -185,9 +195,19 @@ export default function SearchFilter() {
             {selectionIcon}
             <MenuItem
                 value={filterItems[0]}
-                onChange={onChangeFilterCheckbox}
+                onChange={handleOnChangeLevel}
                 class="filter-items-menu-item">
-                {levelCheckbox}
+
+                {levels.map((element, index) => {
+                    return (
+                        <Checkbox
+                        value={element}
+                        checked={levelState[index]}
+                        onChange={() => handleOnChangeLevel(index)}
+                        >
+                        </Checkbox>
+                    );
+                })}
             </MenuItem>
             <MenuItem
                 value={filterItems[1]}
