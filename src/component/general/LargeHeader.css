@@ -50,6 +50,8 @@
     font-style: normal;
     font-weight: 500;
     line-height: 42px;
+    text-align: center;
+    margin-top: -0.5vh;
 }
 #course-radar {
     width: 30vmin;

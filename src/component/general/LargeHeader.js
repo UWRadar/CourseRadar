@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SortIcon from '@material-ui/icons/Sort';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import SearchDropDown from "../general/SearchDropDown";
-
+import { NavLink } from 'react-router-dom'
 import "./LargeHeader.css"
 
 export default function LargeHeader() {
@@ -25,15 +25,29 @@ export default function LargeHeader() {
                     />
                     <SearchIcon id="search-icon"/>
                 </div>
-                <div id="right-upper-icons">
+                {/* 添加链接 */}
+                <NavLink
+                    to="/"
+                    activeStyle={{
+                        color: "black",
+                      }}>
                     <div class="logo-with-characters">
                         <img src="./img/pen.png" id="pen" class="header-logo" alt="logo for filling forms"/>
                         <p>填写课评</p>
-                    </div>
+                    </div>      
+                </NavLink>
+                <div id="right-upper-icons">
+                <NavLink
+                    to="/"
+                    activeStyle={{
+                        color: "black",
+                      }}>
                     <div class="logo-with-characters">
                         <img src="./img/log-in.png" id="log-in" class="header-logo" alt="logo for logging in"/>
                         <p>登录</p>
                     </div>
+                </NavLink>
+
                 </div>
 
             </AppBar>

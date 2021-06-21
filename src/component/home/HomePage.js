@@ -10,6 +10,7 @@ import {Footer, BigFooter} from "../general/Footer"
 import Header from "../general/Header"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
+import { NavLink } from "react-router-dom"
 
 export default class HomePage extends Component {
     /* constructor(props) {
@@ -58,10 +59,18 @@ export default class HomePage extends Component {
                 <Banner
                     items={bannerItems}
                 />
-                <Tabs
-                    items={tabItems}
-                    active="trendy"
-                />
+                {/* 需要加上链接...最好能把两个tabItem分开... */}
+                <NavLink
+                    to="/"
+                    activeStyle={{
+                        color: "white",
+                    }}>
+                    <Tabs
+                        items={tabItems}
+                        active="trendy"
+                    />
+                </NavLink>
+
                 <CourseCard />
                 <CourseCard />
 

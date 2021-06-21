@@ -1,7 +1,7 @@
 .course-title {
     min-height: 6rem;
     min-width: 37%;
-    background-image: url("../../img/IStest.jpg");
+    /* background-image: url("../../img/IStest.jpg"); */
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -124,7 +124,7 @@ h1 {
     .course-title {
         max-width: 100%;
         width: 15rem;
-        background-image: url("../../img/IStest.jpg");
+        /* background-image: url("../../img/IStest.jpg"); */
     }
 
     .course-title-wrap{
