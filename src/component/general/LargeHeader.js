@@ -27,8 +27,8 @@ export default function LargeHeader() {
                 </div>
                 {/* 添加链接 */}
                 <NavLink
-                    to="/"
-                    activeStyle={{
+                    to="/survey"
+                    style={{
                         color: "black",
                       }}>
                     <div class="logo-with-characters">
@@ -38,8 +38,8 @@ export default function LargeHeader() {
                 </NavLink>
                 <div id="right-upper-icons">
                 <NavLink
-                    to="/"
-                    activeStyle={{
+                    to="/login"
+                    style={{
                         color: "black",
                       }}>
                     <div class="logo-with-characters">

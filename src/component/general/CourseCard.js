@@ -8,8 +8,8 @@ const CourseCard = (props) => {
     const name = "INFO";
     return (
         <NavLink 
-            to="/"
-            activeStyle={{
+            to="/CourseDetail/:INFO340"
+            style={{
                 color: "black",
               }}>
             <div className="course-card">
