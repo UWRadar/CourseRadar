@@ -19,7 +19,7 @@
     display: none;
     flex-direction: row;
     align-items: center;
-    border: 3px solid #5E4271;
+    border: 3px solid rgb(192, 182, 197);
     margin-left: 3;
     border-radius: 10px;
 }
@@ -37,6 +37,7 @@
 
 #search-icon {
     position: relative;
+    color: rgb(156, 138, 165);
     
 }
 

@@ -38,14 +38,16 @@ export default function SearchDropDown() {
             </MenuItem>
             <div className="selection-container">
                 {
-                    dropDownRegion("Course Level", ["100", "200", "300", "400"])
+                    dropDownRegion("课程级数", ["100-level", "200-level", "300-level", "400-level", "500-level"])
                 }
 
                 {
-                    dropDownRegion("Credit", ["1", "2", "3", "4", "5"])
+                    dropDownRegion("通识分类", ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"])
                 }
 
-                {dropDownRegion("Course Level", ["VLPA", "QSR", "NW", "I&S"])}
+                {
+                    dropDownRegion("学分数量", ["1 Credit", "2 Credits", "3 Credits", "4 Credits", "5 Credits"])
+                }
             </div>
         </Select>   
     )

@@ -6,6 +6,8 @@
 
 #selection-icon > img {
     height: 3vh;
+    padding-top: 0.25rem;
+    padding-left: 0.75rem;
 }
 
 .selection {
@@ -25,4 +27,8 @@
 
 .listing {
     position: relative;
+}
+
+.MuiSelect-root{
+    background-color: white;
 }
