@@ -10,6 +10,7 @@ import {Footer, BigFooter} from "../general/Footer"
 import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
+import { NavLink } from "react-router-dom"
 
 export default class HomePage extends Component {
     /* constructor(props) {
@@ -43,19 +44,19 @@ export default class HomePage extends Component {
         }]
 
         const CourseTemp = [{
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"
         },
         {
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"
         },
         {
-            courseName: "Info340",
+            courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"

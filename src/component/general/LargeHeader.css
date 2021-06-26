@@ -59,6 +59,8 @@
     width: 60%;
     outline: none;
     border: none;
+    text-decoration: none;
+    text-align: center;
     background-color: white;
     color: black;
 }
