@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Ubuntu&display=swap');
+
+.CourseComment {
+    margin-bottom: 10%;
+}
+
+.logo {
+    text-align: right;
+    padding-right: 5%;
+    
+}
+
+.name {
+    font-size: 24px;
+    padding-left: 5%;
+    padding-top: 5%;
+    margin-bottom: 0;
+}
+
+.info {
+    padding-left: 5%;
+    font-family: 'Fira Sans', sans-serif;
+    color: #9F8D8D;
+    margin-right: -75px;
+}
+
+.comment {
+    padding-left: 5%;
+}
+
+.question {
+    font-size: 20px;
+    display: inline;
+    margin: 0;
+}
+
+.answer {
+    font-size: 20px;
+    display: inline;
+    margin: 0;
+}
+
+.paragraph {
+    font-size: 20px;
+    margin-right: -60px;
+}
+
+
+/* Media Control screen larger than 320px */ 
+@media (min-width: 375px)
+{
+
+}
+
+/* Media Control screen larger than 480px */ 
+@media (min-width: 768px) 
+{
+    .logo {
+        text-align: right;
+        padding-right: 5%;
+    }
+
+    .info {
+        padding-right: 10%;
+        padding-left: 0%;
+        margin-right: -50px;
+    }
+    
+    .name {
+        font-size: 16px;
+        padding-left: 0;
+        padding-top: 2%;
+        margin-bottom: 0;
+    }
+
+    .commentdetail {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .paragraph {
+        font-size: 20px;
+        margin-right: 0px;
+    }
+
+}
+.commentlogo {
+    width: 40px;
+    height: 40px;
+    margin-top: 1vh;
+}
+
+/* Media Control screen larger than 768px */ 
+@media (min-width: 1024px)
+{
+    .info {
+        padding-right: 20%;
+        margin-right: 0px;
+    }
+}

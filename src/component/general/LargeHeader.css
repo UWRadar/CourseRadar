@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    
 }
 #large-header {
     width: 100%;
@@ -11,7 +12,7 @@
     justify-content: center;
     align-items: center;
     overflow: auto;
-    position: relative;
+    position: fixed;
     height: 11vh;
 }
 

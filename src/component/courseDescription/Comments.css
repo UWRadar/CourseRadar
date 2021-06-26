@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Ubuntu&display=swap');
+
+
+.bookmark {
+    padding-left: 10%;
+}
+
+.bookmarkimg {
+    width: 18px;
+}
+
+.title {
+    text-align: center;
+    padding-bottom: 5%;
+    padding-left: 45%;
+}
+
+.logo {
+    text-align: right;
+    padding-right: 5%;
+}
+
+.name {
+    font-size: 14px;
+    padding-left: 5%;
+    padding-top: 5%;
+    margin-bottom: 0;
+}
+
+.info {
+    padding-left: 5%;
+    font-family: 'Fira Sans', sans-serif;
+    color: #9F8D8D;
+    margin-right: -75px;
+}
+
+.comment {
+    padding-left: 5%;
+}
+
+.question {
+    font-size: 10px;
+    display: inline;
+    margin: 0;
+}
+
+.answer {
+    font-size: 10px;
+    display: inline;
+    margin: 0;
+}
+
+.paragraph {
+    font-size: 10px;
+    margin-right: -60px;
+}
+
+
+.starLarge {
+    display: none;
+}
+
+
+/* Media Control screen larger than 320px */ 
+@media (min-width: 375px)
+{
+
+}
+
+/* Media Control screen larger than 480px */ 
+@media (min-width: 768px) 
+{
+    .starLarge {
+        display: flex;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .comment {
+        padding-left: 10%;
+    }
+
+    .bookmarkimg {
+        width: 20px;
+    }
+
+    .logo {
+        text-align: right;
+        padding-right: 5%;
+    }
+
+    .info {
+        padding-right: 10%;
+        padding-left: 0%;
+        margin-right: -50px;
+    }
+
+    .title {
+        text-align: center;
+        padding-bottom: 0%;
+        padding-left: 0%;
+    }
+
+    .name {
+        font-size: 16px;
+        padding-left: 0;
+        padding-top: 2%;
+        margin-bottom: 0;
+    }
+
+    .commentdetail {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .paragraph {
+        font-size: 10px;
+        margin-right: 0px;
+    }
+
+}
+
+/* Media Control screen larger than 768px */ 
+@media (min-width: 1024px)
+{
+    .info {
+        padding-right: 20%;
+        margin-right: 0px;
+    }
+}
