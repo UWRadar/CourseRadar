@@ -4,7 +4,7 @@ import React, { Component } from "react"
 import Banner from "./Banner"
 import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
-
+import "./HomePage.css"
 import CourseCards from "../general/CourseCard"
 import {Footer, BigFooter} from "../general/Footer"
 import ImageStorage from "../general/ImageStorage.js"
@@ -71,29 +71,26 @@ export default class HomePage extends Component {
             id: "recommendation",
             text: "“水课” 推荐"
         }]
-        console.log(ImageStorage.logo)
         return (
-            <div>
-                <Banner
-                    items={bannerItems}
-                />
-                <Tabs
-                    items={tabItems}
-                    active="trendy"
-                />
-                {
-                    CourseTemp.map(element => {
-                        return (<CourseCard courseName = {element.courseName}
-                                    courseDescription={element.courseDescription}
-                                    tags={element.tags}
-                                    credit={element.credit} />)
-                    })
-                }
-                { /*<Footer />*/}
-                { /*<BigFooter /> */}
-                {/*<LoginPage close={this.closeLoginPage} pageStatus={this.state.openLoginWindow}/>*/}
-
-            </div>
+                <div className="home">
+                    <Banner
+                        items={bannerItems}
+                    />
+                    <Tabs
+                        items={tabItems}
+                        active="trendy"
+                    />
+                    <div className="courselist">
+                        {
+                            CourseTemp.map(element => {
+                                return (<CourseCard courseName = {element.courseName}
+                                            courseDescription={element.courseDescription}
+                                            tags={element.tags}
+                                            credit={element.credit} />)
+                            })
+                        }
+                    </div>
+                </div>
         )
     }
 }

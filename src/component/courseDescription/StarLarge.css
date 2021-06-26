@@ -24,8 +24,20 @@
     padding-left: 0;
     padding-right: 0;
     margin-top: 6px;
+    font-size: 13px;
 }
 
 .stars {
     margin-right: -35px;
+}
+
+@media (min-width: 1024px)
+{
+    .ratingstar{
+        height: 190px;
+        width: 90%;
+    }
+    .cat{
+        font-size: 20px;
+    }
 }

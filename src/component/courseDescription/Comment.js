@@ -6,7 +6,7 @@ import logo from '../../img/hdlogo.png';
 
 const Comment = (props) => {
     return (
-        <div>
+        <div className="CourseComment">
             <Grid container xs={12}>
                 <Grid item xs={2} className='logo'>
                     <img className='commentlogo' src={logo} alt="profile logo" />
@@ -14,13 +14,13 @@ const Comment = (props) => {
                 <Grid item xs={10}>
                         <p className='name'>{props.name}</p>
                     <Row className='info'>
-                        <Col>
+                        <Col xs={12} lg={3}>
                             <p className='question'>Quarter: </p><p className='answer'>{props.quarter}</p>
                         </Col>
-                        <Col>
+                        <Col xs={12} lg={6}>
                             <p className='question'>Professor: </p><p className='answer'>{props.professor}</p>
                         </Col>
-                        <Col>
+                        <Col xs={12} lg={3}>
                             <p className='question'>Grade: </p><p className='answer'>{props.gpa}</p>
                         </Col>
                     </Row>

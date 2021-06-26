@@ -30,9 +30,6 @@ footer{
     box-shadow: 0px 1px 3px rgba(0,0,0,0.16), 0px 1px 3px rgba(0,0,0,0.23);
     display: flex;
     flex-direction: row;
-    margin-bottom: 0;
-    position:fixed;
-    bottom:-5px;
     z-index: 1000;
 }
 
@@ -58,10 +55,13 @@ footer p{
    font-size: 10px;
 }
 
+footer{
+    bottom: 0;
+    position: fixed;
+}
+
 @media screen and (min-width: 1023px) {
-    footer{
-        top: 0;
-    }
+    
 
     #footer-img-for-nav{
         display: block;
@@ -84,13 +84,14 @@ footer p{
         margin-right: 3rem;
     }
 
+    footer{
+        bottom: 0;
+    }
+
 }
 
 
 @media screen and (min-width: 1200px) {
-    footer{
-        top: 0;
-    }
 
     #footer-img-for-nav{
         display: block;

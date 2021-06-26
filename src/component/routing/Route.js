@@ -5,8 +5,8 @@ import HomePage from "../home/HomePage"
 import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
 import SurveyPage from "../survey/SurveyPage"
-import CourseDescription from "../courseDescription/CourseDescription"
 import LargeHeader from "../general/LargeHeader"
+import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
 export default class Routing extends Component {
 
@@ -37,7 +37,7 @@ export default class Routing extends Component {
                         <Route path="/login" component={LoginPage}/>
                     </Switch>
                     <Footer/>
-                </div>
+                </div> 
             </Router>
         )
     }

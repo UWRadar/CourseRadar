@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Description from "./Description"
 import Comments from "./Comments"
-
+import "./Description.css"
 export default class CourseDescription extends Component {
     render() {
         const commentItems = [{
@@ -55,7 +55,7 @@ export default class CourseDescription extends Component {
             tags:["VLPA", "NW"]
         }
         return (
-            <div>
+            <div className="coursedescription">
                 <Description courseItems={courseItems}/>
                 <Comments commentItems={commentItems}/>
             </div>
