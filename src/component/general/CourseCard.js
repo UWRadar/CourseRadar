@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import "./CourseCard.css"
-import Img from "./mapping.js"
+import Img from "./Mapping.js"
 import { NavLink } from 'react-router-dom'
 
 const CourseCard = (props) => {
