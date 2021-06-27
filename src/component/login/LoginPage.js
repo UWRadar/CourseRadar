@@ -93,6 +93,7 @@ export default class LoginPage extends Component {
                 email: this.state.loginEmail,
                 password: md5(this.state.loginPassword)
             }),
+            credentials: "include",
             method: "POST"
         }).then((response) => response.json()).then((data) => {
             if (data) {
@@ -130,6 +131,7 @@ export default class LoginPage extends Component {
                         body: JSON.stringify({
                             idToken: idToken
                         }),
+                        credentials: "include",
                         method: "POST"
                     }).then((response) => {
                         if (response.ok) {

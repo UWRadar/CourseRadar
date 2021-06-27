@@ -4,7 +4,6 @@ import StarSmall from './StarSmall';
 import { Container, Row, Col } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
-
 import background from "../../img/guthrie.jpeg";
 
 const Description = (props) => {
