@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Select from '@material-ui/core/Select';
 import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
@@ -10,10 +10,10 @@ export default function SearchDropDown() {
     const icon =
         (
             <div id="selection-icon">
-                <img src="./img/vector.png"  alt="logo for selection"/>
+                <img src="./img/vector.png" alt="logo for selection" />
             </div>
         )
-    const [displayFilter,setDisplayFilter] = useState(false)
+    const [displayFilter, setDisplayFilter] = useState(false)
 
     return (
 
@@ -22,7 +22,7 @@ export default function SearchDropDown() {
         //         {icon}
         //     </button>
 
-        // {displayFilter && 
+        // {displayFilter &&
         //     <ul className="list-group listing">
         //         <li className="list-group-item">Cras justo odio</li>
         //         <li className="list-group-item">Dapibus ac facilisis in</li>
@@ -32,9 +32,9 @@ export default function SearchDropDown() {
         //     </ul>
         // }
         // </div>
-        <Select value=" " onClick={(event) => event.stopPropagation()}>    
+        <Select value=" " onClick={(event) => event.stopPropagation()}>
             <MenuItem value=" ">
-                {icon}      
+                {icon}
             </MenuItem>
             <div className="selection-container">
                 {
@@ -45,22 +45,24 @@ export default function SearchDropDown() {
                     dropDownRegion("Credit", ["1", "2", "3", "4", "5"])
                 }
 
-                {dropDownRegion("Course Level", ["VLPA", "QSR", "NW", "I&S"])}
+                {
+                    dropDownRegion("Gen Edu Req", ["VLPA", "QSR", "NW", "I&S"])
+                }
             </div>
-        </Select>   
+        </Select>
     )
 }
 
 function dropDownRegion(regionName, options) {
     return (
-        <div onClick={(event) => {event.stopPropagation()}}>
-            <MenuItem value="level" className="selection"> 
+        <div onClick={(event) => { event.stopPropagation() }}>
+            <MenuItem value="level" className="selection">
                 <p>{regionName}</p>
                 <div>
                     {options.map(element => {
                         return (
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     {element}
                                 </label>

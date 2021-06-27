@@ -6,11 +6,12 @@ import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
 import "./HomePage.css"
 import CourseCards from "../general/CourseCard"
-import {Footer, BigFooter} from "../general/Footer"
+import { Footer, BigFooter } from "../general/Footer"
 import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 import { NavLink } from "react-router-dom"
+import SearchBar from "../general/SearchBar"
 
 export default class HomePage extends Component {
     /* constructor(props) {
@@ -73,25 +74,40 @@ export default class HomePage extends Component {
             text: "“水课” 推荐"
         }]
         return (
-                <div className="home">
-                    <Banner
-                        items={bannerItems}
-                    />
-                    <Tabs
-                        items={tabItems}
-                        active="trendy"
-                    />
-                    <div className="courselist">
-                        {
-                            CourseTemp.map(element => {
-                                return (<CourseCard courseName = {element.courseName}
-                                            courseDescription={element.courseDescription}
-                                            tags={element.tags}
-                                            credit={element.credit} />)
-                            })
-                        }
-                    </div>
+            <div className="home">
+                <div className="bg-img">
+                    <SearchBar />
+                    <div className="arrow-down" onClick={() => {
+                        let intervalId = setInterval(() => {
+                            let y1 = window.scrollY
+                            window.scrollTo(0, window.scrollY + 2)
+                            let y2 = window.scrollY
+                            if (y1 == y2 || window.scrollY > window.innerHeight) {
+                                clearInterval(intervalId)
+                            }
+                        }, 1)
+                    }}></div>
                 </div>
+                <Banner
+                    items={bannerItems}
+                />
+                <Tabs
+                    items={tabItems}
+                    active="trendy"
+                />
+                <div className="course-list">
+                    {
+                        CourseTemp.map(element => (
+                            <CourseCard
+                                courseName={element.courseName}
+                                courseDescription={element.courseDescription}
+                                tags={element.tags}
+                                credit={element.credit}
+                            />
+                        ))
+                    }
+                </div>
+            </div >
         )
     }
 }

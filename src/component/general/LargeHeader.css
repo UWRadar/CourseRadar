@@ -1,7 +1,7 @@
 * {
     box-sizing: border-box;
-    
 }
+
 #large-header {
     width: 100%;
     height: auto;
@@ -11,18 +11,22 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    overflow: auto;
+    overflow: hidden;
     position: fixed;
     height: 11vh;
 }
 
-#search-bar {
+.search-bar {
+    background-color: white;
+    border: 3px solid #5E4271;
+    border-radius: 10px;
+}
+
+header .search-bar {
     display: none;
     flex-direction: row;
     align-items: center;
-    border: 3px solid #5E4271;
     margin-left: 3;
-    border-radius: 10px;
 }
 
 .header-logo {
@@ -31,14 +35,13 @@
     align-content: left;
 }
 
-#large-header-input {
+.large-header-input {
     width: 50vmin;
     margin-left: 1vmin;
 }
 
-#search-icon {
+.search-icon {
     position: relative;
-    
 }
 
 #right-upper-icons {
@@ -84,27 +87,27 @@
 #course-radar2 {
     display: none;
 }
+
 @media screen and (min-width: 500px) {
     #course-radar {
         width: 30vmax;
         margin-left: 2vw;
     }
-    
 }
 
 
 @media screen and (min-width: 900px) {
-
-    #large-header{
+    #large-header {
         justify-content: space-between;
     }
-    #right-upper-icons{
+
+    #right-upper-icons {
         display: flex;
     }
-    #search-bar{
+
+    header .search-bar {
         display: flex;
     }
-    
 }
 
 @media screen and (min-width: 1023px) {
