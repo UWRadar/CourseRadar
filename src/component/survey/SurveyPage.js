@@ -44,9 +44,24 @@ export default class SurveyPage extends Component {
 
     setGrading = (e) => this.setState({ grading: e.target.value });
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
+        const SERVER_URL = "http://localhost:9000/api/";
         event.preventDefault();
-        console.log(this.state);
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state),
+        };
+        const response = await fetch(SERVER_URL + 'fillcomment', requestOptions);
+        const data = await response.json();
+        console.log(data);
+        if(data.success === 1) {
+            alert("课评提交成功，感谢你的付出")
+        } else {
+            alert(data.result + ", please try again");
+        }
+        //console.log(requestOptions);
+        //console.log(JSON.parse(requestOptions.body))
     }
 
     render() {
