@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import "./Banner.css"
+
 const Banner = (props) => {
     const bannerItems = []
     const [active, setActive] = useState(0)
@@ -13,6 +14,7 @@ const Banner = (props) => {
             setActive(0)
         }
     }
+
     for (const key in props.items) {
         const thisProps = props.items[key]
         bannerItems.push(
@@ -27,7 +29,7 @@ const Banner = (props) => {
                     }
                 })()}
                 style={{
-                    backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + thisProps.image + ")"
+                    backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + thisProps.pic + ")"
                 }}
             >
                 <button
@@ -39,9 +41,10 @@ const Banner = (props) => {
                 ></button>
                 <div className="main">
                     <h1>{thisProps.title}</h1>
-                    <h2>{thisProps.subtitle}</h2>
-                    <p className="hide-on-mobile">{thisProps.description}</p>
-                    <button className="hide-on-mobile">详情</button>
+                    <p className="hide-on-mobile">{thisProps.content}</p>
+                    {/* <button className="hide-on-mobile" >详情</button> */}
+                    <a href={thisProps.redirect_link} role="button" className="hide-on-mobile detail-button">详情</a>
+                    {/* <Button redirect_link = {thisProps.redirect_link}/> */}
                 </div>
                 <button
                     className="arrow arrow-right"
