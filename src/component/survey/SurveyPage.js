@@ -19,6 +19,8 @@ export default class SurveyPage extends Component {
             comment: '',
             remark: '',
             contact: '',
+            // use to prevent default validation UI
+            validated: false,
         }
     }
 
@@ -45,8 +47,17 @@ export default class SurveyPage extends Component {
     setGrading = (e) => this.setState({ grading: e.target.value });
 
     async handleSubmit(event) {
+        // use to prevent default validation UI
+        let form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.setState({validated: true});
+        if(!form.checkValidity()) {
+            return;
+        }
         const SERVER_URL = "http://localhost:9000/api/";
-        event.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -65,13 +76,15 @@ export default class SurveyPage extends Component {
     }
 
     render() {
+       
+        
         return (
             <div className="container-xxl" fliud id="survey">
                 <Container id='form-header'>
                     <h1>Course Evaluation Form</h1>
                 </Container>
                 <Container>
-                    <Form className = 'survey-form' onSubmit= {(e) => this.handleSubmit(e)}>
+                    <Form noValidate className = 'survey-form' validated={this.state.validated} onSubmit= {(e) => this.handleSubmit(e)}>
                         <Container id='form-box'>
                         <Form.Group as={Row} controlId='formYear'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -79,17 +92,22 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={2}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="YYYY"
                                     value={this.state.year}
                                     onChange={this.setYear}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    Year is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlID='formQuarter'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Quarters:
                             </Form.Label>
+                            
                             <Col sm>
                                 <Form.Check
                                     inline
@@ -141,11 +159,15 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={3}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="e.g.: CSE142"
                                     value={this.state.courseName}
                                     onChange={this.setCourseName}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    CourseName is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formInstructor'>
@@ -154,11 +176,15 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={3}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="First Name, Last Name"
                                     value={this.state.instructor}
                                     onChange={this.setInstructor}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    instructor is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formCredits'>
@@ -166,13 +192,16 @@ export default class SurveyPage extends Component {
                                 Credits:
                             </Form.Label>
                             <Col sm={2}>
-                                <Form.Control as="select" value={this.state.credits} onChange={this.setCredits}>
+                                <Form.Control required="true" as="select" value={this.state.credits} onChange={this.setCredits}>
                                     <option value='1'>1</option>
                                     <option value='2'>2</option>
                                     <option value='3'>3</option>
                                     <option value='3'>4</option>
                                     <option value='5'>5</option>
                             </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                    credits is a required field.
+                            </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formCourseContent'>
@@ -180,11 +209,15 @@ export default class SurveyPage extends Component {
                                 Course Content
                             </Form.Label>
                             <Form.Control
+                                required
                                 as="textarea"
                                 rows={3}
                                 value={this.state.courseContent}
                                 onChange={this.setCourseContent}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                courseContent is a required field.
+                            </Form.Control.Feedback>   
                         </Form.Group>
                         <Form.Group as={Row} controlId='formWorkload'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -254,7 +287,7 @@ export default class SurveyPage extends Component {
                         </Form.Group>
                         <Form.Group as={Row} controlId='formGrading'>
                             <Form.Label column sm={2} className="text-md-left">
-                                Workload:
+                                Difficulty:
                             </Form.Label>
                             <Col sm>
                                 <Form.Text>Easy</Form.Text>
