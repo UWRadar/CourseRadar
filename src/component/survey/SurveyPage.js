@@ -19,6 +19,7 @@ export default class SurveyPage extends Component {
             comment: '',
             remark: '',
             contact: '',
+            language: 'CN',
             // use to prevent default validation UI
             validated: false,
         }
@@ -67,7 +68,7 @@ export default class SurveyPage extends Component {
         const response = await fetch(SERVER_URL + 'fillcomment', requestOptions);
         const data = await response.json();
         console.log(data);
-        if(data.success === 1) {
+        if(data.success === true) {
             alert("课评提交成功，感谢你的付出")
         } else {
             alert(data.result + ", please try again");
