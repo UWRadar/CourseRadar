@@ -50,9 +50,9 @@ export default class SurveyPage extends Component {
         // use to prevent default validation UI
         let form = event.currentTarget;
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
         }
+        event.preventDefault();
         this.setState({validated: true});
         if(!form.checkValidity()) {
             return;
@@ -63,6 +63,7 @@ export default class SurveyPage extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(this.state),
         };
+        console.log(this.state)
         const response = await fetch(SERVER_URL + 'fillcomment', requestOptions);
         const data = await response.json();
         console.log(data);
@@ -103,12 +104,22 @@ export default class SurveyPage extends Component {
                                 </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} controlID='formQuarter'>
+                        <Form.Group as={Row} controlID='formQuarter'>                                                
                             <Form.Label column sm={2} className="text-md-left">
                                 Quarters:
                             </Form.Label>
-                            
-                            <Col sm>
+                            <Col sm={2}>     
+                                <Form.Control required="true" as="select" value={this.state.quarter} onChange={this.setQuarter}>
+                                        <option value='spring'>Spring</option>
+                                        <option value='summer'>Summer</option>
+                                        <option value='autumn'>Autumn</option>
+                                        <option value='winnter'>Winter</option>
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">
+                                        credits is a required field.
+                                </Form.Control.Feedback>
+                            </Col>        
+                            {/*<Col sm>
                                 <Form.Check
                                     inline
                                     type='radio'
@@ -151,7 +162,7 @@ export default class SurveyPage extends Component {
                                     checked={this.state.quarter === 'summer'}
                                     onChange={this.setQuarter}
                                 />
-                            </Col>
+                            </Col>/*/}
                         </Form.Group>
                         <Form.Group as={Row} controlId='formCourseName'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -196,7 +207,7 @@ export default class SurveyPage extends Component {
                                     <option value='1'>1</option>
                                     <option value='2'>2</option>
                                     <option value='3'>3</option>
-                                    <option value='3'>4</option>
+                                    <option value='4'>4</option>
                                     <option value='5'>5</option>
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
@@ -223,7 +234,19 @@ export default class SurveyPage extends Component {
                             <Form.Label column sm={2} className="text-md-left">
                                 Workload:
                             </Form.Label>
-                            <Col sm>
+                            <Col sm={2}>
+                                <Form.Control required="true" as="select" value={this.state.workload} onChange={this.setWorkload}>
+                                    <option value='1'>1(Light)</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5(Massive)</option>
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                    workload is a required field.
+                            </Form.Control.Feedback>
+                            </Col>
+                            {/*<Col sm>
                                 <Form.Text>Light</Form.Text>
                             </Col>
                             <Col sm>
@@ -283,13 +306,25 @@ export default class SurveyPage extends Component {
                             </Col>
                             <Col sm>
                                 <Form.Text>Massive</Form.Text>
-                            </Col>
+                            </Col>*/}
                         </Form.Group>
                         <Form.Group as={Row} controlId='formGrading'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Difficulty:
                             </Form.Label>
-                            <Col sm>
+                            <Col sm={2}>
+                                <Form.Control required="true" as="select" value={this.state.grading} onChange={this.setGrading}>
+                                    <option value='1'>1(Easy)</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5(Hard)</option>
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">
+                                        Difficulty is a required field.
+                                </Form.Control.Feedback>
+                            </Col>
+                            {/*<Col sm>
                                 <Form.Text>Easy</Form.Text>
                             </Col>
                             <Col sm>
@@ -349,7 +384,7 @@ export default class SurveyPage extends Component {
                             </Col>
                             <Col sm>
                                 <Form.Text>Hard</Form.Text>
-                            </Col>
+                            </Col>*/}
                         </Form.Group>
                         <Form.Group as={Row} controlId='formSurveyComment'>
                             <Form.Label column sm={4} className="text-md-left">
