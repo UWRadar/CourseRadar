@@ -143,7 +143,9 @@ export default class LoginPage extends Component {
                 })
             }).catch((error) => {
                 console.error(error)
-                alert("Firebase 验证出错。")
+                if (error.code != "auth/popup-closed-by-user") {
+                    alert("Firebase 验证出错：" + error.message)
+                }
             })
     }
 

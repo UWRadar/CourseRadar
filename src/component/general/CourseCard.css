@@ -38,6 +38,7 @@
 
 .recom-description h1 {
     margin-bottom: 0.5rem;
+    word-break: break-word;
 }
 
 .describtion-tags {
