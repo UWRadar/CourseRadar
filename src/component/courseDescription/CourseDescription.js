@@ -2,50 +2,65 @@ import React, { Component } from "react"
 import Description from "./Description"
 import Comments from "./Comments"
 import "./Description.css"
+import ServerConfig from "../config/ServerConfig"
 export default class CourseDescription extends Component {
+
+    constructor(link) {
+        super();
+        this.state = {
+            filteredComment: [],
+            allComments: [],
+            courseName: link["match"].params.courseName,
+            courseInfo: {},
+            receivedBackEndData: false
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            filteredComment: [],
+            allComments: []
+        });
+        this.getAllCommentFromCoursename();
+        this.getCourseRatingByCoursename();
+    }
+
+    getCourseRatingByCoursename() {
+        console.log("Hello");
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOURSERATING + "?courseName=" + this.state.courseName)
+            .then((response) => {
+                if (response.ok)
+                    return response.json();
+                else
+                    return {};
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    courseInfo: data.result[0],
+                    receivedBackEndData: true
+                })
+            })
+    }
+
+    getAllCommentFromCoursename() {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOMMENT + "?name=" + this.state.courseName)
+            .then((response) => {
+                if (response.ok)
+                    return response.json();
+                else {
+                    return [];
+                }
+            })
+            .then(data => {                
+                this.setState({
+                    allComments: data.result
+                })
+            })
+
+    }
+
     render() {
-        const commentItems = [{
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }, 
-        {
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }, 
-        {
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }, 
-        {
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }, 
-        {
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }, 
-        {
-            name: "红领巾",
-            quarter: "WI",
-            professor: "Brett Reges",
-            gpa: "3.5",
-            comment:"I think he is a great professor. I enjoyed taking psych with him. I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him.  I think he is a great professor. I enjoyed taking psych with him. "
-        }]
 
         const courseItems = {
             code: "PSYCH101",
@@ -56,8 +71,10 @@ export default class CourseDescription extends Component {
         }
         return (
             <div className="coursedescription">
-                <Description courseItems={courseItems}/>
-                <Comments commentItems={commentItems}/>
+                {this.state.receivedBackEndData && <Description 
+                    courseItems={this.state.courseInfo}
+                    courseName={this.state.courseName}/>}
+                <Comments commentItems={this.state.allComments} courseItems={this.state.courseInfo}/>
             </div>
         )
     }
