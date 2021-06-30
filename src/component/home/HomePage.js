@@ -57,6 +57,18 @@ export default class HomePage extends Component {
             credit: "5 credits"
         },
         {
+            courseName: "CSE 142",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
+            courseName: "CSE 142",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
             courseName: "Info 340",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
@@ -88,7 +100,8 @@ export default class HomePage extends Component {
                         }, 1)
                     }}></div>
                 </div>
-                <Banner
+
+                <Banner className="banner"
                     items={bannerItems}
                 />
                 <Tabs

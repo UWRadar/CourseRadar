@@ -32,21 +32,14 @@
 }
 
 .home {
+    margin-top: 11vh;
     height: 100%;
     width: 100%;
+    margin-bottom: 11vh;
 }
- .courselist {
-    flex-direction: column;
-    padding: 11vh 0 5rem;
-}
-
-.course-list {
-    height: 100%;
-    width: 100%;
-}
-
 @media screen and (min-width: 900px) {
     .bg-img {
         display: none;
     }
 }
+
