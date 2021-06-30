@@ -5,7 +5,7 @@ import bookmark from '../../img/bookmark.png';
 import Comment from "./Comment";
 import StarLarge from './StarLarge';
 
-const Comments = (commentItems) => {
+const Comments = (props) => {
     return (
         <div className='comments'>
             <div className='bookmark'>
@@ -17,18 +17,22 @@ const Comments = (commentItems) => {
                         <h1>课程评价</h1>
                     </div>
                     {
-                        commentItems.commentItems.map(element => {
-                            return (<Comment name={element.name}
+                        props.commentItems.map(element => {
+                            return (<Comment name={"匿名"}
                                 quarter={element.quarter}
-                                professor={element.professor}
-                                gpa={element.gpa}
+                                professor={element.professorName}
+                                gpa={element.GPA}
                                 comment={element.comment}
                                 />)})
                     }
                     
                 </Grid>
                 <Grid className='starLarge' item xs={4}>
-                    <StarLarge />
+                    <StarLarge 
+                        diffRating={props.courseItems.difficulty} 
+                        workRating={props.courseItems.workload}
+                        avgRating = {props.courseItems.averageGPA}
+                    />
                 </Grid>
             </Grid>
             <br></br>

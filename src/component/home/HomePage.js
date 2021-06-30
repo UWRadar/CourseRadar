@@ -51,7 +51,7 @@ export default class HomePage extends Component {
             credit: "5 credits"
         },
         {
-            courseName: "Info 340",
+            courseName: "CSE 142",
             courseDescription: "Introduction to web design",
             tags: ["qsr", "vlpa", "idc"],
             credit: "5 credits"

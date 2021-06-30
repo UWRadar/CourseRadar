@@ -34,14 +34,13 @@
 .home {
     height: 100%;
     width: 100%;
-    display: flex;
+}
+ .courselist {
     flex-direction: column;
     padding: 11vh 0 5rem;
 }
 
 .course-list {
-    display: flex;
-    flex-direction: row;
     height: 100%;
     width: 100%;
 }
