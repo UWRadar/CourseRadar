@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { Container, Row, Col, Form, Button, Card }from 'react-bootstrap'
 import "./SurveyPage.css"
 import ImageManger from "../general/ImageManager"
+import ServerConfig from "../config/ServerConfig"
 export default class SurveyPage extends Component {
     constructor(props) {
         super(props);
@@ -14,11 +15,14 @@ export default class SurveyPage extends Component {
             instructor: '',
             credits: '',
             courseContent: '',
-            workload: '',
-            grading: '',
+            workload: 1,
+            difficulty: 1,
             comment: '',
-            remark: '',
             contact: '',
+            gpa: '',
+            language: 'Chinese',
+            // use to prevent default validation UI
+            validated: false,
         }
     }
 
@@ -34,29 +38,67 @@ export default class SurveyPage extends Component {
     
     setRemark = (e) => this.setState({ remark: e.target.value });
 
-    setContact = (e) => this.setState({ contact: e.target.value });
+    setGPA = (e) => this.setState({gpa: e.target.value});
 
-    setCredits = (e) => this.setState({ credits: e.target.value });
+    setContact = (e) => this.setState({ contact: e.target.value });
 
     setQuarter = (e) => this.setState({ quarter: e.target.value });
 
     setWorkload = (e) => this.setState({ workload: e.target.value });
 
-    setGrading = (e) => this.setState({ grading: e.target.value });
+    setDifficulty = (e) => this.setState({ difficulty: e.target.value });
 
-    handleSubmit(event) {
+    convertStateToJSON() {
+        return JSON.stringify({
+            year: this.state.year,
+            quarter: this.state.quarter,
+            courseName: this.state.courseName,
+            instructor: this.state.instructor,
+            comment: this.state.courseContent + " " + this.state.comment,
+            workload: this.state.workload,
+            difficulty: this.state.difficulty,
+            grading: this.state.gpa
+        })
+    }
+    async handleSubmit(event) {
+        // use to prevent default validation UI
+        let form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
         event.preventDefault();
-        console.log(this.state);
+        this.setState({validated: true});
+        if(!form.checkValidity()) {
+            return;
+        }
+        const requestOptions = {
+            method: 'POST',
+            body: this.convertStateToJSON(),
+        };
+        console.log(ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT)
+        const response = await fetch(ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT, requestOptions);
+        const data = await response.json();
+        console.log(data);
+        if(data.success === true) {
+            alert("课评提交成功，感谢你的付出");
+            window.location.href = "/";
+        } else {
+            alert(data.result + ", please try again");
+        }
+        //console.log(requestOptions);
+        //console.log(JSON.parse(requestOptions.body))
     }
 
     render() {
+       
+        
         return (
             <div className="container-xxl" fliud id="survey">
                 <Container id='form-header'>
                     <h1>Course Evaluation Form</h1>
                 </Container>
                 <Container>
-                    <Form className = 'survey-form' onSubmit= {(e) => this.handleSubmit(e)}>
+                    <Form noValidate className = 'survey-form' validated={this.state.validated} onSubmit= {(e) => this.handleSubmit(e)}>
                         <Container id='form-box'>
                         <Form.Group as={Row} controlId='formYear'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -64,61 +106,32 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={2}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="YYYY"
                                     value={this.state.year}
                                     onChange={this.setYear}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    Year is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} controlID='formQuarter'>
+                        <Form.Group as={Row} controlID='formQuarter'>                                                
                             <Form.Label column sm={2} className="text-md-left">
                                 Quarters:
                             </Form.Label>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='Autumn' 
-                                    name='quarterSelect'
-                                    value='autumn' 
-                                    checked={this.state.quarter === 'autumn'}
-                                    onChange={this.setQuarter}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='Winter' 
-                                    name='quarterSelect'
-                                    value='winter' 
-                                    checked={this.state.quarter === 'winter'}
-                                    onChange={this.setQuarter}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='Spring' 
-                                    name='quarterSelect'
-                                    value='spring' 
-                                    checked={this.state.quarter === 'spring'}
-                                    onChange={this.setQuarter}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='Summer' 
-                                    name='quarterSelect'
-                                    value='summer' 
-                                    checked={this.state.quarter === 'summer'}
-                                    onChange={this.setQuarter}
-                                />
-                            </Col>
+                            <Col sm={2}>     
+                                <Form.Control required="true" as="select" value={this.state.quarter} onChange={this.setQuarter}>
+                                        <option value='spring'>Spring</option>
+                                        <option value='summer'>Summer</option>
+                                        <option value='autumn'>Autumn</option>
+                                        <option value='winnter'>Winter</option>
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">
+                                        Quarter is a required field.
+                                </Form.Control.Feedback>
+                            </Col>        
                         </Form.Group>
                         <Form.Group as={Row} controlId='formCourseName'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -126,11 +139,15 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={3}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="e.g.: CSE142"
                                     value={this.state.courseName}
                                     onChange={this.setCourseName}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    CourseName is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formInstructor'>
@@ -139,170 +156,86 @@ export default class SurveyPage extends Component {
                             </Form.Label>
                             <Col sm={3}>
                                 <Form.Control
+                                    required
                                     type='text'
                                     placeholder="First Name, Last Name"
                                     value={this.state.instructor}
                                     onChange={this.setInstructor}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    instructor is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} controlId='formCredits'>
-                            <Form.Label column sm={2} className="text-md-left">
-                                Credits:
-                            </Form.Label>
-                            <Col sm={2}>
-                                <Form.Control as="select" value={this.state.credits} onChange={this.setCredits}>
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='3'>4</option>
-                                    <option value='5'>5</option>
-                            </Form.Control>
-                            </Col>
-                        </Form.Group>
+                        
                         <Form.Group as={Row} controlId='formCourseContent'>
                             <Form.Label column sm={4} className="text-md-left">
                                 Course Content
                             </Form.Label>
                             <Form.Control
+                                required
                                 as="textarea"
                                 rows={3}
                                 value={this.state.courseContent}
                                 onChange={this.setCourseContent}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                courseContent is a required field.
+                            </Form.Control.Feedback>   
                         </Form.Group>
                         <Form.Group as={Row} controlId='formWorkload'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Workload:
                             </Form.Label>
-                            <Col sm>
-                                <Form.Text>Light</Form.Text>
+                            <Col sm={2}>
+                                <Form.Control required="true" as="select" value={this.state.workload} onChange={this.setWorkload}>
+                                    <option value='1'>1(Light)</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5(Massive)</option>
+                            </Form.Control>
+                            <Form.Control.Feedback type="invalid">
+                                    workload is a required field.
+                            </Form.Control.Feedback>
                             </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='1' 
-                                    name='WorkloadSelect'
-                                    value='1' 
-                                    checked={this.state.workload === '1'}
-                                    onChange={this.setWorkload}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='2' 
-                                    name='WorkloadSelect'
-                                    value='2' 
-                                    checked={this.state.workload === '2'}
-                                    onChange={this.setWorkload}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='3' 
-                                    name='WorkloadSelect'
-                                    value='3' 
-                                    checked={this.state.workload === '3'}
-                                    onChange={this.setWorkload}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='4' 
-                                    name='WorkloadSelect'
-                                    value='4' 
-                                    checked={this.state.workload === '4'}
-                                    onChange={this.setWorkload}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='5' 
-                                    name='WorkloadSelect'
-                                    value='5' 
-                                    checked={this.state.workload === '5'}
-                                    onChange={this.setWorkload}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Text>Massive</Form.Text>
-                            </Col>
+                            
                         </Form.Group>
                         <Form.Group as={Row} controlId='formGrading'>
                             <Form.Label column sm={2} className="text-md-left">
-                                Workload:
+                                Difficulty:
                             </Form.Label>
-                            <Col sm>
-                                <Form.Text>Easy</Form.Text>
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='1' 
-                                    name='GradingSelect'
-                                    value='1' 
-                                    checked={this.state.grading === '1'}
-                                    onChange={this.setGrading}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='2' 
-                                    name='GradingSelect'
-                                    value='2' 
-                                    checked={this.state.grading === '2'}
-                                    onChange={this.setGrading}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='3' 
-                                    name='GradingSelect'
-                                    value='3' 
-                                    checked={this.state.grading === '3'}
-                                    onChange={this.setGrading}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='4' 
-                                    name='GradingSelect'
-                                    value='4' 
-                                    checked={this.state.grading === '4'}
-                                    onChange={this.setGrading}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Check
-                                    inline
-                                    type='radio'
-                                    label='5' 
-                                    name='GradingSelect'
-                                    value='5' 
-                                    checked={this.state.grading === '5'}
-                                    onChange={this.setGrading}
-                                />
-                            </Col>
-                            <Col sm>
-                                <Form.Text>Hard</Form.Text>
+                            <Col sm={2}>
+                                <Form.Control required="true" as="select" value={this.state.difficulty} onChange={this.setDifficulty}>
+                                    <option value='1'>1(Easy)</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5(Hard)</option>
+                                </Form.Control>
+                                <Form.Control.Feedback type="invalid">
+                                        Difficulty is a required field.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
+
+                        <Form.Group as={Row} controlId='formGPA'>
+                            <Form.Label column sm={2} className="text-md-left">
+                                GPA:
+                            </Form.Label>
+                            <Col sm={2}>
+                                <Form.Control
+                                    type='text'
+                                    placeholder="eg. 3.3 (optional)"
+                                    value={this.state.gpa}
+                                    onChange={this.setGPA}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    gpa is a required field.
+                                </Form.Control.Feedback>
+                            </Col>
+                        </Form.Group>
+
                         <Form.Group as={Row} controlId='formSurveyComment'>
                             <Form.Label column sm={4} className="text-md-left">
                                 Comments and Additional Thought:
