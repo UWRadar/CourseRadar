@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { NavLink } from "react-router-dom"
 import "./Banner.css"
 const Banner = (props) => {
     const bannerItems = []
@@ -41,7 +42,15 @@ const Banner = (props) => {
                     <h1>{thisProps.title}</h1>
                     <h2>{thisProps.subtitle}</h2>
                     <p className="hide-on-mobile">{thisProps.description}</p>
-                    <button className="hide-on-mobile">详情</button>
+                    {/* 微信公众号界面链接 */}
+                    <NavLink 
+                        to="/"
+                        activeStyle={{
+                            color: "white",
+                          }}>
+                        <button className="hide-on-mobile">详情</button>
+                    </NavLink>
+                    
                 </div>
                 <button
                     className="arrow arrow-right"

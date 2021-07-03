@@ -4,8 +4,12 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
 import HomePage from "../home/HomePage"
 import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
+import SearchResultPage from "../home/SearchResultPage"
 import SurveyPage from "../survey/SurveyPage"
-import SearchResultPage from "../search-result-page/SearchResultPage"
+// import SearchResultPage from "../search-result-page/SearchResultPage"
+import LargeHeader from "../general/LargeHeader"
+import CourseDescription from "../courseDescription/CourseDescription"
+import Footer from "../general/Footer"
 export default class Routing extends Component {
 
     constructor() {
@@ -25,14 +29,16 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
+                    <LargeHeader />
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile/:username" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-                        <Route path="/SearchResult" component={SearchResultPage} />
-                        <Route path="/CourseDetail/:courseName" component={HomePage} />
-                        <Route path="/login" component={LoginPage}/>
+                        <Route path="/search/:searchTerm" component={SearchResultPage} />
+                        <Route path="/CourseDetail/:courseName" component={CourseDescription} />
+                        <Route path="/login" component={LoginPage} />
                     </Switch>
+                    <Footer />
                 </div>
             </Router>
         )

@@ -4,12 +4,14 @@ import React, { Component } from "react"
 import Banner from "./Banner"
 import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
-
+import "./HomePage.css"
 import CourseCards from "../general/CourseCard"
-import {Footer, BigFooter} from "../general/Footer"
-import Header from "../general/Header"
+import { Footer, BigFooter } from "../general/Footer"
+import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
+import { NavLink } from "react-router-dom"
+import SearchBar from "../general/SearchBar"
 
 export default function HomePage() {
     /* constructor(props) {
@@ -42,37 +44,83 @@ export default function HomePage() {
             image: "https://www.bing.com/th?id=OHR.BlueTitDaffs_ZH-CN3333224685_1920x1080.jpg"
         }]
 
+        const CourseTemp = [{
+            courseName: "Info 340",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
+            courseName: "CSE 142",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
+            courseName: "CSE 142",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
+            courseName: "CSE 142",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        },
+        {
+            courseName: "Info 340",
+            courseDescription: "Introduction to web design",
+            tags: ["qsr", "vlpa", "idc"],
+            credit: "5 credits"
+        }
+        ]
+
         const tabItems = [{
-            icon: "../../img/hot-active.png",
+            icon: "hotClass",
             id: "trendy",
             text: "热门课程"
         }, {
-            icon: "../../img/talk.png",
+            icon: "waterClass",
             id: "recommendation",
             text: "“水课” 推荐"
         }]
-
         return (
-            <div>
-                <LargeHeader />
-                <Banner
+            <div className="home">
+                <div className="bg-img">
+                    <SearchBar />
+                    <div className="arrow-down" onClick={() => {
+                        let intervalId = setInterval(() => {
+                            let y1 = window.scrollY
+                            window.scrollTo(0, window.scrollY + 2)
+                            let y2 = window.scrollY
+                            if (y1 == y2 || window.scrollY > window.innerHeight) {
+                                clearInterval(intervalId)
+                            }
+                        }, 1)
+                    }}></div>
+                </div>
+
+                <Banner className="banner"
                     items={bannerItems}
                 />
                 <Tabs
                     items={tabItems}
                     active="trendy"
                 />
-                <CourseCard />
-                <CourseCard />
-
-
-                <CourseCards />
-                <CourseCards />
-                { /*<Footer />*/}
-                { /*<BigFooter /> */}
-                {/*<LoginPage close={this.closeLoginPage} pageStatus={this.state.openLoginWindow}/>*/}
-
-            </div>
+                <div className="course-list">
+                    {
+                        CourseTemp.map(element => (
+                            <CourseCard
+                                courseName={element.courseName}
+                                courseDescription={element.courseDescription}
+                                tags={element.tags}
+                                credit={element.credit}
+                            />
+                        ))
+                    }
+                </div>
+            </div >
         )
     }
 // }

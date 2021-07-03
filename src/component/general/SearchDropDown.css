@@ -1,0 +1,28 @@
+#selection-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#selection-icon > img {
+    height: 3vh;
+}
+
+.selection {
+    display: flex;
+    flex-direction: column;
+}
+
+#dropdownMenuButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.selection-container{
+    display: flex;
+}
+
+.listing {
+    position: relative;
+}

@@ -1,0 +1,47 @@
+:root {
+    --filter-width: 300px;
+}
+
+.filter {
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    display: none;
+    height: calc(89vh - 5rem);
+    left: 0;
+    overflow: auto;
+    padding: 15px;
+    position: fixed;
+    top: 11vh;
+    width: var(--filter-width);
+}
+
+.filter h1 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.filter h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.filter label {
+    margin-left: 5px;
+}
+
+.search-result {
+    padding: 11vh 0 5rem;
+}
+
+.search-result .course-list {
+    display: block;
+}
+
+@media screen and (min-width: 900px) {
+    .filter {
+        display: block;
+    }
+    .search-result .course-list {
+        margin-left: var(--filter-width);
+        width: calc(100% - var(--filter-width));
+    }
+}
