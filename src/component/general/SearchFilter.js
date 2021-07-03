@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Button, TextField, Checkbox, MenuItem } from '@material-ui/core'
-import useFilterStatus from "../search-result-page/useFilterStates"
-import SearchIcon from '@material-ui/icons/Search';
-// import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
+import { Grid } from '@material-ui/core';
+
+import Select from '@material-ui/core/Select';
+import SearchResultPage from "../search-result-page/SearchResultPage.js"
 
 import "./SearchFilter.css"
-import SearchResultPage from "../search-result-page/SearchResultPage";
 
 export default function SearchFilter() {
     const selectionIcon = (
@@ -13,142 +13,131 @@ export default function SearchFilter() {
             <img src="./img/vector.png"  alt="logo for selection"/>
         </div>
     )
-    const levels = [100, 200, 300, 400];
-    const credits = [1, 2, 3, 4, 5];
-    const creditTypes = ["c", "div", "i&s", "na", "nw", "qsr", "vlpa", "w"];
 
 
-    // const [courseName, setCourseName] = useState("cse");
-    // const [level, setLevel] = useState(100);
-    // const [credit, setCredit] = useState(5);
-    // const [creditType, setCreditType] = useState("nw");
+    /*
+    [
+        {
+            type: "level",
+            value: 100 (or array)
+        },
+        {
+            ...
+        }
+    ]
+    */
 
-    // const getFilters = () => {
-    //     return [courseName, level, credit, creditType];
-    // };
+    // level: 0-3, credit: 4-8, creditType: 9-16
+    const FILTER_ITEMS = [
+        {type: "level", value: 100},
+        {type: "level", value: 200},
+        {type: "level", value: 300},
+        {type: "level", value: 400},
+        {type: "credit", value: 1},
+        {type: "credit", value: 2},
+        {type: "credit", value: 3},
+        {type: "credit", value: 4},
+        {type: "credit", value: 5},
+        {type: "creditType", value: "C"},
+        {type: "creditType", value: "DIV"},
+        {type: "creditType", value: "I&S"},
+        {type: "creditType", value: "N/A"},
+        {type: "creditType", value: "NW"},
+        {type: "creditType", value: "QSR"},
+        {type: "creditType", value: "VLPA"},
+        {type: "creditType", value: "W"}
+    ];
 
-    // const updateFilters = (newCourseName, newLevel, newCredit, newCreditType) => {
-    //     setCourseName(newCourseName);
-    //     setLevel(newLevel);
-    //     setCredit(newCredit);
-    //     setCreditType(newCreditType);
-    // };
-
-    const defaultFilter = {
-        courseName: "cse",
-        level: 100,
-        credit: 5,
-        creditType: "nw"
-    };
-
-    const [filters, setFilters] = useState(defaultFilter);
-
-    const [levelState, setLevelState] = useState(new Array(levels.length).fill(false));
-
-    const handleOnChangeLevel = (position) => {
-        const updatedLevel = levelState.map((item, index) =>
-            index === position ? !item : item
-        );
-
-        setLevelState(updatedLevel);
-        return false;
-
-    }
-
-    // Checkbox
-    const [checked, setChecked] = useState(true);
-
-    // onClickCheckbox
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
-    };
-
-    // TODO: Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+    const [filters, setFilters] = useState([
+        // initialize textInput filter in the default state
+        {
+            type: "courseName",
+            value: ""
+        }
+    ]);
 
     // Apply Filters Btn: first click or else
     const [isFirstClick, toggleIsFirstClick] = useState(true);
 
-    // Filter States see useFilterStates.js
+    // Checkbox (updated)
+    const [checkedState, setCheckedState] = useState(new Array(FILTER_ITEMS.length).fill(false));
 
-
-
-    const filterItems = ["level", "credit", "creditType"];
-
-    const selectedItem = (checkboxArr) => {
-        for (const cb in checkboxArr) {
-            if (cb.checked) {
-                return cb;
+    // onClickCheckbox (updated)
+    const handleOnChangeClickBox = (position) => {
+        // setChecked(event.target.checked);
+        toggleIsFirstClick(false);
+        const updatedChecked = checkedState.map((item, index) =>
+            index === position ? !item : item
+        );
+        setCheckedState(updatedChecked);
+        let tempFilterArr = [filters[0]];
+        for (let i = 0; i < updatedChecked.length; i++) {
+            if (updatedChecked[i]) {
+                tempFilterArr.push(FILTER_ITEMS[i]);
             }
         }
-    }
-
-    // Read checkbox status, call updateFilters to update the filter model
-    const onChangeFilterCheckbox = (event) => {
-        setChecked(event.target.checked);
-        toggleIsFirstClick(false);
-        const level = document.querySelectorAll(".level");
-        const credit = document.querySelectorAll(".credit");
-        const creditType = document.querySelectorAll(".creditType");
-        console.log("11111");
-        console.log(level);
-        console.log(credit);
-        console.log(creditType);
-        const selectedlevel = selectedItem(level);
-        const selectedCredit = selectedItem(credit);
-        const selectedCreditType = selectedItem(creditType);
-        setFilters({
-            courseName: filters.courseName,
-            level: selectedlevel,
-            credit: selectedCredit,
-            creditType: selectedCreditType
-        });
+        setFilters(tempFilterArr);
     };
 
+    // Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
+
+
+
+    // textInput onChange (updated)
     const onChangeCourseNameTextInput = (event) => {
-        setFilters({
-            courseName: event.target.value,
-            level: filters.level,
-            credit: filters.credit,
-            creditType: filters.creditType
-        });
+        let curFilterArr = filters;
+        // update courseName value in filters
+        curFilterArr[0].value = event.target.value;
+        setFilters(curFilterArr);
     };
 
-    const generateCheckboxArr = (array, tag) => {
+    // generate Checkbox tags (updated)
+    const generateCheckboxArr = (startIndex, endIndex) => {
         const result = [];
-        for (const item of array) {
-            const isDefault = item === defaultFilter[tag];
-            setChecked(isDefault); // TODO: useState indiv checkbxes, changestate on corresponding
-            console.log("@@@: " + item);
+        for (let i = startIndex; i <= endIndex; i++) {
             result.push(
-                <Checkbox
-                    checked={checked}
-                    className={`filter-sub-check-box ${tag}`}
-                    onChange={onChangeFilterCheckbox}
-                    value={item}
-                />
+                <div className="single-filter-item">
+                    <Checkbox
+                        checked={checkedState[i]}
+                        onChange={() => handleOnChangeClickBox(i)}
+                        className="checkbox"
+                    />
+                    <label> {FILTER_ITEMS[i].value} </label>
+                </div>
             )
         }
         return result;
     }
 
-    const levelCheckbox = generateCheckboxArr(levels, "level");
-    const creditCheckbox = generateCheckboxArr(credits, "credit");
-    const creditTypeCheckbox = generateCheckboxArr(creditTypes, "creditType");
-
-    // Search query. onClickUpdateFilterBtn
+    // Search query. onClickUpdateFilterBtn (updated)
+    // example url input: /api/search?courseName=cse&level=100/200&credit=1/2&creditType=i&s/qsr
     const searchFilters = () => {
-        const url = "/api/search";
+        const url = "http://localhost:9000/api/search";
         let currentUrl = url;
         console.log(filters);
-        let curCourseName = filters.courseName;
-        let curLevel = filters.level;
-        let curCredit = filters.credit;
-        let curCreditType = filters.creditType.toUpperCase();
-
-        //let [curCourseName, curLevel, curCredit, curCreditType] = getFilters;
-
-        // edit creditType
-        //curCreditType = curCreditType.toUpperCase();
+        let curCourseName = "";
+        let curLevel = [];
+        let curCredit = [];
+        let curCreditType = [];
+        for (let i = 0; i < filters.length; i++) {
+            let element = filters[i];
+            switch (element.type) {
+                case 'courseName':
+                    curCourseName = element.value;
+                    break;
+                case 'level':
+                    curLevel.push(element.value);
+                    break;
+                case 'credit':
+                    curCredit.push(element.value);
+                    break;
+                case 'creditType':
+                    curCreditType.push(element.value);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         // check courseName
         if (curCourseName != "") {
@@ -158,79 +147,81 @@ export default function SearchFilter() {
             currentUrl += "courseName=" + curCourseName;
         }
         // check level
-        if (curLevel != null) {
+        if (curLevel.length !== 0) {
             if (currentUrl === url) {
-                currentUrl += "?level=" + curLevel;
+                currentUrl += "?level=" + curLevel.join("/");
             } else {
-                currentUrl += "&level=" + curLevel;
+                currentUrl += "&level=" + curLevel.join("/");
             }
         }
         // check credit
-        if (curCredit != null) {
+        if (curCredit.length !== 0) {
             if (currentUrl === url) {
-                currentUrl += "?credit=" + curCredit;
+                currentUrl += "?credit=" + curCredit.join("/");
             } else {
-                currentUrl += "&credit=" + curCredit;
+                currentUrl += "&credit=" + curCredit.join("/");
             }
         }
         // check creditType
-        if (curCreditType != null) {
+        if (curCreditType.length !== 0) {
             if (currentUrl === url) {
-                currentUrl += "?creditType=" + curCreditType;
+                currentUrl += "?creditType=" + curCreditType.join("/");
             } else {
-                currentUrl += "&creditType=" + curCreditType;
+                currentUrl += "&creditType=" + curCreditType.join("/");
             }
         }
         console.log(currentUrl);
 
         fetch(currentUrl)
             .then(checkStatus)
-            .then(res => res.json())
-            .then(SearchResultPage)
+            // .then(res => res.json())
+            .then(res => SearchResultPage(res))
     };
 
+    const dropDownRegion = (regionName, startIndex, endIndex) => {
+        return (
+            <div onClick={(event) => {event.stopPropagation()}}>
+                <MenuItem value="level" className="selection">
+                    <Grid>
+                        <p>{regionName}</p>
+                        {generateCheckboxArr(startIndex, endIndex)}
+                    </Grid>
+
+                </MenuItem>
+            </div>
+        )
+    }
 
     return (
         <div>
-            {selectionIcon}
-            <MenuItem
-                value={filterItems[0]}
-                onChange={handleOnChangeLevel}
-                class="filter-items-menu-item">
+            <Select value=" " onClick={(event) => event.stopPropagation()}>
+                <MenuItem value=" ">
+                    {selectionIcon}
+                </MenuItem>
+                <div className="selection-container">
+                    {
+                        dropDownRegion("Course Level", 0, 3)
+                    }
 
-                {levels.map((element, index) => {
-                    return (
-                        <Checkbox
-                        value={element}
-                        checked={levelState[index]}
-                        onChange={() => handleOnChangeLevel(index)}
-                        >
-                        </Checkbox>
-                    );
-                })}
-            </MenuItem>
-            <MenuItem
-                value={filterItems[1]}
-                onChange={onChangeFilterCheckbox}
-                class="filter-items-menu-item">
-                {creditCheckbox}
-            </MenuItem>
-            <MenuItem
-                value={filterItems[2]}
-                onChange={onChangeFilterCheckbox}
-                class="filter-items-menu-item">
-                {creditTypeCheckbox}
-            </MenuItem>
+                    {
+                        dropDownRegion("Credit", 4, 8)
+                    }
+
+                    {
+                        dropDownRegion("Credit Type", 9, 16)
+                    }
+                </div>
+            </Select>
             <TextField
                 id="large-header-input"
                 placeholder="想要找啥课啊..."
                 onChange={onChangeCourseNameTextInput}/>
-            <SearchIcon id="search-icon"/>
             <Button
                 className={isFirstClick? "btn-first-click" : "btn-update-click"}
                 id="apply-filter-btn"
                 onClick={searchFilters}
-            >Apply Filters</Button>
+            >
+            Search</Button>
         </div>
     )
 }

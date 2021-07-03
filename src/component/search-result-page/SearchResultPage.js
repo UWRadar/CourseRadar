@@ -5,15 +5,15 @@ import CourseCard from "../general/CourseCard"
 import LargeHeader from "../general/LargeHeader"
 
 export default function SearchResultPage(resultJson) { // origin input: props
-  const searchResults = [];
-  console.log(resultJson["result"]);
-  for (const singleCourse in resultJson) {
-    searchResults.push(
-        <div>
-          <CourseCard />
-        </div>
-    )
-  }
+  const searchResults = resultJson.result;
+  // for (const singleCourse in resultJson) {
+  //   searchResults.push(
+  //       <div>
+  //         <CourseCard />
+  //       </div>
+  //   )
+  // }
+  console.log("success");
   return (
     <div>
       {searchResults}

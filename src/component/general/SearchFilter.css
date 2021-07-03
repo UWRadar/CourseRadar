@@ -6,3 +6,18 @@
 #selection-icon > img {
     height: 3vh;
 }
+
+.selection {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.selection-container{
+    display: flex;
+}
+
+.single-filter-item{
+    text-align: left;
+    min-width: 100px;
+}
