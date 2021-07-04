@@ -60,6 +60,10 @@
     display: none;
 }
 
+.evaluation {
+    font-size: 20px;
+}
+
 
 /* Media Control screen larger than 320px */ 
 @media (min-width: 375px)
@@ -72,8 +76,8 @@
 {
     .starLarge {
         display: flex;
-        padding-left: 5%;
-        padding-right: 5%;
+        padding-left: 0%;
+        padding-right: 1%;
     }
 
     .comment {
@@ -117,6 +121,8 @@
         font-size: 10px;
         margin-right: 0px;
     }
+
+
 
 }
 

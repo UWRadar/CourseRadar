@@ -14,13 +14,13 @@ const Comment = (props) => {
                 <Grid item xs={10}>
                         <p className='name'>{props.name}</p>
                     <Row className='info'>
-                        <Col xs={12} lg={3}>
+                        <Col xs={12} lg={4}>
                             <p className='question'>Quarter: </p><p className='answer'>{props.quarter}</p>
                         </Col>
-                        <Col xs={12} lg={6}>
+                        <Col xs={12} lg={4}>
                             <p className='question'>Professor: </p><p className='answer'>{props.professor}</p>
                         </Col>
-                        <Col xs={12} lg={3}>
+                        <Col xs={12} lg={4}>
                             <p className='question'>Grade: </p><p className='answer'>{props.gpa}</p>
                         </Col>
                     </Row>
