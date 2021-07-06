@@ -35,11 +35,13 @@ export default class CourseDescription extends Component {
                     return {};
             })
             .then((data) => {
-                console.log(data);
-                this.setState({
-                    courseInfo: data.result[0],
-                    receivedBackEndData: true
-                })
+                if (data) {
+                    console.log(data);
+                    this.setState({
+                        courseInfo: data.result?.[0],
+                        receivedBackEndData: true
+                    })
+                }
             })
     }
 
@@ -52,7 +54,7 @@ export default class CourseDescription extends Component {
                     return [];
                 }
             })
-            .then(data => {                
+            .then(data => {
                 this.setState({
                     allComments: data.result
                 })
@@ -67,14 +69,14 @@ export default class CourseDescription extends Component {
             name: "Introduction to Psychology",
             credit: "5",
             desc: "Surveys major areas of psychological science. Core topics include human social behavior, personality, psychological disorders and treatment, learning, memory, human development, biological influences, and research methods.",
-            tags:["VLPA", "NW"]
+            tags: ["VLPA", "NW"]
         }
         return (
             <div className="coursedescription">
-                {this.state.receivedBackEndData && <Description 
+                {this.state.receivedBackEndData && <Description
                     courseItems={this.state.courseInfo}
-                    courseName={this.state.courseName}/>}
-                <Comments commentItems={this.state.allComments} courseItems={this.state.courseInfo}/>
+                    courseName={this.state.courseName} />}
+                <Comments commentItems={this.state.allComments} courseItems={this.state.courseInfo} />
             </div>
         )
     }

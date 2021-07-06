@@ -1,3 +1,59 @@
+.profile-page {
+    padding-bottom: 5rem;
+    padding-top: 14vh;
+}
+
+.favorite-courses {
+    text-align: left;
+}
+
+.favorite-courses img {
+    display: block;
+    margin: 0 auto;
+    max-width: 320px;
+}
+
+.input-bar {
+    margin-top: 10px;
+}
+
+.input-bar input {
+    background-color: white;
+    border: 1px solid rgb(224, 221, 221);
+    border-radius: 5px;
+    display: block;
+    font-size: inherit;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.input-bar label {
+    display: block;
+    font-size: 16px;
+    margin: 0 auto 5px;
+    max-width: 600px;
+    text-align: left;
+    width: 100%;
+}
+
+.input-bar label::after {
+    content: "：";
+}
+
+.profile-settings button {
+    background-color: var(--theme-color);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    margin: 15px auto 0;
+    padding: 10px 30px;
+}
+
 .user-info{
     padding: 1.7rem;
     background-color: white;
@@ -12,8 +68,7 @@
     -o-background-size: cover;
     background-size:cover;
     background-repeat: no-repeat;
-    margin-top: 0rem;
-    
+    margin-top: 0;
 }
 
 #user-logo{
@@ -72,8 +127,8 @@
     margin-bottom: 1rem;
 }
 
-#user-info-detail p{
-    font-size:0.8rem;
+#user-info-detail div span {
+    font-size: 0.8rem;
     color: rgba(65, 65, 66, 0.87);
 }
 

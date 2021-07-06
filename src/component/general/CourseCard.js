@@ -8,14 +8,14 @@ const CourseCard = (props) => {
     const name = props.courseName.split(" ")[0].toUpperCase();
     console.log(name);
     return (
-        <NavLink 
+        <NavLink
             to={"/CourseDetail/" + props.courseName.replace("/\s/g", "")}
             style={{
                 color: "black",
-              }}>
+            }}>
             <div className="course-card">
                 <div className="recom-cards" aria-label="recommendation">
-                    <div className="course-title" style={{backgroundImage: `url(${Img[name].default})`}}>
+                    <div className="course-title" style={{ backgroundImage: `url(${Img[name]?.default})` }}>
                         <div className="course-title-wrap">
                             <p>{props.courseName}</p>
                         </div>
@@ -26,14 +26,14 @@ const CourseCard = (props) => {
 
                         <div class="describtion-tags">
                             {props.tags.map(element => {
-                                return (<div class={"tag " + element}npnp>
+                                return (<div class={"tag " + element} npnp>
                                     <div class="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>
                                         {/* <span class="tooltiptext"> Quantitative and Symbolic Reasoning</span> */}
                                     </div>
                                 </div>);
                             })}
-                                
+
                             <div class="tag credit">
                                 <div class="tooltips" id="5cre">
                                     <p>{props.credit}</p>

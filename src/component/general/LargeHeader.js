@@ -10,11 +10,14 @@ import SearchBar from "./SearchBar"
 import "./LargeHeader.css"
 
 export default function LargeHeader() {
+    const goHome = () => {
+        window.location.href = "/"
+    }
     return (
         <div>
             <AppBar id='large-header'>
-                <img src="./img/original6.png" id="course-radar" alt="logo for course radar"></img>
-                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile"></img>
+                <img src="./img/original6.png" id="course-radar" alt="logo for course radar" onClick={goHome}></img>
+                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile" onClick={goHome}></img>
                 <SearchBar />
                 {/* 添加链接 */}
                 <div id="right-upper-icons">
