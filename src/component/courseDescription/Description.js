@@ -38,13 +38,13 @@ const Description = (props) => {
                     <br></br>
                 </div>
             </div>
-            <StarSmall 
-                diffRating={props.courseItems.difficulty} 
-                workRating={props.courseItems.workload} 
+            <StarSmall
+                diffRating={props.courseItems.difficulty}
+                workRating={props.courseItems.workload}
                 avgRating={props.courseItems.averageGPA}
             />
         </div>
-        
+
     )
 }
 

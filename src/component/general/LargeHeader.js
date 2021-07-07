@@ -13,8 +13,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { NavLink } from 'react-router-dom'
 import SearchBar from "./SearchBar"
 import "./LargeHeader.css"
+import { PinDropSharp } from "@material-ui/icons";
 
-export default function LargeHeader() {
+export default function LargeHeader(props) {
     return (
         <div>
             <AppBar id='large-header'>

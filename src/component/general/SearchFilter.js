@@ -1,13 +1,19 @@
 import React, { useState } from "react"
 import { Button, TextField, Checkbox, MenuItem } from '@material-ui/core'
 import { Grid } from '@material-ui/core';
+import { NavLink, Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 import Select from '@material-ui/core/Select';
-import SearchResultPage from "../search-result-page/SearchResultPage.js"
 
 import "./SearchFilter.css"
+import SearchResultPage from "../home/SearchResultPage"
 
-export default function SearchFilter() {
+export default function SearchFilter(props) {
+
+    const history = useHistory();
+    const [searchResultData, setSearchResultData] = useState([]);
+
     const selectionIcon = (
         <div id="selection-icon">
             <img src="./img/vector.png"  alt="logo for selection"/>
@@ -65,7 +71,7 @@ export default function SearchFilter() {
     // onClickCheckbox (updated)
     const handleOnChangeClickBox = (position) => {
         // setChecked(event.target.checked);
-        toggleIsFirstClick(false);
+        // toggleIsFirstClick(false);
         const updatedChecked = checkedState.map((item, index) =>
             index === position ? !item : item
         );
@@ -112,8 +118,6 @@ export default function SearchFilter() {
     // Search query. onClickUpdateFilterBtn (updated)
     // example url input: /api/search?courseName=cse&level=100/200&credit=1/2&creditType=i&s/qsr
     const searchFilters = () => {
-        const url = "http://localhost:9000/api/search";
-        let currentUrl = url;
         console.log(filters);
         let curCourseName = "";
         let curLevel = [];
@@ -138,44 +142,24 @@ export default function SearchFilter() {
                     break;
             }
         }
+        curLevel = curLevel.join("/");
+        curCredit = curCredit.join("/");
+        curCreditType = curCreditType.join("/");
+        localStorage.setItem("courseName", curCourseName);
+        localStorage.setItem("level", curLevel);
+        localStorage.setItem("credit", curCredit);
+        localStorage.setItem("creditType", curCreditType);
+        console.log(11111);
+        history.push({
+            pathname: "/search/:searchTerm",
+            state: [curCourseName, curLevel, curCredit, curCreditType]
+        });
 
-        // check courseName
-        if (curCourseName != "") {
-            if (currentUrl === url) {
-                currentUrl += "?";
-            }
-            currentUrl += "courseName=" + curCourseName;
-        }
-        // check level
-        if (curLevel.length !== 0) {
-            if (currentUrl === url) {
-                currentUrl += "?level=" + curLevel.join("/");
-            } else {
-                currentUrl += "&level=" + curLevel.join("/");
-            }
-        }
-        // check credit
-        if (curCredit.length !== 0) {
-            if (currentUrl === url) {
-                currentUrl += "?credit=" + curCredit.join("/");
-            } else {
-                currentUrl += "&credit=" + curCredit.join("/");
-            }
-        }
-        // check creditType
-        if (curCreditType.length !== 0) {
-            if (currentUrl === url) {
-                currentUrl += "?creditType=" + curCreditType.join("/");
-            } else {
-                currentUrl += "&creditType=" + curCreditType.join("/");
-            }
-        }
-        console.log(currentUrl);
+        // const response = await fetch(currentUrl);
+        // const data = await checkStatus(response);
+        // setSearchResultData(data.result);
+        // console.log(data.result);
 
-        fetch(currentUrl)
-            .then(checkStatus)
-            // .then(res => res.json())
-            .then(res => SearchResultPage(res))
     };
 
     const dropDownRegion = (regionName, startIndex, endIndex) => {
@@ -186,7 +170,6 @@ export default function SearchFilter() {
                         <p>{regionName}</p>
                         {generateCheckboxArr(startIndex, endIndex)}
                     </Grid>
-
                 </MenuItem>
             </div>
         )
@@ -220,16 +203,13 @@ export default function SearchFilter() {
                 className={isFirstClick? "btn-first-click" : "btn-update-click"}
                 id="apply-filter-btn"
                 onClick={searchFilters}
+                // to={{
+                //     pathname: "/search/:searchTerm",
+                //     state: {searchResultData}
+                //   }}
             >
             Search</Button>
         </div>
     )
 }
 
-function checkStatus(response) {
-    if (response.ok) {
-        return response.text()
-    } else {
-        return Promise.reject(new Error(response.status + ": " + response.statusText))
-    }
-}

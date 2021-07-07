@@ -2,61 +2,278 @@ import React, { Component } from "react"
 import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 export default class SearchResultPage extends Component {
-    render() {
-        const courseTemp = [{
-            courseName: "Info 340",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "Info 340",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "Info 340",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }]
-        const renderRadioBoxes = (name, items) => {
-            const result = []
-            for (let i = 0; i < items.length; i++) {
-                const randomId = Math.random().toString(36).substring(2)
-                result.push(
-                    <div>
-                        <input id={randomId} name={name} type="radio"></input>
-                        <label for={randomId}>{items[i]}</label>
-                    </div>
-                )
-            }
-            return result
+
+// const SearchResultPage = (props) => {
+    constructor(props) {
+        super(props);
+        this.state = {
+            courseCards: [],
+            courseName: "",
+            courseLevel: "",
+            courseCredit: "",
+            courseCreditType: "",
+            // subCourseCards: [],
+            selectLevel: "",
+            selectCredit: "",
+            selectCreditType: "",
+
         }
+    }
+
+    componentDidMount() {
+        let curCourseName = localStorage.getItem("courseName");
+        let curLevel = localStorage.getItem("level");
+        let curCredit = localStorage.getItem("credit");
+        let curCreditType = localStorage.getItem("creditType");
+        this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+    }
+
+    componentDidUpdate(props) {
+        let curFilters = props.history.location.state;
+        if (curFilters[0] != this.state.courseName ||
+            curFilters[1] != this.state.courseLevel ||
+            curFilters[2] != this.state.courseCredit ||
+            curFilters[3] != this.state.courseCreditType) {
+            let curCourseName = localStorage.getItem("courseName");
+            let curLevel = localStorage.getItem("level");
+            let curCredit = localStorage.getItem("credit");
+            let curCreditType = localStorage.getItem("creditType");
+            this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        }
+        // if (this.state.courseCards.length != 0) {
+        //     let curCourseName = localStorage.getItem("courseName");
+        //     let curLevel = localStorage.getItem("level");
+        //     let curCredit = localStorage.getItem("credit");
+        //     let curCreditType = localStorage.getItem("creditType");
+        //     this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        // }
+    }
+
+
+    processSearchResult(curCourseName, curLevel, curCredit, curCreditType) {
+        console.log(22222);
+        this.setState({
+            courseName: curCourseName,
+            courseLevel: curLevel,
+            courseCredit: curCredit,
+            courseCreditType: curCreditType
+        })
+
+        const url = "http://localhost:9000/api/search";
+        let currentUrl = url;
+
+        // check courseName
+        if (curCourseName != "") {
+            if (currentUrl === url) {
+                currentUrl += "?";
+            }
+            currentUrl += "courseName=" + curCourseName;
+        }
+        // check level
+        if (curLevel != "") {
+            if (currentUrl === url) {
+                currentUrl += "?level=" + curLevel;
+            } else {
+                currentUrl += "&level=" + curLevel;
+            }
+        }
+        // check credit
+        if (curCredit != "") {
+            if (currentUrl === url) {
+                currentUrl += "?credit=" + curCredit;
+            } else {
+                currentUrl += "&credit=" + curCredit;
+            }
+        }
+        // check creditType
+        if (curCreditType != "") {
+            if (currentUrl === url) {
+                currentUrl += "?creditType=" + curCreditType;
+            } else {
+                currentUrl += "&creditType=" + curCreditType;
+            }
+        }
+
+        console.log(currentUrl);
+
+        fetch(currentUrl)
+            .then(checkStatus)
+            // .then(res => res.json())
+            .then(res => {
+                console.log(res.result);
+                let courses = res.result;
+                let courseTemp = [];
+                for (let i = 0; i < courses.length; i++) {
+                    let course = courses[i];
+                    let tempCourseName = course.courseName;
+                    let courseNum = tempCourseName.match(/\d+/g);
+                    let courseMajor = tempCourseName.match(/[a-zA-Z]+/g);
+                    courseTemp.push({
+                        courseName: courseMajor + " " + courseNum,
+                        courseDescription: course.courseFullName,
+                        tags: course.creditType.split("/"),
+                        credit: course.credit[0]
+                    })
+                }
+                this.setState({
+                    courseCards: courseTemp
+                })
+            })
+    }
+
+    render() {
+
+        // const checkImport = () => {
+        //     // setSubCourseCards();
+        //     if (this.state.courseCards.length == 0) {
+        //         return "no results";
+        //     } else {
+        //         return this.state.courseCards.map(element => (
+        //             <CourseCard
+        //                 courseName={element.courseName}
+        //                 courseDescription={element.courseDescription}
+        //                 tags={element.tags}
+        //                 credit={element.credit}
+        //             />
+        //         ));
+        //     }
+        // }
+
+        // const renderRadioBoxes = (name, items) => {
+        //     const result = []
+        //     for (let i = 0; i < items.length; i++) {
+        //         const randomId = Math.random().toString(36).substring(2)
+        //         result.push(
+        //             <div>
+        //                 <input name={name} type="radio"></input>
+        //                 <label for={randomId}>{items[i]}</label>
+        //             </div>
+        //         )
+        //     }
+        //     return result
+        // }
+
+        const onChangeLevel = (event) => {
+            this.setState({selectLevel: event.target.value});
+            // setSubCourseCards();
+        }
+
+        const onChangeCredit = (event) => {
+            this.setState({selectCredit: event.target.value});
+            // setSubCourseCards();
+        }
+
+        const onChangeCreditType = (event) => {
+            this.setState({selectCreditType: event.target.value});
+            // setSubCourseCards();
+        }
+
+        const setSubCourseCards = () => {
+            let tempSubCourseCards = [];
+            let courseCards = this.state.courseCards;
+            let fitLevel = false;
+            let fitCredit = false;
+            let fitCreditType = false;
+            if (this.state.selectLevel == "") {
+                fitLevel = true;
+            }
+            if (this.state.selectCredit == "") {
+                fitCredit = true;
+            }
+            if (this.state.selectCreditType == "") {
+                fitCreditType = true;
+            }
+            for (let i = 0; i < courseCards.length; i++) {
+                if (this.state.selectLevel != "") {
+                    let tempCourseNum = parseInt(courseCards[i].courseName.match(/\d+/g));
+                    let tempLevel = parseInt(this.state.selectLevel);
+                    let difference = tempCourseNum - tempLevel;
+                    if (difference >= 0 && difference < 100) {
+                        fitLevel = true;
+                    }
+                }
+                if (this.state.selectCredit != "") {
+                    if (courseCards[i].credit == this.state.selectCredit) {
+                        fitCredit = true;
+                    }
+                }
+                if (this.state.selectCreditType != "") {
+                    if (courseCards[i].tags.includes(this.state.selectCreditType.toUpperCase())) {
+                        fitCreditType = true;
+                    }
+                }
+                if (fitLevel && fitCredit && fitCreditType) {
+                    tempSubCourseCards.push(courseCards[i]);
+                }
+            }
+            // this.setState({subCourseCards: tempSubCourseCards});
+            if (tempSubCourseCards.length == 0) {
+                return "no results";
+            } else {
+                return tempSubCourseCards.map(element => (
+                    <CourseCard
+                        courseName={element.courseName}
+                        courseDescription={element.courseDescription}
+                        tags={element.tags}
+                        credit={element.credit}
+                    />
+                ));
+            }
+        }
+
         return (
             <div className="search-result">
                 <div className="filter">
                     <h1>筛选</h1>
                     <h2>课程级别</h2>
-                    <div>{renderRadioBoxes("course-level", [100, 200, 300, 400])}</div>
+                    <RadioGroup value={this.state.selectLevel} onChange={onChangeLevel}>
+                        <FormControlLabel value="100" control={<Radio />} label="100" />
+                        <FormControlLabel value="200" control={<Radio />} label="200" />
+                        <FormControlLabel value="300" control={<Radio />} label="300" />
+                        <FormControlLabel value="400" control={<Radio />} label="400" />
+                        <FormControlLabel value="" control={<Radio />} label="all levels" />
+                    </RadioGroup>
                     <h2>学分</h2>
-                    <div>{renderRadioBoxes("credits", [1, 2, 3, 4, 5])}</div>
+                    <RadioGroup value={this.state.selectCredit} onChange={onChangeCredit}>
+                        <FormControlLabel value="1" control={<Radio />} label="1" />
+                        <FormControlLabel value="2" control={<Radio />} label="2" />
+                        <FormControlLabel value="3" control={<Radio />} label="3" />
+                        <FormControlLabel value="4" control={<Radio />} label="4" />
+                        <FormControlLabel value="5" control={<Radio />} label="5" />
+                        <FormControlLabel value="" control={<Radio />} label="all credits" />
+                    </RadioGroup>
                     <h2>通识教育要求</h2>
-                    <div>{renderRadioBoxes("gen-edu-req", ["VLPA", "QSR", "NW", "I&S"])}</div>
+                    <RadioGroup value={this.state.selectCreditType} onChange={onChangeCreditType}>
+                        <FormControlLabel value="C" control={<Radio />} label="C" />
+                        <FormControlLabel value="DIV" control={<Radio />} label="DIV" />
+                        <FormControlLabel value="I&S" control={<Radio />} label="I&S" />
+                        <FormControlLabel value="None" control={<Radio />} label="None" />
+                        <FormControlLabel value="NW" control={<Radio />} label="NW" />
+                        <FormControlLabel value="QSR" control={<Radio />} label="QSR" />
+                        <FormControlLabel value="VLPA" control={<Radio />} label="VLPA" />
+                        <FormControlLabel value="W" control={<Radio />} label="W" />
+                        <FormControlLabel value="" control={<Radio />} label="all credit types" />
+                    </RadioGroup>
                 </div>
                 <div className="course-list">
-                    {
-                        courseTemp.map(element => (
-                            <CourseCard
-                                courseName={element.courseName}
-                                courseDescription={element.courseDescription}
-                                tags={element.tags}
-                                credit={element.credit}
-                            />
-                        ))
-                    }
+                    {setSubCourseCards()}
                 </div>
             </div>
         )
+    }
+}
+
+function checkStatus(response) {
+    if (response.ok) {
+        return response.json()
+    } else {
+        return Promise.reject(new Error(response.status + ": " + response.statusText))
     }
 }
