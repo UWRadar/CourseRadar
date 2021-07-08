@@ -32,7 +32,9 @@ export default class SearchResultPage extends Component {
         let curLevel = localStorage.getItem("level");
         let curCredit = localStorage.getItem("credit");
         let curCreditType = localStorage.getItem("creditType");
-        this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
+            this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        }
     }
 
     componentDidUpdate(props) {
@@ -45,7 +47,9 @@ export default class SearchResultPage extends Component {
             let curLevel = localStorage.getItem("level");
             let curCredit = localStorage.getItem("credit");
             let curCreditType = localStorage.getItem("creditType");
-            this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+            if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
+                this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+            }
         }
         // if (this.state.courseCards.length != 0) {
         //     let curCourseName = localStorage.getItem("courseName");
@@ -112,11 +116,8 @@ export default class SearchResultPage extends Component {
                 let courseTemp = [];
                 for (let i = 0; i < courses.length; i++) {
                     let course = courses[i];
-                    let tempCourseName = course.courseName;
-                    let courseNum = tempCourseName.match(/\d+/g);
-                    let courseMajor = tempCourseName.match(/[a-zA-Z]+/g);
                     courseTemp.push({
-                        courseName: courseMajor + courseNum,
+                        courseName: course.courseName,
                         courseDescription: course.courseFullName,
                         tags: course.creditType.split("/"),
                         credit: course.credit[0]
@@ -192,6 +193,7 @@ export default class SearchResultPage extends Component {
             }
             for (let i = 0; i < courseCards.length; i++) {
                 if (this.state.selectLevel != "") {
+                    fitLevel = false;
                     let tempCourseNum = parseInt(courseCards[i].courseName.match(/\d+/g));
                     let tempLevel = parseInt(this.state.selectLevel);
                     let difference = tempCourseNum - tempLevel;
@@ -200,11 +202,13 @@ export default class SearchResultPage extends Component {
                     }
                 }
                 if (this.state.selectCredit != "") {
+                    fitCredit = false;
                     if (courseCards[i].credit == this.state.selectCredit) {
                         fitCredit = true;
                     }
                 }
                 if (this.state.selectCreditType != "") {
+                    fitCreditType = false;
                     if (courseCards[i].tags.includes(this.state.selectCreditType.toUpperCase())) {
                         fitCreditType = true;
                     }

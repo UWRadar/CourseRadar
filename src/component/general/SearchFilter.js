@@ -187,7 +187,7 @@ export default function SearchFilter(props) {
         <div className="search-bar">
             <Button onClick={handleClick}>
                 <img id="selection-icon" src="./img/vector-withTri.png"  alt="logo for selection"/>
-                
+
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -195,12 +195,12 @@ export default function SearchFilter(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-            
+
                 <MenuItem value="">
                     {selectionIcon}
                 </MenuItem>
-                    
-                
+
+
                 <div className="selection-container">
                     {
                         dropDownRegion("Course Level", 0, 3)
@@ -228,7 +228,7 @@ export default function SearchFilter(props) {
             >
             Search</button>
         </div>
-        
+
     )
 }
 
