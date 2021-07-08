@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 export default function Footer() {
     return(
         <footer id = 'nav'>
-            <img id = 'footer-img-for-nav' src="../img/original4.png" className="web-logo" alt="Logo for Course Radar" />
+            <img id = 'footer-img-for-nav' src="../img/original4.png" alt="Logo for Course Radar" />
             <div id='logos'>
                 <Popup trigger={<img src='../img/Wechat-logo.svg' alt="logo for Wechat"></img>} position="top center" offsetX="10" arrow="true">
                     <img src="../img/QR_code.jpg" alt="logo for QRcode" id="QRcode"></img>

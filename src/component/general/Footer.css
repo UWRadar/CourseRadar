@@ -15,10 +15,12 @@ footer{
     justify-content: flex-end;
     align-items: center;
 }
+
 #footer-img-for-nav {
     margin: 0.3rem;
     margin-left: 1.5rem;
-    width: 13rem;
+    width: 14rem;
+    height: 5rem;
 }
 
 #logos img {
