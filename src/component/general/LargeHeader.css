@@ -16,11 +16,6 @@
     height: 11vh;
 }
 
-.search-bar {
-    background-color: white;
-    border: 3px solid #5E4271;
-    border-radius: 10px;
-}
 
 header .search-bar {
     display: none;
@@ -107,6 +102,7 @@ header .search-bar {
 
     header .search-bar {
         display: flex;
+        flex-direction: row;
     }
 }
 

@@ -1,7 +1,5 @@
 #selection-icon {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+
 }
 
 #selection-icon > img {

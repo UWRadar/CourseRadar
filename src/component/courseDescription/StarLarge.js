@@ -7,7 +7,7 @@ import clock from '../../img/clock.svg';
 import award from '../../img/award.svg';
 
 const StarLarge = (props) => {
-
+    console.log(props)
     return (
         <Container className='ratingstar'> 
         <Row>

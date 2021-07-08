@@ -1,11 +1,7 @@
 #selection-icon {
-    display: flex;
-    align-items: center;
+    height: 2.8vh;
 }
 
-#selection-icon > img {
-    height: 3vh;
-}
 
 .selection {
     display: flex;
@@ -17,7 +13,22 @@
     display: flex;
 }
 
+
 .single-filter-item{
     text-align: left;
     min-width: 100px;
+}
+
+.large-header-input {
+    margin-top: 1vh;
+    width: 20vw;
+    font-size: larger;
+}
+
+.search-bar{
+    display: flex;
+}
+
+#apply-filter-btn {
+    margin-left: 1vw;
 }

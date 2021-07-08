@@ -16,14 +16,17 @@ import "./LargeHeader.css"
 import { PinDropSharp } from "@material-ui/icons";
 
 export default function LargeHeader(props) {
+    const goHome = () => {
+        window.location.href="/";
+    }
     return (
         <div>
             <AppBar id='large-header'>
-                <img src="./img/courseRadar.png" id="course-radar" alt="logo for course radar">
-                </img>
-                <div id="search-bar">
-                    <SearchFilter/>
-                </div>
+                <img src="./img/original6.png" id="course-radar" alt="logo for course radar" onClick={goHome}></img>
+                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile" onClick={goHome}></img>
+
+                <SearchFilter className="search-bar" className="search_bar"/>
+
                 <div id="right-upper-icons">
                     <NavLink
                         className="logo-with-characters"

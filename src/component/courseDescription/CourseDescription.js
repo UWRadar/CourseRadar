@@ -25,6 +25,13 @@ export default class CourseDescription extends Component {
         this.getCourseRatingByCoursename();
     }
 
+    replaceNullWithZero(courseRating) {
+        for (const [key, value] of Object.entries(courseRating)) {
+            if (value == null)
+                courseRating[key] = 0;
+        }
+    }
+
     getCourseRatingByCoursename() {
         console.log("Hello");
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOURSERATING + "?courseName=" + this.state.courseName)
@@ -37,8 +44,9 @@ export default class CourseDescription extends Component {
             .then((data) => {
                 if (data) {
                     console.log(data);
+                    this.replaceNullWithZero(data.result[0])
                     this.setState({
-                        courseInfo: data.result?.[0],
+                        courseInfo: data.result[0],
                         receivedBackEndData: true
                     })
                 }

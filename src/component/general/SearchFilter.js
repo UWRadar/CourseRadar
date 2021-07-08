@@ -1,18 +1,18 @@
 import React, { useState } from "react"
-import { Button, TextField, Checkbox, MenuItem } from '@material-ui/core'
+import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-ui/core'
 import { Grid } from '@material-ui/core';
 import { NavLink, Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
 
 import Select from '@material-ui/core/Select';
-
+import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
 import SearchResultPage from "../home/SearchResultPage"
 
 export default function SearchFilter(props) {
 
     const history = useHistory();
-    const [searchResultData, setSearchResultData] = useState([]);
+    const [openMenu, setOpenMenu] = useState(false);
 
     const selectionIcon = (
         <div id="selection-icon">
@@ -175,12 +175,32 @@ export default function SearchFilter(props) {
         )
     }
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+      const handleClose = () => {
+    setAnchorEl(null);
+  };
+
     return (
-        <div>
-            <Select value=" " onClick={(event) => event.stopPropagation()}>
-                <MenuItem value=" ">
+        <div className="search-bar">
+            <Button onClick={handleClick}>
+                <img id="selection-icon" src="./img/vector-withTri.png"  alt="logo for selection"/>
+                
+            </Button>
+            <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+            
+                <MenuItem value="">
                     {selectionIcon}
                 </MenuItem>
+                    
+                
                 <div className="selection-container">
                     {
                         dropDownRegion("Course Level", 0, 3)
@@ -194,22 +214,21 @@ export default function SearchFilter(props) {
                         dropDownRegion("Credit Type", 9, 16)
                     }
                 </div>
-            </Select>
+        </Menu>
             <TextField
-                id="large-header-input"
-                placeholder="想要找啥课啊..."
+                className="large-header-input"
+                id="outlined-full-width"
+                label="搜索"
+                placeholder="想要找啥课呀"
                 onChange={onChangeCourseNameTextInput}/>
-            <Button
-                className={isFirstClick? "btn-first-click" : "btn-update-click"}
+            <button
+                className="btn btn-outline-success"
                 id="apply-filter-btn"
                 onClick={searchFilters}
-                // to={{
-                //     pathname: "/search/:searchTerm",
-                //     state: {searchResultData}
-                //   }}
             >
-            Search</Button>
+            Search</button>
         </div>
+        
     )
 }
 

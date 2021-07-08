@@ -44,6 +44,7 @@
 .paragraph {
     font-size: 19px;
     margin-right: -60px;
+    text-align: left;
 }
 
 .commentdetail {
@@ -93,7 +94,6 @@
 
     .paragraph {
         font-size: 20px;
-        margin-right: 0px;
     }
 
 }
@@ -103,6 +103,5 @@
 {
     .info {
         padding-right: 18%;
-        margin-right: 0px;
     }
 }

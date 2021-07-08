@@ -17,24 +17,6 @@ export default function Footer() {
                 <a href="https://www.zhihu.com/people/hua-da-ke-you" target="_blank"><img src='../img/zhihu-logo.svg' alt="logo for zhihu"></img> </a>
                 <a href="mailto:ohcmuw@gmail.com"><img src='../img/mail-logo.svg' alt="logo for mail"></img> </a>
             </div>
-            {/* <div id="home" className='footer-active'>
-                    <img src="../img/home-active.png" alt="Logo for home" />
-                    <NavLink to="/"><p>回到首页</p></NavLink>
-            </div>
-            <div className='hide' id='back'>
-                    <img className='back web-logo' src="../img/back.png" alt="Logo for a back button" />
-                    <NavLink to="/"><p>返回上页</p></NavLink>
-                    
-            </div>
-            <div id="write">
-                    <img src="../img/edit.png" alt="Logo for write reviews" />
-                    <NavLink to="/"><p>填写课评</p></NavLink>
-            </div>
-            <div id="login">
-                    <img src="../img/log-in.png" alt="Logo for log-in" />
-                    <NavLink to="/login"><p>用户登录</p></NavLink>
-                    
-            </div> */}
         </footer>
     ) 
 }

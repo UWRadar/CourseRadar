@@ -16,24 +16,8 @@ export default function SearchDropDown() {
     const [displayFilter, setDisplayFilter] = useState(false)
 
     return (
-
-        // <div className="selection-group">
-        //     <button className="btn" onClick={(event) => {setDisplayFilter(!displayFilter)}}>
-        //         {icon}
-        //     </button>
-
-        // {displayFilter &&
-        //     <ul className="list-group listing">
-        //         <li className="list-group-item">Cras justo odio</li>
-        //         <li className="list-group-item">Dapibus ac facilisis in</li>
-        //         <li className="list-group-item">Morbi leo risus</li>
-        //         <li className="list-group-item">Porta ac consectetur ac</li>
-        //         <li className="list-group-item">Vestibulum at eros</li>
-        //     </ul>
-        // }
-        // </div>
         <Select value=" " onClick={(event) => event.stopPropagation()}>
-            <MenuItem value=" ">
+            <MenuItem className="filter-icon" value=" ">
                 {icon}
             </MenuItem>
             <div className="selection-container">

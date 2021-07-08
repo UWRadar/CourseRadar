@@ -10,7 +10,7 @@ import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 import { NavLink } from "react-router-dom"
-import SearchBar from "../general/SearchBar"
+import SearchBar from "../general/SearchFilter"
 import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {
@@ -128,7 +128,7 @@ export default class HomePage extends Component {
         return (
             <div className="home">
                 <div className="bg-img">
-                    {/* <SearchBar /> */}
+                    <SearchBar />
                     <div className="arrow-down" onClick={() => {
                         let intervalId = setInterval(() => {
                             let y1 = window.scrollY
