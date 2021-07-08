@@ -3,13 +3,13 @@ import "./Tabs.css"
 import ImageStorage from "../general/ImageStorage.js"
 const Tabs = (props) => {
     const tabItems = []
-    console.log(props)
+
     for (const key in props.items) {
         const thisProps = props.items[key]
         tabItems.push(
             <button id="trendy" 
                 className={thisProps.id == props.active ? "active" : ""} 
-                onClick={() => props.setActive(thisProps.id)}
+                onClick={() => props.setActiveTab(thisProps.id)}
             >
                 <img src={ImageStorage[thisProps.icon]} alt />
                 <span>{thisProps.text}</span>

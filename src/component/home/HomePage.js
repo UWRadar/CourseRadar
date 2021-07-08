@@ -33,12 +33,18 @@ export default class HomePage extends Component {
                 subtitle: "副标题",
                 description: "The quick brown fox jumps over the lazy dog",
                 image: "https://www.bing.com/th?id=OHR.BlueTitDaffs_ZH-CN3333224685_1920x1080.jpg"
-            }]
+            }],
+            loaded : false,
+            recommened: [],
+            mostTaken: [],
+            activeTab: "trendy"
         }
     }
 
-
     componentDidMount() {
+        setInterval(() => {
+            this.switchBanner(1)
+        }, 5000)
         this.getRecommended();
     }
 
@@ -104,7 +110,7 @@ export default class HomePage extends Component {
         return (
             <div className="home">
                 <div className="bg-img">
-                    <SearchBar />
+                    {/* <SearchBar /> */}
                     <div className="arrow-down" onClick={() => {
                         let intervalId = setInterval(() => {
                             let y1 = window.scrollY
@@ -127,7 +133,7 @@ export default class HomePage extends Component {
                 <Tabs
                     items={tabItems}
                     active={this.state.activeTab}
-                    setActive={(data) => this.changeActiveTab(data)}
+                    setActiveTab={(data) => this.changeActiveTab(data)}
                 />
                 <div className="course-list">
                     {!this.state.loaded && 
@@ -150,11 +156,6 @@ export default class HomePage extends Component {
         )
     }
 
-    componentDidMount() {
-        setInterval(() => {
-            this.switchBanner(1)
-        }, 5000)
-    }
 
     switchBanner(delta) {
         const newActive = this.state.activeBanner + delta
