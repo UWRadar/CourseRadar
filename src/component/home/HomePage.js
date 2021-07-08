@@ -11,6 +11,7 @@ import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 import { NavLink } from "react-router-dom"
 import SearchBar from "../general/SearchBar"
+import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {
     constructor(props) {
@@ -36,11 +37,32 @@ export default class HomePage extends Component {
         }
     }
 
-    /*close = () => {
-        this.setState({
-            openLoginWindow: false,
+
+    componentDidMount() {
+        this.getRecommended();
+    }
+
+    changeActiveTab(tabName) {
+        this.setState({activeTab: tabName})
+    }
+
+    getRecommended() {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETRECOMMENDED)
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            } else {
+                return [];
+            }
         })
-    }*/
+        .then((data) => {
+            console.log(data)
+            this.setState({
+                loaded : true,
+                recommened: data.result
+            });
+        })
+    }
     render() {
         const CourseTemp = [{
             courseName: "Info 340",
@@ -104,15 +126,21 @@ export default class HomePage extends Component {
                 />
                 <Tabs
                     items={tabItems}
-                    active="trendy"
+                    active={this.state.activeTab}
+                    setActive={(data) => this.changeActiveTab(data)}
                 />
                 <div className="course-list">
-                    {
-                        CourseTemp.map(element => (
+                    {!this.state.loaded && 
+                        <div class="loading-small">
+                                <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
+                        </div>
+                    }
+                    {this.state.loaded && this.state.activeTab == "recommendation" &&
+                        this.state.recommened.map(element => (
                             <CourseCard
                                 courseName={element.courseName}
-                                courseDescription={element.courseDescription}
-                                tags={element.tags}
+                                courseDescription={element.courseFullName}
+                                tags={element.creditType.split("/")}
                                 credit={element.credit}
                             />
                         ))

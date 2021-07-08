@@ -7,12 +7,9 @@ const Tabs = (props) => {
     for (const key in props.items) {
         const thisProps = props.items[key]
         tabItems.push(
-            <button
-                id={thisProps.id}
-                className={thisProps.id == props.active ? "active" : ""}
-                onClick={() => {
-                    props.onclick(thisProps.id)
-                }}
+            <button id="trendy" 
+                className={thisProps.id == props.active ? "active" : ""} 
+                onClick={() => props.setActive(thisProps.id)}
             >
                 <img src={ImageStorage[thisProps.icon]} alt />
                 <span>{thisProps.text}</span>

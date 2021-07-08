@@ -31,6 +31,18 @@
     width: 80%;
 }
 
+.loading-small {
+    text-align: center;
+}
+
+.loading-small img {
+    width: 10rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 18rem;
+    padding-left: -8rem;
+}
+
 .home {
     margin-top: 11vh;
     height: 100%;
@@ -40,6 +52,14 @@
 @media screen and (min-width: 900px) {
     .bg-img {
         display: none;
+    }
+
+    .loading-small img {
+        width: 15rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 18rem;
+        padding-left: -8rem;
     }
 }
 
