@@ -96,29 +96,26 @@
 
 #user-info-logoout{
     min-width: 5rem;
-    height:1.5rem;
-    border: 1px solid rgb(50, 0, 111) ;
-    color: rgb(50, 0, 111);
+    height:2.5rem;
     text-align: center;
     border-radius: 2rem;
     margin-top: -1rem;
-    display: flex;
-    justify-content: center;
     align-items: center;
     padding-left:0.5rem;
     padding-right:0.5rem;
-    cursor: pointer;
+    font-weight: 900;
+}
+
+
+
+#no-result {
+    width: 20rem;
 }
 
 #user-info-logoout p{
     margin:0;
     font-weight: 400;
     font-size: 0.8rem;
-}
-
-#user-info-logoout:hover {
-    background-color: rgb(50, 0, 111);
-    color: white;
 }
 
 #user-info-detail h1{
@@ -145,4 +142,22 @@
 
 #user-sub-info{
     display: flex;
+}
+
+@media screen and (min-width: 540px) {
+    #no-result {
+        width: 30rem;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    #no-result {
+        width: 40rem;
+    }
+}
+
+@media screen and (min-width: 1140px) {
+    #no-result {
+        width: 50rem;
+    }
 }

@@ -127,7 +127,7 @@ export default class HomePage extends Component {
 
         return (
             <div className="home">
-                <div className="bg-img">
+                {/* <div className="bg-img">
                     <SearchBar />
                     <div className="arrow-down" onClick={() => {
                         let intervalId = setInterval(() => {
@@ -139,7 +139,7 @@ export default class HomePage extends Component {
                             }
                         }, 1)
                     }}></div>
-                </div>
+                </div> */}
 
                 <Banner className="banner"
                     items={this.state.bannerItems}
