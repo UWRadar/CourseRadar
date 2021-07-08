@@ -18,12 +18,12 @@ footer{
 #footer-img-for-nav {
     margin: 0.3rem;
     margin-left: 1.5rem;
-    
+    width: 13rem;
 }
 
 #logos img {
     margin: 0.4rem;
-    height: 2.6rem;
+    height: 2rem;
 }
 #QRcode {
     height: 5rem;
