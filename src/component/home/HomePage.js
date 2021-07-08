@@ -36,6 +36,7 @@ export default class HomePage extends Component {
             }],
             loaded : false,
             recommened: [],
+            popular: [],
             mostTaken: [],
             activeTab: "trendy"
         }
@@ -45,11 +46,28 @@ export default class HomePage extends Component {
         setInterval(() => {
             this.switchBanner(1)
         }, 5000)
+        this.getPopular();
         this.getRecommended();
     }
 
     changeActiveTab(tabName) {
         this.setState({activeTab: tabName})
+    }
+
+    getPopular() {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETPOPULAR)
+        .then(response => {
+            if (response.ok){
+                return response.json();
+            } else {
+                return [];
+            }
+        })
+        .then((data) => {
+            this.setState({
+                popular: data.result
+            });
+        })
     }
 
     getRecommended() {
@@ -141,9 +159,21 @@ export default class HomePage extends Component {
                                 <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
-                    {this.state.loaded && this.state.activeTab == "recommendation" &&
+                    {this.state.loaded && this.state.activeTab === "recommendation" &&
                         this.state.recommened.map(element => (
                             <CourseCard
+                                key={element.courseName}
+                                courseName={element.courseName}
+                                courseDescription={element.courseFullName}
+                                tags={element.creditType.split("/")}
+                                credit={element.credit}
+                            />
+                        ))
+                    }
+                    {this.state.loaded && this.state.activeTab === "trendy" &&
+                        this.state.popular.map(element => (
+                            <CourseCard
+                                key={element.courseName}
                                 courseName={element.courseName}
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}

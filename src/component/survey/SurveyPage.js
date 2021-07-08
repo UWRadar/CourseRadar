@@ -93,14 +93,14 @@ export default class SurveyPage extends Component {
        
         
         return (
-            <div className="container-xxl" fliud id="survey">
+            <div className="container-xxl" id="survey">
                 <Container id='form-header'>
                     <h1>Course Evaluation Form</h1>
                 </Container>
                 <Container>
                     <Form noValidate className = 'survey-form' validated={this.state.validated} onSubmit= {(e) => this.handleSubmit(e)}>
                         <Container id='form-box'>
-                        <Form.Group as={Row} controlId='formYear'>
+                        <Form.Group as={Row} controlid='formYear'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Year:
                             </Form.Label>
@@ -260,7 +260,7 @@ export default class SurveyPage extends Component {
                                 />
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} controlId='formSurveyRemark'>
+                        <Form.Group as={Row} controlId='formSurveyContact'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Contact(E-mail or Wechat):
                             </Form.Label>
