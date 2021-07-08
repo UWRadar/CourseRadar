@@ -6,6 +6,7 @@ import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
 import SearchResultPage from "../home/SearchResultPage"
 import SurveyPage from "../survey/SurveyPage"
+// import SearchResultPage from "../search-result-page/SearchResultPage"
 import LargeHeader from "../general/LargeHeader"
 import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
@@ -28,12 +29,12 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
-                    <LargeHeader />
+                    <LargeHeader/>
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-                        <Route path="/search/:searchTerm" component={SearchResultPage} />
+                        <Route path="/search/:searchTerm" component={SearchResultPage}/>
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
                         <Route path="/login" component={LoginPage} />
                     </Switch>

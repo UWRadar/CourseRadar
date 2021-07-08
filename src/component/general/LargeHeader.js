@@ -3,23 +3,27 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+
+
+
+import SearchFilter from "./SearchFilter";
+
 import SortIcon from '@material-ui/icons/Sort';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { NavLink } from 'react-router-dom'
 import SearchBar from "./SearchBar"
 import "./LargeHeader.css"
+import { PinDropSharp } from "@material-ui/icons";
 
-export default function LargeHeader() {
-    const goHome = () => {
-        window.location.href = "/"
-    }
+export default function LargeHeader(props) {
     return (
         <div>
             <AppBar id='large-header'>
-                <img src="./img/original6.png" id="course-radar" alt="logo for course radar" onClick={goHome}></img>
-                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile" onClick={goHome}></img>
-                <SearchBar />
-                {/* 添加链接 */}
+                <img src="./img/courseRadar.png" id="course-radar" alt="logo for course radar">
+                </img>
+                <div id="search-bar">
+                    <SearchFilter/>
+                </div>
                 <div id="right-upper-icons">
                     <NavLink
                         className="logo-with-characters"
