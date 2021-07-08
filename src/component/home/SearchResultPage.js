@@ -116,7 +116,7 @@ export default class SearchResultPage extends Component {
                     let courseNum = tempCourseName.match(/\d+/g);
                     let courseMajor = tempCourseName.match(/[a-zA-Z]+/g);
                     courseTemp.push({
-                        courseName: courseMajor + " " + courseNum,
+                        courseName: courseMajor + courseNum,
                         courseDescription: course.courseFullName,
                         tags: course.creditType.split("/"),
                         credit: course.credit[0]

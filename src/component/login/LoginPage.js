@@ -151,7 +151,7 @@ export default class LoginPage extends Component {
 
     loginSuccess() {
         alert("登录成功！")
-        window.location.href = "/"
+        window.location.href = "/profile"
     }
 
     setPage(value) {

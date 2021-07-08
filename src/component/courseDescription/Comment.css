@@ -11,10 +11,11 @@
 }
 
 .name {
-    font-size: 24px;
+    font-size: 19px;
     padding-left: 5%;
     padding-top: 5%;
     margin-bottom: 0;
+    text-align: left;
 }
 
 .info {
@@ -25,26 +26,37 @@
 }
 
 .comment {
-    padding-left: 5%;
+    padding-left: 7%;
 }
 
 .question {
-    font-size: 20px;
+    font-size: 19px;
     display: inline;
     margin: 0;
 }
 
 .answer {
-    font-size: 20px;
+    font-size: 19px;
     display: inline;
     margin: 0;
 }
 
 .paragraph {
-    font-size: 20px;
+    font-size: 19px;
     margin-right: -60px;
 }
 
+.commentdetail {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 5%;
+}
+
+.commentlogo {
+    width: 40px;
+    height: 40px;
+    margin-top: 1vh;
+}
 
 /* Media Control screen larger than 320px */ 
 @media (min-width: 375px)
@@ -67,7 +79,7 @@
     }
     
     .name {
-        font-size: 16px;
+        font-size: 20px;
         padding-left: 0;
         padding-top: 2%;
         margin-bottom: 0;
@@ -76,6 +88,7 @@
     .commentdetail {
         margin-left: 0;
         margin-right: 0;
+        padding-left: 0%;
     }
 
     .paragraph {
@@ -84,17 +97,12 @@
     }
 
 }
-.commentlogo {
-    width: 40px;
-    height: 40px;
-    margin-top: 1vh;
-}
 
 /* Media Control screen larger than 768px */ 
 @media (min-width: 1024px)
 {
     .info {
-        padding-right: 20%;
+        padding-right: 18%;
         margin-right: 0px;
     }
 }

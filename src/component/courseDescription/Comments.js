@@ -14,7 +14,7 @@ const Comments = (props) => {
             <Grid container xs={12}>
                 <Grid className='comment' item xs={8}>
                     <div className='title'>
-                        <h1>课程评价</h1>
+                        <p className="evaluation">课程评价</p>
                     </div>
                     {
                         props.commentItems.map(element => {

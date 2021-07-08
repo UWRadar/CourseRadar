@@ -3,4 +3,6 @@ export default {
     GETCOMMENT:      "/api/retrieveComment",
     GETCOURSERATING: "/api/retrieveRating",
     FILLCOMMENT:     "/api/fillcomment",
+    GETRECOMMENDED:  "/api/getRecommended",
+    GETPOPULAR:      "/api/getPopular",
 }

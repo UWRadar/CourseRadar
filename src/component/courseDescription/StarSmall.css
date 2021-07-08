@@ -18,9 +18,10 @@
     position: static;
     border: 1px;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     text-align: right;
     color: rgb(116, 116, 116);
+    margin-top: 2px;
 }
 
 

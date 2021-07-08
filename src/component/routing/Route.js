@@ -32,7 +32,7 @@ export default class Routing extends Component {
                     <LargeHeader/>
                     <Switch>
                         <Route path="/" exact component={HomePage} />
-                        <Route path="/profile/:username" component={ProfilePage} />
+                        <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
                         <Route path="/search/:searchTerm" component={SearchResultPage}/>
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
