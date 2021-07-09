@@ -16,7 +16,7 @@ export default function SearchFilter(props) {
 
     const selectionIcon = (
         <div id="selection-icon">
-            <img src="./img/vector.png"  alt="logo for selection"/>
+            <img src="./img/Vector.png"  alt="logo for selection"/>
         </div>
     )
 
