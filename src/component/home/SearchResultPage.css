@@ -45,3 +45,10 @@
         width: calc(100% - var(--filter-width));
     }
 }
+
+.no-result {
+    width: 70vmin;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

@@ -24,6 +24,7 @@ export default class SearchResultPage extends Component {
             selectLevel: "",
             selectCredit: "",
             selectCreditType: "",
+            loaded: false,
 
         }
     }
@@ -35,6 +36,8 @@ export default class SearchResultPage extends Component {
         let curCreditType = localStorage.getItem("creditType");
         if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
             this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        } else {
+            this.setState({loaded: true});
         }
     }
 
@@ -53,7 +56,9 @@ export default class SearchResultPage extends Component {
             let curCredit = localStorage.getItem("credit");
             let curCreditType = localStorage.getItem("creditType");
             if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
-                this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+                if (this.state.loaded) {
+                    this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+                }
             }
         }
         // if (this.state.courseCards.length != 0) {
@@ -71,7 +76,8 @@ export default class SearchResultPage extends Component {
             courseName: curCourseName,
             courseLevel: curLevel,
             courseCredit: curCredit,
-            courseCreditType: curCreditType
+            courseCreditType: curCreditType,
+            loaded: false,
         })
 
         const url = ServerConfig.SERVER_URL + "/api/search";
@@ -128,42 +134,14 @@ export default class SearchResultPage extends Component {
                     })
                 }
                 this.setState({
-                    courseCards: courseTemp
+                    courseCards: courseTemp,
+                    loaded: true
                 })
             })
+            .catch(this.setState({courseCards: []}));
     }
 
     render() {
-
-        // const checkImport = () => {
-        //     // setSubCourseCards();
-        //     if (this.state.courseCards.length == 0) {
-        //         return "no results";
-        //     } else {
-        //         return this.state.courseCards.map(element => (
-        //             <CourseCard
-        //                 courseName={element.courseName}
-        //                 courseDescription={element.courseDescription}
-        //                 tags={element.tags}
-        //                 credit={element.credit}
-        //             />
-        //         ));
-        //     }
-        // }
-
-        // const renderRadioBoxes = (name, items) => {
-        //     const result = []
-        //     for (let i = 0; i < items.length; i++) {
-        //         const randomId = Math.random().toString(36).substring(2)
-        //         result.push(
-        //             <div>
-        //                 <input name={name} type="radio"></input>
-        //                 <label for={randomId}>{items[i]}</label>
-        //             </div>
-        //         )
-        //     }
-        //     return result
-        // }
 
         const onChangeLevel = (event) => {
             this.setState({ selectLevel: event.target.value });
@@ -222,8 +200,10 @@ export default class SearchResultPage extends Component {
                 }
             }
             // this.setState({subCourseCards: tempSubCourseCards});
+
             if (tempSubCourseCards.length == 0) {
-                return "no results";
+                return<img className="no-result" src="../img/no-result.png" alt="no results"/>
+
             } else {
                 return tempSubCourseCards.map(element => (
                     <CourseCard
@@ -271,7 +251,13 @@ export default class SearchResultPage extends Component {
                     </RadioGroup>
                 </div>
                 <div className="course-list">
-                    {setSubCourseCards()}
+                    {!this.state.loaded &&
+                        <div class="loading-small">
+                                <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
+                        </div>
+                    }
+                    {this.state.loaded &&
+                        setSubCourseCards()}
                 </div>
             </div>
         )
@@ -280,7 +266,13 @@ export default class SearchResultPage extends Component {
 
 function checkStatus(response) {
     if (response.ok) {
-        return response.json()
+        if (response.status == 200) {
+            console.log(response);
+            return response.json()
+        } else {
+            return {result: []};
+        }
+
     } else {
         return Promise.reject(new Error(response.status + ": " + response.statusText))
     }
