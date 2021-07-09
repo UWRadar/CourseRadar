@@ -5,6 +5,7 @@ import md5 from "md5"
 import firebase from "firebase/app"
 import "firebase/analytics"
 import "firebase/auth"
+import ServerConfig from "../config/ServerConfig"
 export default class LoginPage extends Component {
     constructor(props) {
         super(props)
@@ -88,7 +89,7 @@ export default class LoginPage extends Component {
             return
         }
         this.state.loginEmail = this.state.loginEmail.toLowerCase()
-        fetch("http://localhost:9000/api/login", {
+        fetch(ServerConfig.SERVER_URL + "/api/login", {
             body: JSON.stringify({
                 email: this.state.loginEmail,
                 password: md5(this.state.loginPassword)
@@ -129,7 +130,7 @@ export default class LoginPage extends Component {
             .signInWithPopup(provider)
             .then((result) => {
                 result.user.getIdToken().then(idToken => {
-                    fetch("http://localhost:9000/api/loginfirebase", {
+                    fetch(ServerConfig.SERVER_URL + "/api/loginfirebase", {
                         body: JSON.stringify({
                             idToken: idToken
                         }),
@@ -179,7 +180,7 @@ export default class LoginPage extends Component {
             alert("两次输入的密码不一致。")
             return
         }
-        fetch("http://localhost:9000/api/signup", {
+        fetch(ServerConfig.SERVER_URL + "/api/signup", {
             body: JSON.stringify({
                 email: this.state.signupEmail,
                 password: md5(this.state.signupPassword),
@@ -219,7 +220,7 @@ export default class LoginPage extends Component {
             alert("请输入发送到您的邮箱的验证码。")
             return
         }
-        fetch("http://localhost:9000/api/verifyemail", {
+        fetch(ServerConfig.SERVER_URL + "/api/verifyemail", {
             body: JSON.stringify({
                 code: this.state.code,
                 email: this.state.signupEmail

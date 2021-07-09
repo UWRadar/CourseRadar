@@ -64,6 +64,7 @@ export default class HomePage extends Component {
             }
         })
         .then((data) => {
+            console.log(data)
             this.setState({
                 popular: data.result
             });

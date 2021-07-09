@@ -1,5 +1,5 @@
 export default {
-    SERVER_URL:      "http://localhost:9000",
+    SERVER_URL:      "http://test.uwclassmate.com",
     GETCOMMENT:      "/api/retrieveComment",
     GETCOURSERATING: "/api/retrieveRating",
     FILLCOMMENT:     "/api/fillcomment",

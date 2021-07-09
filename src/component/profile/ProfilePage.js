@@ -5,6 +5,7 @@ import CourseCard from "../general/CourseCard"
 import ImageStorage from "../general/ImageStorage"
 import Tabs from "../home/Tabs"
 import md5 from "md5"
+import ServerConfig from "../config/ServerConfig"
 export default class ProfilePage extends Component {
     constructor(props) {
         super(props)
@@ -80,7 +81,7 @@ export default class ProfilePage extends Component {
                                 <h1>{this.state.username && this.state.username.substring(0, 1)}</h1>
                             </div>
                             <button className="btn btn-danger" id="user-info-logoout" onClick={() => {
-                                fetch("http://localhost:9000/api/logout", {
+                                fetch(ServerConfig.SERVER_URL + "/api/logout", {
                                     credentials: "include",
                                     method: "POST"
                                 }).then(response => {
@@ -153,7 +154,7 @@ export default class ProfilePage extends Component {
                             alert("两次输入的密码不一致。")
                             return
                         }
-                        fetch("http://localhost:9000/api/changeprofile", {
+                        fetch(ServerConfig.SERVER_URL + "/api/changeprofile", {
                             body: JSON.stringify({
                                 password: newPassword ? md5(newPassword) : null,
                                 username: newUsername
@@ -175,7 +176,7 @@ export default class ProfilePage extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:9000/api/userinfo", {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
             credentials: "include"
         }).then(response => {
             if (response.ok) {

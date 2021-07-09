@@ -16,7 +16,7 @@ const Description = (props) => {
                         <Row>
                             <Col>
                                 <p className="courseCode">{props.courseName}</p>
-                                <p className="courseName">{props.courseName}</p>
+                                <p className="courseName">{props.courseItems.courseFullName}</p>
                                 <a href={props.courseItems.myplanLink} className="myPlan"><FontAwesomeIcon icon={faExternalLinkAlt} aria-label="link" /> MyPlan</a>
                             </Col>
                             <Col>
