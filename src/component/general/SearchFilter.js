@@ -186,7 +186,7 @@ export default function SearchFilter(props) {
     return (
         <div className="search-bar">
             <Button onClick={handleClick}>
-                <img id="selection-icon" src="./img/vector-withTri.png"  alt="logo for selection"/>
+                <img id="selection-icon" src="./img/Vector-withTri.png"  alt="logo for selection"/>
 
             </Button>
             <Menu
