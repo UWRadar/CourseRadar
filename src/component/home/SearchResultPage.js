@@ -36,6 +36,8 @@ export default class SearchResultPage extends Component {
         let curCreditType = localStorage.getItem("creditType");
         if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
             this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
+        } else {
+            this.setState({loaded: true});
         }
     }
 
