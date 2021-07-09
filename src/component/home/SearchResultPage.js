@@ -11,7 +11,7 @@ import ServerConfig from "../config/ServerConfig";
 
 export default class SearchResultPage extends Component {
 
-// const SearchResultPage = (props) => {
+    // const SearchResultPage = (props) => {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,10 +40,14 @@ export default class SearchResultPage extends Component {
 
     componentDidUpdate(props) {
         let curFilters = props.history.location.state;
-        if (curFilters[0] != this.state.courseName ||
-            curFilters[1] != this.state.courseLevel ||
-            curFilters[2] != this.state.courseCredit ||
-            curFilters[3] != this.state.courseCreditType) {
+        if (
+            curFilters && (
+                curFilters[0] != this.state.courseName ||
+                curFilters[1] != this.state.courseLevel ||
+                curFilters[2] != this.state.courseCredit ||
+                curFilters[3] != this.state.courseCreditType
+            )
+        ) {
             let curCourseName = localStorage.getItem("courseName");
             let curLevel = localStorage.getItem("level");
             let curCredit = localStorage.getItem("credit");
@@ -162,17 +166,17 @@ export default class SearchResultPage extends Component {
         // }
 
         const onChangeLevel = (event) => {
-            this.setState({selectLevel: event.target.value});
+            this.setState({ selectLevel: event.target.value });
             // setSubCourseCards();
         }
 
         const onChangeCredit = (event) => {
-            this.setState({selectCredit: event.target.value});
+            this.setState({ selectCredit: event.target.value });
             // setSubCourseCards();
         }
 
         const onChangeCreditType = (event) => {
-            this.setState({selectCreditType: event.target.value});
+            this.setState({ selectCreditType: event.target.value });
             // setSubCourseCards();
         }
 

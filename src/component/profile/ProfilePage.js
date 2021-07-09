@@ -126,7 +126,7 @@ export default class ProfilePage extends Component {
                         })
                     }}
                 />
-                {this.state.activeTab=="favCourses" && renderFavCourses()}
+                {this.state.activeTab == "favCourses" && renderFavCourses()}
                 <p className={"profile-settings" + (this.state.activeTab == "settings" ? "" : " hide")}>
                     {renderInputBars([{
                         autoComplete: "name",
@@ -181,7 +181,7 @@ export default class ProfilePage extends Component {
             if (response.ok) {
                 return response.json()
             } else if (response.status == 403) {
-                window.location.href = "/login"
+                throw new Error("unauthorized")
             }
         }).then(data => {
             if (data) {
@@ -191,6 +191,8 @@ export default class ProfilePage extends Component {
                     username: data.username
                 })
             }
+        }).catch(() => {
+            window.location.href = "/login"
         })
     }
 }

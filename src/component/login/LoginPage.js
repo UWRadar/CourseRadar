@@ -118,6 +118,8 @@ export default class LoginPage extends Component {
                     alert(msg)
                 }
             }
+        }).catch(() => {
+            alert("无法连接到服务器。")
         })
     }
 

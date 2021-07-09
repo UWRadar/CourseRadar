@@ -18,26 +18,27 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { PinDropSharp } from "@material-ui/icons";
 
 export default function LargeHeader(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState(null)
 
     const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
 
     const handleClose = () => {
-    setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     const goHome = () => {
-        window.location.href="/";
+        window.location.href = "/"
     }
+
     return (
         <div>
             <AppBar id='large-header'>
                 <img src="./img/original6.png" id="course-radar" alt="logo for course radar" onClick={goHome}></img>
                 <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile" onClick={goHome}></img>
 
-                <SearchFilter className="search-bar" className="search_bar"/>
+                <SearchFilter className="search-bar" className="search_bar" />
 
                 <div id="right-upper-icons">
                     <NavLink
@@ -49,7 +50,7 @@ export default function LargeHeader(props) {
                     </NavLink>
 
                     <NavLink
-                        to="/login"
+                        to="/profile"
                         className="logo-with-characters"
                     >
                         <img src="./img/log-in.png" id="log-in" class="header-logo" alt="logo for logging in" />
@@ -63,30 +64,29 @@ export default function LargeHeader(props) {
                 </Button>
 
                 <Menu
-                id="simple-menu2"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                >
-                <MenuItem>
-                    <NavLink
-                        to="/login"
-                        className="logo-with-characters"
+                    id="simple-menu2"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}>
+
+                    <MenuItem
                         onClick={handleClose}>
-                        登陆
-                    </NavLink>
-                </MenuItem>
-                
-                <MenuItem>
-                    <NavLink
-                        className="logo-with-characters"
-                        to="/survey"
-                        onClick={handleClose}
-                    >
-                    填写课评
-                    </NavLink>
-                </MenuItem>
+                        <NavLink
+                            to="/profile"
+                            className="logo-with-characters">
+                            登录
+                        </NavLink>
+                    </MenuItem>
+
+                    <MenuItem
+                        onClick={handleClose}>
+                        <NavLink
+                            className="logo-with-characters"
+                            to="/survey">
+                            填写课评
+                        </NavLink>
+                    </MenuItem>
                 </Menu>
 
             </AppBar>
