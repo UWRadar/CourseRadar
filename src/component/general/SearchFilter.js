@@ -217,7 +217,7 @@ export default function SearchFilter(props) {
         </Menu>
             <TextField
                 className="large-header-input"
-                id="outlined-full-width"
+                id="outlined-basic"
                 label="搜索"
                 placeholder="想要找啥课呀"
                 onChange={onChangeCourseNameTextInput}/>

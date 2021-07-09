@@ -18,7 +18,6 @@
 
 
 header .search-bar {
-    display: none;
     flex-direction: row;
     align-items: center;
     margin-left: 3;
@@ -75,19 +74,35 @@ header .search-bar {
     justify-content: center;
 }
 
+#simple-meanubutton {
+    display: flex;
+} 
+
 #course-radar {
     width: 60vmin;
+    cursor: pointer;
+    display: none;
 }
+
+
 
 #course-radar2 {
     display: none;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 500px) {
     #course-radar {
-        width: 30vmax;
+        width: 30vmin;
         margin-left: 2vw;
+        display: flex;
     }
+
+    
+}
+#simple-menu2 {
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -96,9 +111,7 @@ header .search-bar {
         justify-content: space-between;
     }
 
-    #right-upper-icons {
-        display: flex;
-    }
+    
 
     header .search-bar {
         display: flex;
@@ -106,7 +119,13 @@ header .search-bar {
     }
 }
 
-@media screen and (min-width: 1023px) {
+@media screen and (min-width: 1200px) {
+    #right-upper-icons {
+        display: flex;
+    }
+    #simple-meanubutton {
+        display: none;
+    } 
     #course-radar {
         width: 30vmin;
         margin-left: 2vw;

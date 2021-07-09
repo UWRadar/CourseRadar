@@ -7,6 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import ServerConfig from "../config/ServerConfig";
 
 export default class SearchResultPage extends Component {
 
@@ -65,7 +66,6 @@ export default class SearchResultPage extends Component {
 
 
     processSearchResult(curCourseName, curLevel, curCredit, curCreditType) {
-        console.log(22222);
         this.setState({
             courseName: curCourseName,
             courseLevel: curLevel,
@@ -74,7 +74,7 @@ export default class SearchResultPage extends Component {
             loaded: false,
         })
 
-        const url = "http://localhost:9000/api/search";
+        const url = ServerConfig.SERVER_URL + "/api/search";
         let currentUrl = url;
 
         // check courseName

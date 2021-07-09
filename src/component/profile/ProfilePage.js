@@ -35,7 +35,7 @@ export default class ProfilePage extends Component {
         const renderFavCourses = () => {
             const favCourses = this.state.favCourses
             if (favCourses.length == 0) {
-                return <img src="../img/no-result.png" />
+                return <img id="no-result" src="./img/no-result.png" />
             } else {
                 return favCourses.map(element => (
                     <CourseCard
@@ -79,7 +79,7 @@ export default class ProfilePage extends Component {
                             <div id="user-logo">
                                 <h1>{this.state.username && this.state.username.substring(0, 1)}</h1>
                             </div>
-                            <div id="user-info-logoout" onClick={() => {
+                            <button className="btn btn-danger" id="user-info-logoout" onClick={() => {
                                 fetch("http://localhost:9000/api/logout", {
                                     credentials: "include",
                                     method: "POST"
@@ -92,7 +92,7 @@ export default class ProfilePage extends Component {
                                 })
                             }}>
                                 <p>退出登录</p>
-                            </div>
+                            </button>
                         </div>
                         <div id="user-info-detail">
                             <h1>Hi, <span id="user-info-username">{this.state.username}</span></h1>
@@ -100,9 +100,9 @@ export default class ProfilePage extends Component {
                                 <img src={ImageStorage.email} />
                                 <span id="user-email">{this.state.email}</span>
                             </div>
-                            <div id="user-sub-info">
+                            {/* <div id="user-sub-info">
                                 <div class="user-info-container">
-                                    <img src="../img/major.png" />
+                                    <img src="./img/major.png" />
                                     <span id="user-major"></span>
                                 </div>
                                 <div class="user-info-container">
@@ -113,20 +113,20 @@ export default class ProfilePage extends Component {
                                     <img src="./img/club.png" />
                                     <span id="user-club"><span id="club-info"></span></span>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </Container>
                 </section>
                 <Tabs
                     items={tabItems}
                     active={this.state.activeTab}
-                    onclick={(newActiveTab) => {
+                    setActiveTab={(newActiveTab) => {
                         this.setState({
                             activeTab: newActiveTab
                         })
                     }}
                 />
-                <p className={"favorite-courses" + (this.state.activeTab == "favCourses" ? "" : " hide")}>{renderFavCourses()}</p>
+                {this.state.activeTab=="favCourses" && renderFavCourses()}
                 <p className={"profile-settings" + (this.state.activeTab == "settings" ? "" : " hide")}>
                     {renderInputBars([{
                         autoComplete: "name",

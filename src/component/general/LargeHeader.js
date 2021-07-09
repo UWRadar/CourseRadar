@@ -4,7 +4,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import SearchFilter from "./SearchFilter";
 
@@ -13,9 +14,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { NavLink } from 'react-router-dom'
 import SearchBar from "./SearchBar"
 import "./LargeHeader.css"
+import MenuIcon from '@material-ui/icons/Menu';
 import { PinDropSharp } from "@material-ui/icons";
 
 export default function LargeHeader(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+    setAnchorEl(null);
+    };
+
     const goHome = () => {
         window.location.href="/";
     }
@@ -45,6 +57,37 @@ export default function LargeHeader(props) {
                     </NavLink>
 
                 </div>
+
+                <Button aria-controls="simple-menu2" id="simple-meanubutton" aria-haspopup="true" onClick={handleClick}>
+                    <MenuIcon></MenuIcon>
+                </Button>
+
+                <Menu
+                id="simple-menu2"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                >
+                <MenuItem>
+                    <NavLink
+                        to="/login"
+                        className="logo-with-characters"
+                        onClick={handleClose}>
+                        登陆
+                    </NavLink>
+                </MenuItem>
+                
+                <MenuItem>
+                    <NavLink
+                        className="logo-with-characters"
+                        to="/survey"
+                        onClick={handleClose}
+                    >
+                    填写课评
+                    </NavLink>
+                </MenuItem>
+                </Menu>
 
             </AppBar>
         </div>
