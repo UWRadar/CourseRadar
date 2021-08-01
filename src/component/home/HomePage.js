@@ -16,6 +16,7 @@ import ServerConfig from "../config/ServerConfig"
 export default class HomePage extends Component {
     constructor(props) {
         super(props)
+        this.intervalId = null
         this.state = {
             activeBanner: 0,
             bannerItems: [{
@@ -34,7 +35,7 @@ export default class HomePage extends Component {
                 description: "The quick brown fox jumps over the lazy dog",
                 image: "https://www.bing.com/th?id=OHR.BlueTitDaffs_ZH-CN3333224685_1920x1080.jpg"
             }],
-            loaded : false,
+            loaded: false,
             recommened: [],
             popular: [],
             mostTaken: [],
@@ -43,51 +44,57 @@ export default class HomePage extends Component {
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.switchBanner(1)
-        }, 5000)
+        this.resetInterval();
         this.getPopular();
         this.getRecommended();
     }
 
     changeActiveTab(tabName) {
-        this.setState({activeTab: tabName})
+        this.setState({ activeTab: tabName })
     }
 
     getPopular() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETPOPULAR)
-        .then(response => {
-            if (response.ok){
-                return response.json();
-            } else {
-                return [];
-            }
-        })
-        .then((data) => {
-            console.log(data)
-            this.setState({
-                popular: data.result
-            });
-        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            })
+            .then((data) => {
+                console.log(data)
+                this.setState({
+                    popular: data.result
+                });
+            })
     }
 
     getRecommended() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETRECOMMENDED)
-        .then(response => {
-            if (response.ok){
-                return response.json();
-            } else {
-                return [];
-            }
-        })
-        .then((data) => {
-            console.log(data)
-            this.setState({
-                loaded : true,
-                recommened: data.result
-            });
-        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            })
+            .then((data) => {
+                console.log(data)
+                this.setState({
+                    loaded: true,
+                    recommened: data.result
+                });
+            })
     }
+
+    resetInterval() {
+        clearInterval(this.intervalId);
+        this.intervalId = setInterval(() => {
+            this.switchBanner(1);
+        }, 5000);
+    }
+
     render() {
         const CourseTemp = [{
             courseName: "Info 340",
@@ -145,8 +152,15 @@ export default class HomePage extends Component {
                 <Banner className="banner"
                     items={this.state.bannerItems}
                     active={this.state.activeBanner}
-                    onchange={(delta) => {
-                        this.switchBanner(delta)
+                    onChange={(delta) => {
+                        this.switchBanner(delta);
+                        this.resetInterval();
+                    }}
+                    onMouseEnter={() => {
+                        clearInterval(this.intervalId);
+                    }}
+                    onMouseLeave={() => {
+                        this.resetInterval();
                     }}
                 />
                 <Tabs
@@ -155,9 +169,9 @@ export default class HomePage extends Component {
                     setActiveTab={(data) => this.changeActiveTab(data)}
                 />
                 <div className="course-list">
-                    {!this.state.loaded && 
+                    {!this.state.loaded &&
                         <div class="loading-small">
-                                <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
+                            <img class='loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
                     {this.state.loaded && this.state.activeTab === "recommendation" &&

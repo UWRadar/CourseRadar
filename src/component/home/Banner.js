@@ -24,7 +24,7 @@ const Banner = (props) => {
                     className="arrow arrow-left"
                     title="上一张"
                     onClick={() => {
-                        props.onchange(-1)
+                        props.onChange(-1)
                     }}
                 ></button>
                 <div className="main">
@@ -45,14 +45,18 @@ const Banner = (props) => {
                     className="arrow arrow-right"
                     title="下一张"
                     onClick={() => {
-                        props.onchange(1)
+                        props.onChange(1)
                     }}
                 ></button>
             </div>
         )
     }
     return (
-        <div className="banner-placeholder">
+        <div
+            className="banner-placeholder"
+            onMouseEnter={props.onMouseEnter}
+            onMouseLeave={props.onMouseLeave}
+        >
             <div className="banner-area">{bannerItems}</div>
         </div>
     )

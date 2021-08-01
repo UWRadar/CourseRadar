@@ -45,6 +45,8 @@
 }
 
 .banner p {
+    font-size: small;
+    margin-top: 10px;
     width: 40%;
 }
 
