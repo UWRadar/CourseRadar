@@ -10,6 +10,7 @@ const Comments = (props) => {
         <div className='comments'>
             <div className='bookmark'>
                 <img className='bookmarkimg' src={bookmark} alt="bookmark" />
+                <p className='tip'>点我收藏</p>
             </div>
             <Grid container xs={12}>
                 <Grid className='comment' item xs={8}>
@@ -25,11 +26,11 @@ const Comments = (props) => {
                                 comment={element.comment}
                                 />)})
                     }
-                    
+
                 </Grid>
                 <Grid className='starLarge' item xs={4}>
-                    <StarLarge 
-                        diffRating={props.courseItems.difficulty} 
+                    <StarLarge
+                        diffRating={props.courseItems.difficulty}
                         workRating={props.courseItems.workload}
                         avgRating = {props.courseItems.averageGPA}
                     />
@@ -39,8 +40,8 @@ const Comments = (props) => {
             <br></br>
             <br></br>
         </div>
-        
-        
+
+
     )
 }
 
