@@ -7,7 +7,7 @@
 .logo {
     text-align: right;
     padding-right: 5%;
-    
+
 }
 
 .name {
@@ -44,7 +44,7 @@
 .paragraph {
     font-size: 19px;
     margin-right: -60px;
-    text-align: left;
+    text-align: justify;
 }
 
 .commentdetail {
@@ -59,14 +59,14 @@
     margin-top: 1vh;
 }
 
-/* Media Control screen larger than 320px */ 
+/* Media Control screen larger than 320px */
 @media (min-width: 375px)
 {
 
 }
 
-/* Media Control screen larger than 480px */ 
-@media (min-width: 768px) 
+/* Media Control screen larger than 480px */
+@media (min-width: 768px)
 {
     .logo {
         text-align: right;
@@ -78,7 +78,7 @@
         padding-left: 0%;
         margin-right: -50px;
     }
-    
+
     .name {
         font-size: 20px;
         padding-left: 0;
@@ -98,7 +98,7 @@
 
 }
 
-/* Media Control screen larger than 768px */ 
+/* Media Control screen larger than 768px */
 @media (min-width: 1024px)
 {
     .info {
