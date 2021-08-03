@@ -86,6 +86,12 @@
     height: 390px;
 }
 
+.hide-on-mobile:hover {
+    color: white;
+    background-color: rgb(111, 82, 138);
+    border-color:  rgb(111, 82, 138);
+}
+
 @media screen and (max-width: 900px) {
     .banner {
         padding: 20px 10px;
