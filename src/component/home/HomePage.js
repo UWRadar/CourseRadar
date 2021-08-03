@@ -35,6 +35,7 @@ export default class HomePage extends Component {
                 description: "The quick brown fox jumps over the lazy dog",
                 image: "https://www.bing.com/th?id=OHR.BlueTitDaffs_ZH-CN3333224685_1920x1080.jpg"
             }],
+            bannerNoAnimation: false,
             loaded: false,
             recommened: [],
             popular: [],
@@ -50,7 +51,9 @@ export default class HomePage extends Component {
     }
 
     changeActiveTab(tabName) {
-        this.setState({ activeTab: tabName })
+        this.setState({
+            activeTab: tabName
+        })
     }
 
     getPopular() {
@@ -152,6 +155,7 @@ export default class HomePage extends Component {
                 <Banner className="banner"
                     items={this.state.bannerItems}
                     active={this.state.activeBanner}
+                    noAnimation={this.state.bannerNoAnimation}
                     onChange={(delta) => {
                         this.switchBanner(delta);
                         this.resetInterval();
@@ -201,20 +205,30 @@ export default class HomePage extends Component {
         )
     }
 
-
     switchBanner(delta) {
+        if (this.state.bannerNoAnimation) {
+            return
+        }
+        const bannerItems = this.state.bannerItems
         const newActive = this.state.activeBanner + delta
         const setActive = (newValue) => {
             this.setState({
                 activeBanner: newValue
             })
         }
-        if (newActive >= 0 && newActive < this.state.bannerItems.length) {
-            setActive(newActive)
-        } else if (newActive < 0) {
-            setActive(this.state.bannerItems.length - 1)
-        } else {
-            setActive(0)
+        setActive(newActive)
+        if (newActive < 0 || newActive > bannerItems.length - 1) {
+            setTimeout(() => {
+                this.setState({
+                    activeBanner: newActive < 0 ? bannerItems.length - 1 : 0,
+                    bannerNoAnimation: true
+                })
+            }, 500)
+            setTimeout(() => {
+                this.setState({
+                    bannerNoAnimation: false
+                })
+            }, 1000)
         }
     }
 }
