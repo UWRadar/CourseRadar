@@ -222,7 +222,7 @@ export default function SearchFilter(props) {
                 placeholder="想要找啥课呀"
                 onChange={onChangeCourseNameTextInput}/>
             <button
-                className="btn btn-outline-success"
+                className="btn searchButton"
                 id="apply-filter-btn"
                 onClick={searchFilters}
             >
