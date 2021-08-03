@@ -31,6 +31,19 @@
     margin-left: 1vw;
 }
 
+.searchButton:hover {
+    color: white;
+    background-color: rgb(136, 105, 165);
+    border-color: rgb(136, 105, 165);
+}
+
+.searchButton {
+    background-color: transparent;
+    border-color:  rgb(119, 88, 148);
+    color: rgb(119, 88, 148);
+}
+
+
 @media screen and (min-width: 900px) {
     #selection-icon {
         margin-top: 0;
