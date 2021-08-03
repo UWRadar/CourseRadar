@@ -34,7 +34,16 @@
 
 .search-result .course-list {
     display: block;
+    margin: auto auto;
 }
+
+
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    justify-content: center; */
+
 
 @media screen and (min-width: 900px) {
     .filter {

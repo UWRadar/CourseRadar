@@ -26,7 +26,7 @@ const CourseCard = (props) => {
 
 
                         <div class="describtion-tags">
-                            {props.tags.map(element => {
+                            { (props.tags === null) ? null : props.tags.map(element => {
                                 return (<div class={"tag " + element} npnp>
                                     <div class="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>
