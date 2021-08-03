@@ -33,17 +33,12 @@
 }
 
 .search-result .course-list {
-    display: block;
-    margin: auto auto;
-}
-
-
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, 16rem);
+    grid-gap: 1rem;
     justify-content: center; */
-
+    display: block;
+}
 
 @media screen and (min-width: 900px) {
     .filter {
