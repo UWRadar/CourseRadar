@@ -41,7 +41,7 @@
         display: block;
     }
     .search-result .course-list {
-        margin-left: var(--filter-width);
+        margin-left: calc(var(--filter-width));
         width: calc(100% - var(--filter-width));
     }
 }

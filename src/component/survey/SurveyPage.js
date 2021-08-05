@@ -90,7 +90,7 @@ export default class SurveyPage extends Component {
     }
 
     render() {
-       
+        window.scrollTo(0, 0);
         
         return (
             <div className="container-xxl" id="survey">

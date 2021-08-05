@@ -6,7 +6,8 @@ import ImageStorage from "../general/ImageStorage"
 import Tabs from "../home/Tabs"
 import md5 from "md5"
 import ServerConfig from "../config/ServerConfig"
-export default class ProfilePage extends Component {
+import {withRouter, Redirect} from 'react-router-dom';
+class ProfilePage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,6 +25,9 @@ export default class ProfilePage extends Component {
     }
 
     render() {
+        if (this.state.redirectToLogin) {
+            return (<Redirect to="/login" />)
+        }
         const tabItems = [{
             icon: "saveActive",
             id: "favCourses",
@@ -72,6 +76,7 @@ export default class ProfilePage extends Component {
             return result
         }
         return (
+            
             <Container classes={{ root: "profile-page" }} maxWidth="lg">
                 <Container maxWidth="xl" id="user-info-background" />
                 <section class="user-info">
@@ -86,7 +91,7 @@ export default class ProfilePage extends Component {
                                     method: "POST"
                                 }).then(response => {
                                     if (response.ok) {
-                                        window.location.href = "/login"
+                                        this.props.history.push("/login");
                                     } else {
                                         alert("退出登录时出错。")
                                     }
@@ -101,20 +106,6 @@ export default class ProfilePage extends Component {
                                 <img src={ImageStorage.email} />
                                 <span id="user-email">{this.state.email}</span>
                             </div>
-                            {/* <div id="user-sub-info">
-                                <div class="user-info-container">
-                                    <img src="./img/major.png" />
-                                    <span id="user-major"></span>
-                                </div>
-                                <div class="user-info-container">
-                                    <img src="./img/student.png" />
-                                    <span id="user-year-Info"><span id="graduate"></span> Graduate</span>
-                                </div>
-                                <div class="user-info-container">
-                                    <img src="./img/club.png" />
-                                    <span id="user-club"><span id="club-info"></span></span>
-                                </div>
-                            </div> */}
                         </div>
                     </Container>
                 </section>
@@ -189,11 +180,16 @@ export default class ProfilePage extends Component {
                 this.setState({
                     email: data.email,
                     favCourses: data.favCourses,
-                    username: data.username
+                    username: data.username,
+                    redirectToLogin: false
                 })
             }
         }).catch(() => {
-            window.location.href = "/login"
+            this.setState({
+                redirectToLogin: true
+            })
         })
     }
 }
+
+export default withRouter(ProfilePage);

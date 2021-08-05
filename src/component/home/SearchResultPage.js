@@ -267,7 +267,6 @@ export default class SearchResultPage extends Component {
 function checkStatus(response) {
     if (response.ok) {
         if (response.status == 200) {
-            console.log(response);
             return response.json()
         } else {
             return {result: []};

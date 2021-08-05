@@ -3,7 +3,8 @@ import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-u
 import { Grid } from '@material-ui/core';
 import { NavLink, Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
@@ -21,17 +22,6 @@ export default function SearchFilter(props) {
     )
 
 
-    /*
-    [
-        {
-            type: "level",
-            value: 100 (or array)
-        },
-        {
-            ...
-        }
-    ]
-    */
 
     // level: 0-3, credit: 4-8, creditType: 9-16
     const FILTER_ITEMS = [
@@ -186,8 +176,7 @@ export default function SearchFilter(props) {
     return (
         <div className="search-bar">
             <Button onClick={handleClick}>
-                <img id="selection-icon" src="./img/Vector-withTri.png"  alt="logo for selection"/>
-
+                <FontAwesomeIcon className="filterIcon" icon={faCaretDown} />
             </Button>
             <Menu
                 anchorEl={anchorEl}
