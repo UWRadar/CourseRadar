@@ -15,6 +15,12 @@
     padding-left: 45%;
 }
 
+.paragraph {
+    font-size: 19px;
+    margin-right: -60px;
+    text-align: justify;
+}
+
 .logo {
     text-align: right;
     padding-right: 5%;

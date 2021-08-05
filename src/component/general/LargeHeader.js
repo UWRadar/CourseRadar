@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import ImageStorage from "./ImageStorage"
 import SearchFilter from "./SearchFilter";
 import ServerConfig from "../config/ServerConfig"
 import { NavLink } from 'react-router-dom'
@@ -49,8 +49,8 @@ class LargeHeader extends Component {
         }
         return (<div>
             <AppBar id='large-header'>
-                <img src="./img/original6.png" id="course-radar" alt="logo for course radar" onClick={() => {goHome()}}></img>
-                <img src="./img/original.png" id="course-radar2" alt="logo for course radar mobile" onClick={() => {goHome()}}></img>
+                <img src={ImageStorage.logo} id="course-radar" alt="logo for course radar" onClick={() => {goHome()}}></img>
+                <img src={ImageStorage.logoSmall} id="course-radar2" alt="logo for course radar mobile" onClick={() => {goHome()}}></img>
 
                 <SearchFilter className="search-bar" className="search_bar" />
 
@@ -59,7 +59,7 @@ class LargeHeader extends Component {
                         className="logo-with-characters"
                         to="/survey"
                     >
-                        <img src="./img/edit.png" id="pen" class="header-logo" alt="logo for filling forms" />
+                        <img src={ImageStorage.edit} id="pen" class="header-logo" alt="logo for filling forms" />
                         <p>填写课评</p>
                     </NavLink>
 
@@ -68,7 +68,7 @@ class LargeHeader extends Component {
                         className="logo-with-characters"
                         
                     >
-                        <img src="./img/log-in.png" id="log-in" class="header-logo" alt="logo for logging in" />
+                        <img src={ImageStorage.login} id="log-in" class="header-logo" alt="logo for logging in" />
                         <p>{this.state.pathOfPersonIcon === "/login" ? "登录" : "个人"}</p>
                     </NavLink>
 

@@ -41,7 +41,7 @@ export default function SearchFilter(props) {
         {type: "creditType", value: "NW"},
         {type: "creditType", value: "QSR"},
         {type: "creditType", value: "VLPA"},
-        {type: "creditType", value: "W"}
+        // {type: "creditType", value: "W"}
     ];
 
     const [filters, setFilters] = useState([
@@ -199,7 +199,7 @@ export default function SearchFilter(props) {
                     }
 
                     {
-                        dropDownRegion("Credit Type", 9, 16)
+                        dropDownRegion("Credit Type", 9, 15)
                     }
                 </div>
         </Menu>
@@ -207,11 +207,17 @@ export default function SearchFilter(props) {
                 className="large-header-input"
                 id="outlined-basic"
                 label="搜索"
-                placeholder="想要找啥课呀"
+                placeholder="e.g. CSE 142, Engl"
+                onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                        searchFilters();
+                    }
+                }}
                 onChange={onChangeCourseNameTextInput}/>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
+
                 onClick={searchFilters}
             >
             Search</button>

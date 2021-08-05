@@ -41,6 +41,7 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        window.scrollTo(0, 0);
         return (
             <div className="login-container" aria-label="Seaching area">
                 <div id="login-description">

@@ -4,5 +4,8 @@ export default {
     waterClass: require('../../img/talk-active.png').default,
     email: require("../../img/email.png").default,
     saveActive: require("../../img/save-active.png").default,
-    setting: require("../../img/setting.png").default
+    setting: require("../../img/setting.png").default,
+    logoSmall: require("../../img/original.png").default,
+    edit: require("../../img/edit.png").default,
+    login: require("../../img/log-in.png").default
 }
