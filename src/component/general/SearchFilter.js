@@ -139,9 +139,8 @@ export default function SearchFilter(props) {
         localStorage.setItem("level", curLevel);
         localStorage.setItem("credit", curCredit);
         localStorage.setItem("creditType", curCreditType);
-        console.log(11111);
         history.push({
-            pathname: "/search/:searchTerm",
+            pathname: "/search",
             state: [curCourseName, curLevel, curCredit, curCreditType]
         });
 

@@ -34,7 +34,7 @@ export default class Routing extends Component {
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-                        <Route path="/search/:searchTerm" component={SearchResultPage}/>
+                        <Route path="/search" component={SearchResultPage}/>
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
                         <Route path="/login" component={LoginPage} />
                     </Switch>
