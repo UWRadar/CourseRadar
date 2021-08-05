@@ -39,8 +39,13 @@
     text-align: left;
 }
 
+.course-name {
+    height: 3rem;
+    display:table-cell;
+    vertical-align:middle;
+}
+
 .recom-description h1 {
-    margin-bottom: 0.5rem;
     word-break: break-word;
     padding: 10px;
 }

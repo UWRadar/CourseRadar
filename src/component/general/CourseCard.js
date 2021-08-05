@@ -24,7 +24,10 @@ const CourseCard = (props) => {
                         </div>
                     </div>
                     <div className="recom-description">
-                        <h1>{props.courseDescription}</h1>
+                        <div className="course-name">
+                            <h1>{props.courseDescription}</h1>
+                        </div>
+                        
 
 
                         <div class="describtion-tags">

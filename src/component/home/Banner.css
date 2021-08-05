@@ -45,6 +45,8 @@
 }
 
 .banner p {
+    font-size: small;
+    margin-top: 10px;
     width: 40%;
 }
 
@@ -84,6 +86,16 @@
 
 .banner-placeholder {
     height: 390px;
+}
+
+.hide-on-mobile:hover {
+    color: white;
+    background-color: rgb(111, 82, 138);
+    border-color:  rgb(111, 82, 138);
+}
+
+.no-animation * {
+    transition: none;
 }
 
 @media screen and (max-width: 900px) {
