@@ -6,19 +6,21 @@ import { NavLink } from 'react-router-dom'
 const CourseCard = (props) => {
     /* 需要有传进的props以显示对应的课程和正确链接 */
     const firstNonAlpha = props.courseName.search(/\d/);
-    const name = props.courseName.substring(0, firstNonAlpha).toUpperCase();
-
+    let name = props.courseName.substring(0, firstNonAlpha).toUpperCase();
+    if (Img[name] == undefined) {
+        name = "DEFAULT";
+    }
+        
     return (
         <NavLink
             to={"/CourseDetail/" + props.courseName.replace("/\s/g", "")}
-            style={{
-                color: "black",
-            }}>
+            id="courseCardLink"
+        >
             <div className="course-card">
                 <div className="recom-cards" aria-label="recommendation">
                     <div className="course-title" style={{ backgroundImage: `url(${Img[name]?.default})` }}>
                         <div className="course-title-wrap">
-                            <p>{props.courseName}</p>
+                            <p>{props.courseName.toUpperCase()}</p>
                         </div>
                     </div>
                     <div className="recom-description">
@@ -29,7 +31,7 @@ const CourseCard = (props) => {
 
 
                         <div class="describtion-tags">
-                            {props.tags.map(element => {
+                            { (props.tags === null) ? null : props.tags.map(element => {
                                 return (<div class={"tag " + element} npnp>
                                     <div class="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>

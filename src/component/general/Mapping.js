@@ -59,4 +59,5 @@ export default {
     JAPAN: require("../../img/Buildings/Smith.jpg"),
     JSIS: require("../../img/Buildings/Thompson.jpg"),
     ENVIR: require("../../img/Buildings/Wallace.jpeg"),
+    DEFAULT: require("../../img/Buildings/UW.jpeg")
 }

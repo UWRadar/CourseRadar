@@ -34,7 +34,7 @@ export default class SearchResultPage extends Component {
         let curLevel = localStorage.getItem("level");
         let curCredit = localStorage.getItem("credit");
         let curCreditType = localStorage.getItem("creditType");
-        if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
+        if (curCourseName !== "" || curLevel !== "" || curCredit !== "" || curCreditType !== "") {
             this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
         } else {
             this.setState({loaded: true});
@@ -45,17 +45,17 @@ export default class SearchResultPage extends Component {
         let curFilters = props.history.location.state;
         if (
             curFilters && (
-                curFilters[0] != this.state.courseName ||
-                curFilters[1] != this.state.courseLevel ||
-                curFilters[2] != this.state.courseCredit ||
-                curFilters[3] != this.state.courseCreditType
+                curFilters[0] !== this.state.courseName ||
+                curFilters[1] !== this.state.courseLevel ||
+                curFilters[2] !== this.state.courseCredit ||
+                curFilters[3] !== this.state.courseCreditType
             )
         ) {
             let curCourseName = localStorage.getItem("courseName");
             let curLevel = localStorage.getItem("level");
             let curCredit = localStorage.getItem("credit");
             let curCreditType = localStorage.getItem("creditType");
-            if (curCourseName != "" || curLevel != "" || curCredit != "" || curCreditType != "") {
+            if (curCourseName !== "" || curLevel !== "" || curCredit !== "" || curCreditType !== "") {
                 if (this.state.loaded) {
                     this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
                 }
@@ -71,6 +71,7 @@ export default class SearchResultPage extends Component {
     }
 
 
+    // fetch data
     processSearchResult(curCourseName, curLevel, curCredit, curCreditType) {
         this.setState({
             courseName: curCourseName,
@@ -80,18 +81,20 @@ export default class SearchResultPage extends Component {
             loaded: false,
         })
 
+        console.log(this.state.courseCreditType);
+
         const url = ServerConfig.SERVER_URL + "/api/search";
         let currentUrl = url;
 
         // check courseName
-        if (curCourseName != "") {
+        if (curCourseName !== "") {
             if (currentUrl === url) {
                 currentUrl += "?";
             }
             currentUrl += "courseName=" + curCourseName;
         }
         // check level
-        if (curLevel != "") {
+        if (curLevel !== "") {
             if (currentUrl === url) {
                 currentUrl += "?level=" + curLevel;
             } else {
@@ -99,7 +102,7 @@ export default class SearchResultPage extends Component {
             }
         }
         // check credit
-        if (curCredit != "") {
+        if (curCredit !== "") {
             if (currentUrl === url) {
                 currentUrl += "?credit=" + curCredit;
             } else {
@@ -107,7 +110,7 @@ export default class SearchResultPage extends Component {
             }
         }
         // check creditType
-        if (curCreditType != "") {
+        if (curCreditType !== "") {
             if (currentUrl === url) {
                 currentUrl += "?creditType=" + curCreditType;
             } else {
@@ -119,17 +122,20 @@ export default class SearchResultPage extends Component {
 
         fetch(currentUrl)
             .then(checkStatus)
-            // .then(res => res.json())
             .then(res => {
-                console.log(res.result);
                 let courses = res.result;
                 let courseTemp = [];
                 for (let i = 0; i < courses.length; i++) {
                     let course = courses[i];
+                    let curCreditType = course.creditType;
+                    let curTag = null;
+                    if (curCreditType !== null) {
+                        curTag = curCreditType.split("/");
+                    }
                     courseTemp.push({
                         courseName: course.courseName,
                         courseDescription: course.courseFullName,
-                        tags: course.creditType.split("/"),
+                        tags: curTag,
                         credit: course.credit[0]
                     })
                 }
@@ -142,6 +148,10 @@ export default class SearchResultPage extends Component {
     }
 
     render() {
+
+        const LEVELS = [100, 200, 300, 400];
+        const CREDITS = [1, 2, 3, 4, 5];
+        const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
 
         const onChangeLevel = (event) => {
             this.setState({ selectLevel: event.target.value });
@@ -164,17 +174,17 @@ export default class SearchResultPage extends Component {
             let fitLevel = false;
             let fitCredit = false;
             let fitCreditType = false;
-            if (this.state.selectLevel == "") {
+            if (this.state.selectLevel === "") {
                 fitLevel = true;
             }
-            if (this.state.selectCredit == "") {
+            if (this.state.selectCredit === "") {
                 fitCredit = true;
             }
-            if (this.state.selectCreditType == "") {
+            if (this.state.selectCreditType === "") {
                 fitCreditType = true;
             }
             for (let i = 0; i < courseCards.length; i++) {
-                if (this.state.selectLevel != "") {
+                if (this.state.selectLevel !== "") {
                     fitLevel = false;
                     let tempCourseNum = parseInt(courseCards[i].courseName.match(/\d+/g));
                     let tempLevel = parseInt(this.state.selectLevel);
@@ -183,15 +193,19 @@ export default class SearchResultPage extends Component {
                         fitLevel = true;
                     }
                 }
-                if (this.state.selectCredit != "") {
+                if (this.state.selectCredit !== "") {
                     fitCredit = false;
-                    if (courseCards[i].credit == this.state.selectCredit) {
+                    if (courseCards[i].credit === this.state.selectCredit) {
                         fitCredit = true;
                     }
                 }
-                if (this.state.selectCreditType != "") {
+                if (this.state.selectCreditType !== "") {
                     fitCreditType = false;
-                    if (courseCards[i].tags.includes(this.state.selectCreditType.toUpperCase())) {
+                    if (courseCards[i].tags === null) {
+                        if (this.state.selectCreditType === null) {
+                            fitCreditType = true;
+                        }
+                    } else if (courseCards[i].tags.includes(this.state.selectCreditType.toUpperCase())) {
                         fitCreditType = true;
                     }
                 }
@@ -201,7 +215,7 @@ export default class SearchResultPage extends Component {
             }
             // this.setState({subCourseCards: tempSubCourseCards});
 
-            if (tempSubCourseCards.length == 0) {
+            if (tempSubCourseCards.length === 0) {
                 return<img className="no-result" src="../img/no-result.png" alt="no results"/>
 
             } else {
@@ -219,34 +233,49 @@ export default class SearchResultPage extends Component {
         return (
             <div className="search-result">
                 <div className="filter">
-                    <h1>筛选</h1>
+                    <h1>二次筛选</h1>
                     <h2>课程级别</h2>
                     <RadioGroup value={this.state.selectLevel} onChange={onChangeLevel}>
-                        <FormControlLabel value="100" control={<Radio />} label="100" />
+                        { (this.state.courseLevel === "") ? LEVELS.map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        }) : this.state.courseLevel.split("/").map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        })}
+                        {/* <FormControlLabel value="100" control={<Radio />} label="100" />
                         <FormControlLabel value="200" control={<Radio />} label="200" />
                         <FormControlLabel value="300" control={<Radio />} label="300" />
-                        <FormControlLabel value="400" control={<Radio />} label="400" />
+                        <FormControlLabel value="400" control={<Radio />} label="400" /> */}
                         <FormControlLabel value="" control={<Radio />} label="all levels" />
                     </RadioGroup>
                     <h2>学分</h2>
                     <RadioGroup value={this.state.selectCredit} onChange={onChangeCredit}>
-                        <FormControlLabel value="1" control={<Radio />} label="1" />
+                        { (this.state.courseCredit === "") ? CREDITS.map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        }) : this.state.courseCredit.split("/").map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        })}
+                        {/* <FormControlLabel value="1" control={<Radio />} label="1" />
                         <FormControlLabel value="2" control={<Radio />} label="2" />
                         <FormControlLabel value="3" control={<Radio />} label="3" />
                         <FormControlLabel value="4" control={<Radio />} label="4" />
-                        <FormControlLabel value="5" control={<Radio />} label="5" />
+                        <FormControlLabel value="5" control={<Radio />} label="5" /> */}
                         <FormControlLabel value="" control={<Radio />} label="all credits" />
                     </RadioGroup>
                     <h2>通识教育要求</h2>
                     <RadioGroup value={this.state.selectCreditType} onChange={onChangeCreditType}>
-                        <FormControlLabel value="C" control={<Radio />} label="C" />
+                        { (this.state.courseCreditType === "") ? CREDIT_TYPES.map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        }) : this.state.courseCreditType.split("/").map((input) => {
+                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
+                        })}
+                        {/* <FormControlLabel value="C" control={<Radio />} label="C" />
                         <FormControlLabel value="DIV" control={<Radio />} label="DIV" />
                         <FormControlLabel value="I&S" control={<Radio />} label="I&S" />
                         <FormControlLabel value="None" control={<Radio />} label="None" />
                         <FormControlLabel value="NW" control={<Radio />} label="NW" />
                         <FormControlLabel value="QSR" control={<Radio />} label="QSR" />
                         <FormControlLabel value="VLPA" control={<Radio />} label="VLPA" />
-                        <FormControlLabel value="W" control={<Radio />} label="W" />
+                        <FormControlLabel value="W" control={<Radio />} label="W" /> */}
                         <FormControlLabel value="" control={<Radio />} label="all credit types" />
                     </RadioGroup>
                 </div>
@@ -256,8 +285,11 @@ export default class SearchResultPage extends Component {
                                 <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
-                    {this.state.loaded &&
-                        setSubCourseCards()}
+                    {this.state.loaded && setSubCourseCards()}
+                    {/* <i aria-hidden="true"></i>
+                    <i aria-hidden="true"></i>
+                    <i aria-hidden="true"></i>
+                    <i aria-hidden="true"></i> */}
                 </div>
             </div>
         )
@@ -267,7 +299,6 @@ export default class SearchResultPage extends Component {
 function checkStatus(response) {
     if (response.ok) {
         if (response.status == 200) {
-            console.log(response);
             return response.json()
         } else {
             return {result: []};

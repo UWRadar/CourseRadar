@@ -1,3 +1,6 @@
+* {
+    box-sizing: content-box;
+}
 .course-title {
     min-height: 6rem;
     min-width: 37%;
@@ -44,6 +47,7 @@
 
 .recom-description h1 {
     word-break: break-word;
+    padding: 10px;
 }
 
 .describtion-tags {
@@ -75,7 +79,9 @@ h1 {
     color: white;
 }
 
-
+#courseCardLink {
+    color: black;
+}
 
 
 .tag span{
@@ -91,6 +97,8 @@ h1 {
     font-size: 1.2rem;
     font-weight: 500;
 }
+
+
 
 @media screen and (min-width: 767px) {
     .recom-cards{
@@ -141,7 +149,12 @@ h1 {
     }
 }
 
+
 @media screen and (min-width: 1023px) {
+    #courseCardLink {
+        margin: 3px;
+    }
+
     .tooltips .tooltiptext {
         visibility: hidden;
         /* width: auto; */

@@ -41,6 +41,7 @@ export default class LoginPage extends Component {
     }
 
     render() {
+        window.scrollTo(0, 0);
         return (
             <div className="login-container" aria-label="Seaching area">
                 <div id="login-description">
@@ -76,7 +77,7 @@ export default class LoginPage extends Component {
                     <input id="code" placeholder="验证码" name="code" onChange={evt => this.setState({ code: evt.target.value })} />
                     <button id="verify-submit-btn" type="button" onClick={() => { this.verify() }}>提交</button>
                     <p className="link-bar">
-                        <a id="resend" className="float-right" onClick={() => this.resend()}>重新发送</a>
+                        <a id="resend" className="float-right" onClick={() => this.signup()}>重新发送</a>
                     </p>
                 </div>
             </div>

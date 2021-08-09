@@ -32,7 +32,7 @@
     padding: 11vh 0 5rem;
 }
 
-.search-result {
+.search-result .course-list {
     display: block;
 }
 
@@ -48,7 +48,7 @@
         display: block;
     }
     .search-result .course-list {
-        margin-left: var(--filter-width);
+        margin-left: calc(var(--filter-width));
         width: calc(100% - var(--filter-width));
     }
 }

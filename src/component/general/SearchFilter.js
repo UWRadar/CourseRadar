@@ -3,7 +3,8 @@ import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-u
 import { Grid } from '@material-ui/core';
 import { NavLink, Link } from 'react-router-dom'
 import { useHistory } from "react-router-dom";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
@@ -21,17 +22,6 @@ export default function SearchFilter(props) {
     )
 
 
-    /*
-    [
-        {
-            type: "level",
-            value: 100 (or array)
-        },
-        {
-            ...
-        }
-    ]
-    */
 
     // level: 0-3, credit: 4-8, creditType: 9-16
     const FILTER_ITEMS = [
@@ -51,7 +41,7 @@ export default function SearchFilter(props) {
         {type: "creditType", value: "NW"},
         {type: "creditType", value: "QSR"},
         {type: "creditType", value: "VLPA"},
-        {type: "creditType", value: "W"}
+        // {type: "creditType", value: "W"}
     ];
 
     const [filters, setFilters] = useState([
@@ -149,9 +139,8 @@ export default function SearchFilter(props) {
         localStorage.setItem("level", curLevel);
         localStorage.setItem("credit", curCredit);
         localStorage.setItem("creditType", curCreditType);
-        console.log(11111);
         history.push({
-            pathname: "/search/:searchTerm",
+            pathname: "/search",
             state: [curCourseName, curLevel, curCredit, curCreditType]
         });
 
@@ -186,8 +175,7 @@ export default function SearchFilter(props) {
     return (
         <div className="search-bar">
             <Button onClick={handleClick}>
-                <img id="selection-icon" src="./img/Vector-withTri.png"  alt="logo for selection"/>
-
+                <FontAwesomeIcon className="filterIcon" icon={faCaretDown} />
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -211,7 +199,7 @@ export default function SearchFilter(props) {
                     }
 
                     {
-                        dropDownRegion("Credit Type", 9, 16)
+                        dropDownRegion("Credit Type", 9, 15)
                     }
                 </div>
         </Menu>
@@ -219,11 +207,17 @@ export default function SearchFilter(props) {
                 className="large-header-input"
                 id="outlined-basic"
                 label="搜索"
-                placeholder="想要找啥课呀"
+                placeholder="e.g. CSE 142, Engl"
+                onKeyDown={(e) => {
+                    if (e.keyCode === 13) {
+                        searchFilters();
+                    }
+                }}
                 onChange={onChangeCourseNameTextInput}/>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
+
                 onClick={searchFilters}
             >
             Search</button>
