@@ -5,7 +5,7 @@
 .filter {
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     display: none;
-    height: calc(89vh - 5rem);
+    height: calc(100% - 11vh - 10rem);
     left: 0;
     overflow: auto;
     padding: 15px;

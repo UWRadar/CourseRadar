@@ -9,6 +9,7 @@ footer{
     align-items: center;
     bottom: 0;
     z-index: 1;
+    position: fixed;
 }
 
 #logos {
