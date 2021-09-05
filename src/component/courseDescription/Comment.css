@@ -9,12 +9,50 @@
     padding-right: 5%;
 }
 
+.commentID {
+    display: inline;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
 .name {
     font-size: 19px;
     padding-left: 5%;
     padding-top: 5%;
     margin-bottom: 0;
     text-align: left;
+}
+
+.RatingContainer {
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    border-style: solid;
+    border-color:rgb(218, 218, 218);
+    justify-content: center;
+    align-items: center;
+    height: 3rem;
+    margin-top: 5vh;
+}
+
+.difficulty {
+    display: flex;
+    flex-direction: row;
+    height: 3vh;
+    margin-left: auto;
+    margin-right: auto;
+    color:#63469D;
+    fill:#63469D;
+}
+
+hr .rounded {
+    border-top: 8px solid #bbb;
+    border-radius: 5px;
+}
+
+.ratingLabels {
+    margin-left: 1vw;
+    color: black;
 }
 
 .info {
@@ -24,8 +62,18 @@
     margin-right: -75px;
 }
 
+.commentName {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .comment {
-    padding-left: 7%;
+    margin-left: auto;
+    margin-top: 1%;
+    margin-right: 15vw;
+    text-align: justify;
+    padding: 0;
 }
 
 .question {
@@ -36,8 +84,18 @@
 
 .answer {
     font-size: 19px;
-    display: inline;
     margin: 0;
+}
+
+.commentQuarter {
+    margin: 0;
+}
+
+.commentDetail {
+    height: 3vh;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .paragraph {
@@ -52,21 +110,40 @@
     padding-left: 5%;
 }
 
+#workload {
+    display: none;
+}
+
 .commentlogo {
-    width: 40px;
-    height: 40px;
+    width: 4%;
+    display: inline;
+}
+
+.studnetName {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 1vw;
     margin-top: 1vh;
+    font-family: "PingFang SC", sans-serif;
+}
+
+.difficulty p {
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 /* Media Control screen larger than 320px */ 
-@media (min-width: 375px)
+@media (min-width: 480px)
 {
-
+    #workload {
+        display: flex;
+    }
 }
 
 /* Media Control screen larger than 480px */ 
 @media (min-width: 768px) 
 {
+
     .logo {
         text-align: right;
         padding-right: 5%;
@@ -100,6 +177,10 @@
 /* Media Control screen larger than 768px */ 
 @media (min-width: 1024px)
 {
+    .RatingContainer{
+        margin-left: 30vw;
+        margin-right: 10vw;
+    }
     .info {
         padding-right: 18%;
     }

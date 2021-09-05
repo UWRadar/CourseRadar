@@ -1,34 +1,38 @@
 import React from "react"
 import "./Comment.css"
-import { Grid } from '@material-ui/core';
-import { Row, Col } from 'reactstrap';
-import logo from '../../img/hdlogo.png';
-
+import {ReactComponent as QuarterLogo} from "../../img/quarter.svg"
+import {ReactComponent as ProfLogo} from "../../img/professor.svg"
+import ImageStorage from "../general/ImageStorage"
+import CommentRating from "./CommentRating"
 const Comment = (props) => {
     return (
-        <div className="CourseComment">
-            <Grid container xs={12}>
-                <Grid item xs={2} className='logo'>
-                    <img className='commentlogo' src={logo} alt="profile logo" />
-                </Grid>
-                <Grid item xs={10}>
-                        <p className='name'>{props.name}</p>
-                    <Row className='info'>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Quarter: </p><p className='answer'>{props.quarter}</p>
-                        </Col>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Professor: </p><p className='answer'>{props.professor}</p>
-                        </Col>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Grade: </p><p className='answer'>{props.gpa}</p>
-                        </Col>
-                    </Row>
-                    <Row className='commentdetail'>
-                        <p className='paragraph'>{props.comment}</p>
-                    </Row>
-                </Grid>
-            </Grid>
+        <div className="container-fluid">
+            <div className="col">
+                <div className="commentName">
+                    <img className='commentlogo' src={ImageStorage.commentLogo} alt="profile logo" />
+                    <p className="studnetName">匿名</p>
+
+                    <div className="commentID">
+                        <div className="commentDetail">
+                            <QuarterLogo className="detailLogos"/>
+                            <p className="commentQuarter">{props.content.year + " " + props.content.quarter}</p>
+                        </div>
+
+                        <div className="commentDetail">
+                            <ProfLogo className="detailLogos"/>
+                            <p className="commentQuarter">{props.content.professorName}</p>
+                        </div>
+                    </div>               
+                
+                </div>
+                <p className="comment">{props.content.comment}</p>
+                <CommentRating 
+                    difficulty={props.content.difficulty} 
+                    workload={props.content.workload}
+                    gpa={props.content.gpa}
+                />
+                <hr class="rounded"></hr>
+            </div>
         </div>   
     )
 }

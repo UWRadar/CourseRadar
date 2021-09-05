@@ -33,7 +33,6 @@ export default class CourseDescription extends Component {
     }
 
     getCourseRatingByCoursename() {
-        console.log("Hello");
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOURSERATING + "?courseName=" + this.state.courseName)
             .then((response) => {
                 if (response.ok)
@@ -71,20 +70,17 @@ export default class CourseDescription extends Component {
     }
 
     render() {
-
-        const courseItems = {
-            code: "PSYCH101",
-            name: "Introduction to Psychology",
-            credit: "5",
-            desc: "Surveys major areas of psychological science. Core topics include human social behavior, personality, psychological disorders and treatment, learning, memory, human development, biological influences, and research methods.",
-            tags: ["VLPA", "NW"]
-        }
         return (
-            <div className="coursedescription">
-                {this.state.receivedBackEndData && <Description
-                    courseItems={this.state.courseInfo}
-                    courseName={this.state.courseName} />}
-                <Comments commentItems={this.state.allComments} courseItems={this.state.courseInfo} />
+            <div className="container-fluid" id="outerCotainer">
+                <div className="col" id="description">
+                    {this.state.receivedBackEndData && <Description
+                        courseItems={this.state.courseInfo}
+                        courseName={this.state.courseName} />}
+
+                    {this.state.receivedBackEndData && <p className="commentTitle">课程评价</p>}
+                    
+                    {this.state.receivedBackEndData && <Comments className="comments" comments={this.state.allComments}/>}
+                </div>
             </div>
         )
     }

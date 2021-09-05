@@ -7,5 +7,7 @@ export default {
     setting: require("../../img/setting.png").default,
     logoSmall: require("../../img/original.png").default,
     edit: require("../../img/edit.png").default,
-    login: require("../../img/log-in.png").default
+    login: require("../../img/log-in.png").default,
+    commentLogo: require("../../img/hdlogo.png").default,
+    quarter: require("../../img/quarter.png").default,
 }

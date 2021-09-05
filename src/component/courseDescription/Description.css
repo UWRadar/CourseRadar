@@ -3,6 +3,8 @@
 
 .coursedescription {
     margin-top: 11vh;
+    text-align: justify
+
 }
 /* change hero background */
 .hero {
@@ -11,35 +13,131 @@
     color: white;
 }
 
-.overlay {
-    background-color: rgba(70, 157, 147);
+#outerCotainer{
+    padding: 0;
+    margin: 0;
+}
+
+#description { 
+    margin-top: 20%;
+    padding: 0;
+}
+
+.progressBar {
+    width: 30%;
+    color: #63469D;
+    font-size: 30px;
+}
+
+.topHalf {
+    background-image: url("../../img/guthrie.jpeg");
+    color: white;
+    padding: 0;
+}
+
+#barCol {
+    text-align: center;
+    padding: 0;
+    align-items: center;
+    margin: auto;
+}
+
+.linearBar {
+    align-items: center;
+    display: flex;
+}
+
+
+
+.gpaOverLay {
+    font-family: "PingFang SC", sans-serif;
+    font-weight: 600;
+    margin-top: 133%;
+}
+
+.commentTitle {
+    font-size: 2rem;
+    font-family: "PingFang SC", sans-serif;
+    font-weight: 600;
+    margin: 5rem 0rem 5rem 2rem;
+}
+
+.gpaValue {
+    font-size: 22px;
+    margin: 0%;
+}
+
+.gpaLabel {
+    font-size: 12px;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+    fill: #63469D;
+    font-size: 13px;
+}
+
+.CircularProgressbar  .CircularProgressbar-path {
+    stroke: #63469D;
+  }
+
+.CircularProgressbar {
+    width: 35%;
+}
+
+#fillComment{
+    margin-top: auto;
+    margin-bottom: auto;
+
+}
+
+#largeScreenDescription {
+    display: none;
+}
+
+.comments {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#overlay {
+    background-color:rgba(157, 138, 70, 0.7);
     background-size: cover;
     padding-top: 40px;
     padding-left: 25px;
     padding-right: 25px;
+    padding-bottom: 40px;
+}
+
+.courseCredit {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 25px;
 }
 
 .courseCode {
     position: static;
     border: 1px;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
     margin-bottom: 1px;
     text-align: left;
     text-transform: capitalize;
+    
 }
 
 .courseName {
-    font-family: 'Fira Sans', sans-serif;
-    font-size: 17px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 25px;
     text-align: left;
     border: 1px;
     margin-bottom: 10px;
 }
 
 .courseDesc {
-    font-family: 'Fira Sans', sans-serif;
-    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
     text-align: left;
 }
 
@@ -79,32 +177,52 @@
 }
 
 .myPlan {
-    color: rgb(223, 222, 222);
-    font-size: 16px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
     font-family: 'Fira Sans', sans-serif;
     text-align: left;
     border: 1px;
-    margin-bottom: 10px;
     text-decoration: none;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 3rem;
 }
 
-.courseCredit {
-    color: rgba(0, 0, 0, 0.18);
-    font-size: 150px;
-    font-family: 'Roboto', sans-serif;
-    text-align: left;
-    line-height: 90px;
+#commentButton {
+    background-color: #63469D;
+    font-family: 'PingFang SC', sans-serif;
+    font-weight: 600;
 }
+
+#smallScreenDescription {
+    margin-top: 1rem;
+}
+
 
 /* Media Control screen larger than 320px */ 
-@media (min-width: 320px)
+@media (min-width: 460px)
 {
-
+    #description {
+        margin-top:13%
+    }
 }
 
 /* Media Control screen larger than 480px */ 
 @media (min-width: 768px) 
 {
+    .gpaValue {
+        font-size: 30px;
+        margin: 0%;
+    }
+    
+    .gpaLabel {
+        font-size: 15px;
+    }
+
+    #description {
+        margin-top:10%
+    }
+
     .hero {
         background-repeat: no-repeat;
         background-size: cover;
@@ -115,7 +233,7 @@
     }
 
     .overlay {
-        background-color: rgba(70, 157, 147, 0.97);
+        background-color:#9D8A46;
         padding-top: 45px;
         padding-right: 10px;
         border-radius: 25px 25px 25px 25px;
@@ -126,6 +244,9 @@
 /* Media Control screen larger than 768px */ 
 @media (min-width: 1024px)
 {
+    #description {
+        margin-top:8%
+    }
     .hero {
         background-repeat: no-repeat;
         background-size: cover;
@@ -133,4 +254,17 @@
         padding-right: 25%;
     }
 
+}
+
+@media (min-width: 1200px) {
+    #description {
+        margin-top:5%
+    }
+    #smallScreenDescription {
+        display: none;
+    }
+
+    #largeScreenDescription {
+        display: inline;
+    }
 }
