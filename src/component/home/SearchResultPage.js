@@ -205,7 +205,7 @@ export default class SearchResultPage extends Component {
                         if (this.state.selectCreditType === null) {
                             fitCreditType = true;
                         }
-                    } else if (courseCards[i].tags.includes(this.state.selectCreditType.toUpperCase())) {
+                    } else if (courseCards[i].tags.includes(this.state.selectCreditType)) {
                         fitCreditType = true;
                     }
                 }

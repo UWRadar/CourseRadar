@@ -5,18 +5,23 @@ import "./SurveyPage.css"
 import ImageManger from "../general/ImageManager"
 import ServerConfig from "../config/ServerConfig"
 export default class SurveyPage extends Component {
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+    
     constructor(props) {
         super(props);
 
         this.state = {
             year: '',
-            quarter: '',
+            quarter: 'Spring',
             courseName: '',
             instructor: '',
             credits: '',
             courseContent: '',
             workload: 1,
-            difficulty: 1,
+            grading: 1,
             comment: '',
             contact: '',
             gpa: '',
@@ -46,7 +51,7 @@ export default class SurveyPage extends Component {
 
     setWorkload = (e) => this.setState({ workload: e.target.value });
 
-    setDifficulty = (e) => this.setState({ difficulty: e.target.value });
+    setGrading = (e) => this.setState({ grading: e.target.value });
 
     convertStateToJSON() {
         return JSON.stringify({
@@ -56,8 +61,8 @@ export default class SurveyPage extends Component {
             instructor: this.state.instructor,
             comment: this.state.courseContent + " " + this.state.comment,
             workload: this.state.workload,
-            difficulty: this.state.difficulty,
-            grading: this.state.gpa
+            grading: this.state.grading,
+            GPA: this.state.gpa
         })
     }
     async handleSubmit(event) {
@@ -90,7 +95,6 @@ export default class SurveyPage extends Component {
     }
 
     render() {
-        window.scrollTo(0, 0);
         
         return (
             <div className="container-xxl" id="survey">
@@ -185,7 +189,7 @@ export default class SurveyPage extends Component {
                         </Form.Group>
                         <Form.Group as={Row} controlId='formWorkload'>
                             <Form.Label column sm={2} className="text-md-left">
-                                Workload:
+                                任务量:
                             </Form.Label>
                             <Col sm={2}>
                                 <Form.Control required="true" as="select" value={this.state.workload} onChange={this.setWorkload}>
@@ -203,10 +207,10 @@ export default class SurveyPage extends Component {
                         </Form.Group>
                         <Form.Group as={Row} controlId='formGrading'>
                             <Form.Label column sm={2} className="text-md-left">
-                                Difficulty:
+                                得分难易度:
                             </Form.Label>
                             <Col sm={2}>
-                                <Form.Control required="true" as="select" value={this.state.difficulty} onChange={this.setDifficulty}>
+                                <Form.Control required="true" as="select" value={this.state.grading} onChange={this.setGrading}>
                                     <option value='1'>1(Easy)</option>
                                     <option value='2'>2</option>
                                     <option value='3'>3</option>
@@ -214,7 +218,7 @@ export default class SurveyPage extends Component {
                                     <option value='5'>5(Hard)</option>
                                 </Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                        Difficulty is a required field.
+                                        Grading is a required field.
                                 </Form.Control.Feedback>
                             </Col>
                         </Form.Group>

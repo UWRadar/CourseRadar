@@ -8,6 +8,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
+import ImageStorage from "../general/ImageStorage"
 import SearchResultPage from "../home/SearchResultPage"
 
 export default function SearchFilter(props) {
@@ -16,8 +17,8 @@ export default function SearchFilter(props) {
     const [openMenu, setOpenMenu] = useState(false);
 
     const selectionIcon = (
-        <div id="selection-icon">
-            <img src="./img/Vector.png"  alt="logo for selection"/>
+        <div id="selection-icon" style={{marginBottom: "10px"}}>
+            <img src={ImageStorage.selection}  alt="logo for selection"/>
         </div>
     )
 

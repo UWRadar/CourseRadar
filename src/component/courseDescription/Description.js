@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'reactstrap';
 import LinearProgressBar from "./LinearProgressBar"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom'
 import background from "../../img/guthrie.jpeg";
 
 
@@ -69,7 +70,9 @@ const Description = (props) => {
                         </div>
                         <div className="col-lg-3 col-12" id="fillComment">
                             <div className="row">
-                                <button type="button" class="btn btn-primary" id="commentButton">填写课评</button>
+                                <NavLink to="/survey">
+                                    <button type="button" class="btn btn-primary" id="commentButton">填写课评</button>
+                                </NavLink>
                                 <a href={props.courseItems.myplanLink} className="myPlan"><FontAwesomeIcon icon={faExternalLinkAlt} aria-label="link" /> MyPlan</a>
                             </div>
                         </div>
