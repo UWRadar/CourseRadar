@@ -150,7 +150,7 @@ export default class SearchResultPage extends Component {
     render() {
 
         const LEVELS = [100, 200, 300, 400];
-        const CREDITS = [1, 2, 3, 4, 5];
+        const CREDITS = ["1", "2", "3", "4", "5"];
         const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
 
         const onChangeLevel = (event) => {
@@ -195,7 +195,7 @@ export default class SearchResultPage extends Component {
                 }
                 if (this.state.selectCredit !== "") {
                     fitCredit = false;
-                    if (courseCards[i].credit === this.state.selectCredit) {
+                    if (courseCards[i].credit === this.state.selectCredit - 0) {
                         fitCredit = true;
                     }
                 }
@@ -279,7 +279,7 @@ export default class SearchResultPage extends Component {
                         <FormControlLabel value="" control={<Radio />} label="all credit types" />
                     </RadioGroup>
                 </div>
-                <div className="course-list">
+                <div className="course-list2">
                     {!this.state.loaded &&
                         <div class="loading-small">
                                 <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />

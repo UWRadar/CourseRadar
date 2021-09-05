@@ -27,7 +27,7 @@ const Comment = (props) => {
                 </div>
                 <p className="comment">{props.content.comment}</p>
                 <CommentRating 
-                    difficulty={props.content.difficulty} 
+                    difficulty={(props.content.workload + props.content.grading) / 2} 
                     workload={props.content.workload}
                     gpa={props.content.gpa}
                 />
