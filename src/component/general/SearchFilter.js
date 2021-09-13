@@ -11,6 +11,10 @@ import "./SearchFilter.css"
 import ImageStorage from "../general/ImageStorage"
 import SearchResultPage from "../home/SearchResultPage"
 
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 export default function SearchFilter(props) {
 
     const history = useHistory();
@@ -26,15 +30,6 @@ export default function SearchFilter(props) {
 
     // level: 0-3, credit: 4-8, creditType: 9-16
     const FILTER_ITEMS = [
-        {type: "level", value: 100},
-        {type: "level", value: 200},
-        {type: "level", value: 300},
-        {type: "level", value: 400},
-        {type: "credit", value: 1},
-        {type: "credit", value: 2},
-        {type: "credit", value: 3},
-        {type: "credit", value: 4},
-        {type: "credit", value: 5},
         {type: "creditType", value: "C"},
         {type: "creditType", value: "DIV"},
         {type: "creditType", value: "I&S"},
@@ -52,6 +47,9 @@ export default function SearchFilter(props) {
             value: ""
         }
     ]);
+
+    const [credit, setCredit] = useState(-1);
+    const [level, setLevel] = useState(-1);
 
     // Apply Filters Btn: first click or else
     const [isFirstClick, toggleIsFirstClick] = useState(true);
@@ -81,6 +79,14 @@ export default function SearchFilter(props) {
         }
         setFilters(tempFilterArr);
     };
+
+    const handleOnChangeRadioCredit = (event) => {
+        setCredit(event.target.value);
+    }
+
+    const handleOnChangeRadioLevel = (event) => {
+        setLevel(event.target.value);
+    }
 
     // Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 
@@ -137,20 +143,14 @@ export default function SearchFilter(props) {
     const searchFilters = () => {
         console.log(filters);
         let curCourseName = "";
-        let curLevel = [];
-        let curCredit = [];
+        let curLevel = (level === -1) ? "" : level;
+        let curCredit = (credit === -1) ? "" : credit;
         let curCreditType = [];
         for (let i = 0; i < filters.length; i++) {
             let element = filters[i];
             switch (element.type) {
                 case 'courseName':
                     curCourseName = element.value;
-                    break;
-                case 'level':
-                    curLevel.push(element.value);
-                    break;
-                case 'credit':
-                    curCredit.push(element.value);
                     break;
                 case 'creditType':
                     curCreditType.push(element.value);
@@ -159,8 +159,6 @@ export default function SearchFilter(props) {
                     break;
             }
         }
-        curLevel = curLevel.join("/");
-        curCredit = curCredit.join("/");
         curCreditType = curCreditType.join("/");
         localStorage.setItem("courseName", curCourseName);
         localStorage.setItem("level", curLevel);
@@ -170,12 +168,6 @@ export default function SearchFilter(props) {
             pathname: "/search",
             state: [curCourseName, curLevel, curCredit, curCreditType]
         });
-
-        // const response = await fetch(currentUrl);
-        // const data = await checkStatus(response);
-        // setSearchResultData(data.result);
-        // console.log(data.result);
-
     };
 
     const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
