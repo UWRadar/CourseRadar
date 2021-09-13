@@ -33,6 +33,7 @@
     align-items: center;
     height: 3rem;
     margin-top: 5vh;
+    margin-right: 15vw;
 }
 
 .difficulty {
@@ -43,6 +44,7 @@
     margin-right: auto;
     color:#63469D;
     fill:#63469D;
+    font-size: 11px;
 }
 
 hr .rounded {
@@ -68,9 +70,14 @@ hr .rounded {
     justify-content: space-between;
 }
 
+.commentLabel {
+    margin-top: 1%;
+    color: gray;
+    margin-bottom: 0;
+}
+
 .comment {
     margin-left: auto;
-    margin-top: 1%;
     margin-right: 15vw;
     text-align: justify;
     padding: 0;
@@ -119,6 +126,18 @@ hr .rounded {
     display: inline;
 }
 
+.heart {
+    font-size: 20px;
+}
+
+.icon {
+    fill: gray;
+}
+
+.icon:hover {
+    fill:red;
+}
+
 .studnetName {
     font-size: 30px;
     font-weight: bold;
@@ -143,7 +162,9 @@ hr .rounded {
 /* Media Control screen larger than 480px */ 
 @media (min-width: 768px) 
 {
-
+    .difficulty {
+        font-size: 15px;
+    }
     .logo {
         text-align: right;
         padding-right: 5%;
@@ -178,8 +199,7 @@ hr .rounded {
 @media (min-width: 1024px)
 {
     .RatingContainer{
-        margin-left: 30vw;
-        margin-right: 10vw;
+        margin-right: 15vw;
     }
     .info {
         padding-right: 18%;

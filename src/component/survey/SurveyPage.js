@@ -9,7 +9,7 @@ export default class SurveyPage extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
-    
+
     constructor(props) {
         super(props);
 
@@ -172,7 +172,7 @@ export default class SurveyPage extends Component {
                             </Col>
                         </Form.Group>
                         
-                        <Form.Group as={Row} controlId='formCourseContent'>
+                        <Form.Group as={Row} style={{margin: "auto"}} controlId='formCourseContent'>
                             <Form.Label column sm={4} className="text-md-left">
                                 Course Content
                             </Form.Label>
@@ -240,7 +240,7 @@ export default class SurveyPage extends Component {
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} controlId='formSurveyComment'>
+                        <Form.Group as={Row} style={{margin: "auto"}} controlId='formSurveyComment'>
                             <Form.Label column sm={4} className="text-md-left">
                                 Comments and Additional Thought:
                             </Form.Label>

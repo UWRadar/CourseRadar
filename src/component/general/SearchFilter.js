@@ -60,12 +60,18 @@ export default function SearchFilter(props) {
     const [checkedState, setCheckedState] = useState(new Array(FILTER_ITEMS.length).fill(false));
 
     // onClickCheckbox (updated)
-    const handleOnChangeClickBox = (position) => {
-        // setChecked(event.target.checked);
-        // toggleIsFirstClick(false);
-        const updatedChecked = checkedState.map((item, index) =>
-            index === position ? !item : item
-        );
+    const handleOnChangeClickBox = (start, end, position, isSingleChoice) => {
+        
+        const updatedChecked = checkedState.map((item, index) =>{
+            if (isSingleChoice && index >= start && index <= end && index != position) {
+                return false;
+            } else {
+                return index === position ? !item : item
+            }
+            
+        });
+        
+        
         setCheckedState(updatedChecked);
         let tempFilterArr = [filters[0]];
         for (let i = 0; i < updatedChecked.length; i++) {
@@ -89,14 +95,34 @@ export default function SearchFilter(props) {
     };
 
     // generate Checkbox tags (updated)
-    const generateCheckboxArr = (startIndex, endIndex) => {
+    const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
         const result = [];
+        var flag = false;
+        // for (let i = startIndex; i <= endIndex; i++) {
+        //     if (isSingleChoice && checkedState[i]) {flag = true;}
+        // }
         for (let i = startIndex; i <= endIndex; i++) {
+            
+            // if (flag && !checkedState[i]) {
+            //     result.push(
+            //         <div className="single-filter-item">
+            //             <Checkbox
+            //                 disabled
+            //                 checked={checkedState[i]}
+            //                 onChange={() => handleOnChangeClickBox(i)}
+            //                 className="checkbox"
+            //             />
+            //             <label> {FILTER_ITEMS[i].value} </label>
+            //         </div>
+            //     )
+            //     continue;
+            // }
+
             result.push(
                 <div className="single-filter-item">
                     <Checkbox
                         checked={checkedState[i]}
-                        onChange={() => handleOnChangeClickBox(i)}
+                        onChange={() => handleOnChangeClickBox(startIndex, endIndex, i, isSingleChoice)}
                         className="checkbox"
                     />
                     <label> {FILTER_ITEMS[i].value} </label>
@@ -152,13 +178,13 @@ export default function SearchFilter(props) {
 
     };
 
-    const dropDownRegion = (regionName, startIndex, endIndex) => {
+    const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
         return (
             <div onClick={(event) => {event.stopPropagation()}}>
                 <MenuItem value="level" className="selection">
                     <Grid>
                         <p>{regionName}</p>
-                        {generateCheckboxArr(startIndex, endIndex)}
+                        {generateCheckboxArr(startIndex, endIndex, isSingleChoice)}
                     </Grid>
                 </MenuItem>
             </div>
@@ -192,15 +218,15 @@ export default function SearchFilter(props) {
 
                 <div className="selection-container">
                     {
-                        dropDownRegion("Course Level", 0, 3)
+                        dropDownRegion("Course Level", 0, 3, true)
                     }
 
                     {
-                        dropDownRegion("Credit", 4, 8)
+                        dropDownRegion("Credit", 4, 8, true)
                     }
 
                     {
-                        dropDownRegion("Credit Type", 9, 15)
+                        dropDownRegion("Credit Type", 9, 15, false)
                     }
                 </div>
         </Menu>
@@ -226,4 +252,3 @@ export default function SearchFilter(props) {
 
     )
 }
-

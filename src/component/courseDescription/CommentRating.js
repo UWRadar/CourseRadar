@@ -12,13 +12,13 @@ const CommentRating = (props) => {
                 <p className="ratingLabels"> {props.difficulty} / 5</p>
             </div>
 
-            <div className="difficulty" id="workload">
+            <div className="difficulty" >
                 <WorkLoadLogo/>
                 <p>任务量</p>
                 <p className="ratingLabels">{props.workload} / 5 </p>
             </div>
 
-            <div className="difficulty">
+            <div className="difficulty" id="workload">
                 <GPALogo/>
                 <p>成绩</p>
                 <p className="ratingLabels"> {props.gpa == undefined ? "暂无" : props.gpa + " / 5"}</p>

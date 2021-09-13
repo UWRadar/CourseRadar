@@ -149,7 +149,7 @@ export default class SearchResultPage extends Component {
 
     render() {
 
-        const LEVELS = [100, 200, 300, 400];
+        const LEVELS = ["100", "200", "300", "400"];
         const CREDITS = ["1", "2", "3", "4", "5"];
         const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
 
@@ -261,7 +261,7 @@ export default class SearchResultPage extends Component {
                         <FormControlLabel value="5" control={<Radio />} label="5" /> */}
                         <FormControlLabel value="" control={<Radio />} label="all credits" />
                     </RadioGroup>
-                    <h2>通识教育要求</h2>
+                    <h2>课程类型</h2>
                     <RadioGroup value={this.state.selectCreditType} onChange={onChangeCreditType}>
                         { (this.state.courseCreditType === "") ? CREDIT_TYPES.map((input) => {
                             return (<FormControlLabel value={input} control={<Radio />} label={input} />);

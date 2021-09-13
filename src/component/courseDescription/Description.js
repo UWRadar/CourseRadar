@@ -14,7 +14,9 @@ import background from "../../img/guthrie.jpeg";
 
 const Description = (props) => {
     console.log(props);
-
+    const difficulty = Math.round(props.courseItems.difficulty * 10) / 10
+    const grading = Math.round(props.courseItems.grading * 10) / 10
+    const workload = Math.round(props.courseItems.workload * 10) / 10
     const handleClick = () => {
         window.location.href = "/"
     }
@@ -62,13 +64,14 @@ const Description = (props) => {
             <div className="container-fluid" style={{padding: 0}}>
                 <div className="topHalf">
                     <div className="row" id="overlay">
-                        <div className="col-lg-9 col-12">
+                        <div className="col-12 col-lg-9 ">
                             <p className="courseCode">{props.courseName.toUpperCase()}</p>
                             <p className="courseName">{props.courseItems.courseFullName}</p>
                             <p className="courseCredit">{props.courseItems.credit + " credits"}</p>
-                            
+                            {props.courseItems.creditType.split("/").map(element => {
+                                        return (<div ><div className="button type">{element}</div>{' '}</div>);})}
                         </div>
-                        <div className="col-lg-3 col-12" id="fillComment">
+                        <div className="col-12 col-lg-3" id="fillComment">
                             <div className="row">
                                 <NavLink to="/survey">
                                     <button type="button" class="btn btn-primary" id="commentButton">填写课评</button>
@@ -82,11 +85,23 @@ const Description = (props) => {
                 <div className="row" style={{marginTop: "3%", marginLeft: "0.5%"}}>
                     <div className="col-5" id="largeScreenDescription">
                         <p className="courseDesription">{props.courseItems.description}</p>
-                        {props.courseItems.creditType.split("/").map(element => {
-                                    return (<div ><div className="button type">{element}</div>{' '}</div>);})}
                     </div>             
+                    <div className="col-12 col-lg-4">
+                        <LinearProgressBar 
+                            completed={props.courseItems.difficulty / 5 * 100} 
+                            content={difficulty} 
+                            text="课程难度" />
+                        <LinearProgressBar 
+                            completed={props.courseItems.grading / 5 * 100} 
+                            content={grading} 
+                            text="评分难度"/>
+                        <LinearProgressBar 
+                            completed={props.courseItems.workload / 5 * 100}
+                            content={workload} 
+                            text="作业量"/>
+                    </div>
 
-                    <div className="col-6 col-xl-3" id="barCol">
+                    <div className="col-12 col-lg-3" id="barCol">
                         <CircularProgressbarWithChildren value={props.courseItems.averageGPA / 4 * 100}>
                             <div className="gpaOverLay">
                                 <p className="gpaValue">{props.courseItems.averageGPA}</p>
@@ -96,25 +111,10 @@ const Description = (props) => {
                         
                     </div>
 
-                    <div className="col-6 col-xl-4">
-                        <LinearProgressBar 
-                            completed={props.courseItems.difficulty / 5 * 100} 
-                            content={props.courseItems.difficulty} 
-                            text="课程难度" />
-                        <LinearProgressBar 
-                            completed={props.courseItems.grading / 5 * 100} 
-                            content={props.courseItems.grading} 
-                            text="评分难度"/>
-                        <LinearProgressBar 
-                            completed={props.courseItems.workload / 5 * 100}
-                            content={props.courseItems.workload} 
-                            text="作业量"/>
-                    </div>
+                    
                     
                     <div className="col-12" id="smallScreenDescription">
-                            <p className="courseDesription">{props.courseItems.description}</p>
-                            {props.courseItems.creditType.split("/").map(element => {
-                                        return (<div ><div className="button type">{element}</div>{' '}</div>);})}
+                            <p className="courseDesription">{props.courseItems.description}</p>   
                     </div>
             </div>
 

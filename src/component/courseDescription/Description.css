@@ -40,6 +40,8 @@
     padding: 0;
     align-items: center;
     margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .linearBar {
@@ -52,7 +54,7 @@
 .gpaOverLay {
     font-family: "PingFang SC", sans-serif;
     font-weight: 600;
-    margin-top: 133%;
+    margin-top: 125%;
 }
 
 .commentTitle {
@@ -78,23 +80,27 @@
 
 .CircularProgressbar  .CircularProgressbar-path {
     stroke: #63469D;
-  }
+}
 
 .CircularProgressbar {
-    width: 35%;
+    width: 40%;
 }
 
 #fillComment{
-    margin-top: auto;
-    margin-bottom: auto;
-
+    margin-top: 1rem;
+    z-index: 9;
+    margin-left: 1rem;
+    text-decoration: none;
 }
 
 #largeScreenDescription {
     display: none;
+    margin: auto;
 }
 
 .comments {
+    padding-right: 6%;
+    padding-left: 6%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -210,13 +216,21 @@
 /* Media Control screen larger than 480px */ 
 @media (min-width: 768px) 
 {
+    
+    .CircularProgressbar {
+        width: 25%;
+    }
+
+    .gpaOverLay{
+        margin-top: 152%;
+    }
     .gpaValue {
-        font-size: 30px;
+        font-size: 35px;
         margin: 0%;
     }
     
     .gpaLabel {
-        font-size: 15px;
+        font-size: 20px;
     }
 
     #description {
@@ -242,8 +256,32 @@
 }
 
 /* Media Control screen larger than 768px */ 
-@media (min-width: 1024px)
+@media (min-width: 1000px)
 {
+    #fillComment{
+        margin: auto
+    }
+    #barCol {
+        margin: auto;
+    }
+
+    .CircularProgressbar {
+        width: 50%;
+    }
+
+    .gpaOverLay{
+        margin-top: 105%;
+    }
+
+    .gpaValue {
+        font-size: 30px;
+        margin: 0%;
+    }
+    
+    .gpaLabel {
+        font-size: 15px;
+    }
+
     #description {
         margin-top:8%
     }
@@ -257,6 +295,7 @@
 }
 
 @media (min-width: 1200px) {
+    
     #description {
         margin-top:5%
     }
