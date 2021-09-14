@@ -30,6 +30,15 @@ export default function SearchFilter(props) {
 
     // level: 0-3, credit: 4-8, creditType: 9-16
     const FILTER_ITEMS = [
+        {type: "level", value: 100},
+        {type: "level", value: 200},
+        {type: "level", value: 300},
+        {type: "level", value: 400},
+        {type: "credit", value: 1},
+        {type: "credit", value: 2},
+        {type: "credit", value: 3},
+        {type: "credit", value: 4},
+        {type: "credit", value: 5},
         {type: "creditType", value: "C"},
         {type: "creditType", value: "DIV"},
         {type: "creditType", value: "I&S"},
@@ -37,7 +46,6 @@ export default function SearchFilter(props) {
         {type: "creditType", value: "NW"},
         {type: "creditType", value: "QSR"},
         {type: "creditType", value: "VLPA"},
-        // {type: "creditType", value: "W"}
     ];
 
     const [filters, setFilters] = useState([
@@ -103,26 +111,8 @@ export default function SearchFilter(props) {
     // generate Checkbox tags (updated)
     const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
         const result = [];
-        var flag = false;
-        // for (let i = startIndex; i <= endIndex; i++) {
-        //     if (isSingleChoice && checkedState[i]) {flag = true;}
-        // }
         for (let i = startIndex; i <= endIndex; i++) {
-            
-            // if (flag && !checkedState[i]) {
-            //     result.push(
-            //         <div className="single-filter-item">
-            //             <Checkbox
-            //                 disabled
-            //                 checked={checkedState[i]}
-            //                 onChange={() => handleOnChangeClickBox(i)}
-            //                 className="checkbox"
-            //             />
-            //             <label> {FILTER_ITEMS[i].value} </label>
-            //         </div>
-            //     )
-            //     continue;
-            // }
+        
 
             result.push(
                 <div className="single-filter-item">
