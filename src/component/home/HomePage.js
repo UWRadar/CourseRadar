@@ -46,6 +46,7 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         this.resetInterval();
+        // this.getAds();
         this.getPopular();
         this.getRecommended();
     }
@@ -54,6 +55,33 @@ export default class HomePage extends Component {
         this.setState({
             activeTab: tabName
         })
+    }
+
+    getAds() {
+        fetch(ServerConfig.SERVER_URL + "/api/ad")
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    const result = [];
+                    for (const key in data.result) {
+                        const item = data.result[key];
+                        result.push({
+                            title: item.title,
+                            subtitle: item.subtitle,
+                            description: item.content,
+                            image: item.pic,
+                            link: item.redirect_link
+                        });
+                    }
+                    this.setState({
+                        bannerItems: result
+                    });
+                }
+            });
     }
 
     getPopular() {
