@@ -1,4 +1,3 @@
-import { Home } from "@material-ui/icons"
 import React, { Component } from "react"
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom"
 import HomePage from "../home/HomePage"
@@ -10,6 +9,10 @@ import SurveyPage from "../survey/SurveyPage"
 import LargeHeader from "../general/LargeHeader"
 import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
+import { Fab } from "@material-ui/core";
+import HomeIcon from "@material-ui/icons/Home";
+import "../general/Fab.css";
+
 export default class Routing extends Component {
 
     constructor() {
@@ -29,16 +32,25 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
-                    <LargeHeader/>
+                    <LargeHeader />
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-                        <Route path="/search" component={SearchResultPage}/>
+                        <Route path="/search" component={SearchResultPage} />
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
                         <Route path="/login" component={LoginPage} />
                     </Switch>
                     <Footer />
+                    <Fab
+                        className="fab"
+                        color="primary"
+                        aria-label="返回首页"
+                        onClick={() => {
+                            window.location.href = "/";
+                        }}>
+                        <HomeIcon />
+                    </Fab>
                 </div>
             </Router>
         )
