@@ -41,7 +41,6 @@ export default class LoginPage extends Component {
     }
 
     render() {
-        window.scrollTo(0, 0);
         return (
             <div className="login-container" aria-label="Seaching area">
                 <div id="login-description">
@@ -214,6 +213,10 @@ export default class LoginPage extends Component {
                 }
             }
         })
+    }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
     }
 
     verify() {

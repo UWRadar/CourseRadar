@@ -3,6 +3,7 @@ import Description from "./Description"
 import Comments from "./Comments"
 import "./Description.css"
 import ServerConfig from "../config/ServerConfig"
+
 export default class CourseDescription extends Component {
 
     constructor(link) {
@@ -72,6 +73,7 @@ export default class CourseDescription extends Component {
     render() {
         return (
             <div className="container-fluid" id="outerCotainer">
+                
                 <div className="col" id="description">
                     {this.state.receivedBackEndData && <Description
                         courseItems={this.state.courseInfo}

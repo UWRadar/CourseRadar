@@ -52,7 +52,11 @@ class LargeHeader extends Component {
                 <img src={ImageStorage.logo} id="course-radar" alt="logo for course radar" onClick={() => {goHome()}}></img>
                 <img src={ImageStorage.logoSmall} id="course-radar2" alt="logo for course radar mobile" onClick={() => {goHome()}}></img>
 
-                <SearchFilter className="search-bar" className="search_bar" />
+                <SearchFilter 
+                    updateFilter={this.props.updateFilter} 
+                    className="search-bar" 
+                    className="search_bar" 
+                    filters={this.props.filter}/>
 
                 <div id="right-upper-icons">
                     <NavLink

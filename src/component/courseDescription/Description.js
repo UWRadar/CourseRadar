@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { NavLink } from 'react-router-dom'
 import background from "../../img/guthrie.jpeg";
-
+import SideHoverButtons from "../general/SideHoveringButtons"
 
 
 const Description = (props) => {
@@ -62,6 +62,7 @@ const Description = (props) => {
 
 
             <div className="container-fluid" style={{padding: 0}}>
+                <SideHoverButtons/>
                 <div className="topHalf">
                     <div className="row" id="overlay">
                         <div className="col-12 col-lg-9 ">

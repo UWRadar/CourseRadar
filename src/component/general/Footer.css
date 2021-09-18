@@ -1,6 +1,4 @@
 footer{
-    height: 10rem;
-    width: 100%;
     background-color: white;
     box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 1px 3px rgba(0,0,0,0.23);
     display: flex;
@@ -9,6 +7,7 @@ footer{
     align-items: center;
     bottom: 0;
     z-index: 1;
+    height: 5rem;
 }
 
 #logos {
@@ -20,6 +19,7 @@ footer{
 #footer-img-for-nav {
     margin: 0.3rem;
     margin-left: 1.5rem;
+    width: 40%;
 }
 
 #logos img {
@@ -37,11 +37,29 @@ footer{
 } */
 
 @media screen and (min-width: 540px) {
+    footer {
+        height: 10rem;
+    }
+    #footer-img-for-nav {
+        width: 30%;
+    }
     #logos {
         display: flex;
     }
 
     footer {
         justify-content: space-around;
+    }
+}
+
+@media screen and (min-width:1024px) {
+    #footer-img-for-nav {
+        width: 20%;
+    }
+}
+
+@media screen and (min-width:1500px) {
+    #footer-img-for-nav {
+        width: 10%;
     }
 }

@@ -14,6 +14,11 @@
     width: var(--filter-width);
 }
 
+.single-filter-item {
+    font-weight: bold;
+    margin-left: 0.25rem;
+}
+
 .filter h1 {
     font-size: 24px;
     margin: 10px 0;

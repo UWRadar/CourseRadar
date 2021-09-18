@@ -5,12 +5,6 @@ import Banner from "./Banner"
 import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
 import "./HomePage.css"
-import { Footer, BigFooter } from "../general/Footer"
-import ImageStorage from "../general/ImageStorage.js"
-import LoginPage from "../general/LoginPage"
-import LargeHeader from "../general/LargeHeader"
-import { NavLink } from "react-router-dom"
-import SearchBar from "../general/SearchFilter"
 import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {
@@ -48,6 +42,7 @@ export default class HomePage extends Component {
         this.resetInterval();
         this.getPopular();
         this.getRecommended();
+        console.log("refreshing");
     }
 
     changeActiveTab(tabName) {
@@ -66,7 +61,6 @@ export default class HomePage extends Component {
                 }
             })
             .then((data) => {
-                console.log(data)
                 this.setState({
                     popular: data.result
                 });
@@ -83,7 +77,6 @@ export default class HomePage extends Component {
                 }
             })
             .then((data) => {
-                console.log(data)
                 this.setState({
                     loaded: true,
                     recommened: data.result

@@ -9,16 +9,10 @@ import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
 import ImageStorage from "../general/ImageStorage"
-import SearchResultPage from "../home/SearchResultPage"
-
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default function SearchFilter(props) {
 
     const history = useHistory();
-    const [openMenu, setOpenMenu] = useState(false);
 
     const selectionIcon = (
         <div id="selection-icon" style={{marginBottom: "10px"}}>
@@ -48,26 +42,20 @@ export default function SearchFilter(props) {
         {type: "creditType", value: "VLPA"},
     ];
 
-    const [filters, setFilters] = useState([
-        // initialize textInput filter in the default state
-        {
-            type: "courseName",
-            value: ""
-        }
-    ]);
+    // const [filters, setFilters] = useState([
+    //     // initialize textInput filter in the default state
+    //     {
+    //         type: "courseName",
+    //         value: ""
+    //     }
+    // ]);
 
-    const [credit, setCredit] = useState(-1);
-    const [level, setLevel] = useState(-1);
-
-    // Apply Filters Btn: first click or else
-    const [isFirstClick, toggleIsFirstClick] = useState(true);
 
     // Checkbox (updated)
     const [checkedState, setCheckedState] = useState(new Array(FILTER_ITEMS.length).fill(false));
-
+    const [courseName, setCoursename] = useState("");
     // onClickCheckbox (updated)
     const handleOnChangeClickBox = (start, end, position, isSingleChoice) => {
-        
         const updatedChecked = checkedState.map((item, index) =>{
             if (isSingleChoice && index >= start && index <= end && index != position) {
                 return false;
@@ -76,25 +64,25 @@ export default function SearchFilter(props) {
             }
             
         });
-        
-        
         setCheckedState(updatedChecked);
-        let tempFilterArr = [filters[0]];
+        let tempFilter = props.filters;
+        tempFilter.credit = -1;
+        tempFilter.level = -1;
+        tempFilter.creditType = [];
         for (let i = 0; i < updatedChecked.length; i++) {
             if (updatedChecked[i]) {
-                tempFilterArr.push(FILTER_ITEMS[i]);
+                let key = FILTER_ITEMS[i].type;
+                if (key === "creditType") {
+                    tempFilter[key].push(FILTER_ITEMS[i].value);
+                    continue;
+                }
+                tempFilter[key] = FILTER_ITEMS[i].value;
+
             }
         }
-        setFilters(tempFilterArr);
+        props.updateFilter(tempFilter);
+        console.log(props.filters);
     };
-
-    const handleOnChangeRadioCredit = (event) => {
-        setCredit(event.target.value);
-    }
-
-    const handleOnChangeRadioLevel = (event) => {
-        setLevel(event.target.value);
-    }
 
     // Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 
@@ -102,18 +90,16 @@ export default function SearchFilter(props) {
 
     // textInput onChange (updated)
     const onChangeCourseNameTextInput = (event) => {
-        let curFilterArr = filters;
+        let curFilterArr = props.filters;
         // update courseName value in filters
-        curFilterArr[0].value = event.target.value;
-        setFilters(curFilterArr);
+        curFilterArr.courseName = event.target.value;
+        props.updateFilter(curFilterArr);
     };
 
     // generate Checkbox tags (updated)
     const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
         const result = [];
         for (let i = startIndex; i <= endIndex; i++) {
-        
-
             result.push(
                 <div className="single-filter-item">
                     <Checkbox
@@ -131,33 +117,18 @@ export default function SearchFilter(props) {
     // Search query. onClickUpdateFilterBtn (updated)
     // example url input: /api/search?courseName=cse&level=100/200&credit=1/2&creditType=i&s/qsr
     const searchFilters = () => {
-        console.log(filters);
-        let curCourseName = "";
-        let curLevel = (level === -1) ? "" : level;
-        let curCredit = (credit === -1) ? "" : credit;
-        let curCreditType = [];
-        for (let i = 0; i < filters.length; i++) {
-            let element = filters[i];
-            switch (element.type) {
-                case 'courseName':
-                    curCourseName = element.value;
-                    break;
-                case 'creditType':
-                    curCreditType.push(element.value);
-                    break;
-                default:
-                    break;
-            }
-        }
+        console.log(props.filters)
+        let curCourseName = props.filters.courseName;
+        let curLevel = props.filters.level === -1 ? "" : props.filters.level.toString();
+        let curCredit = props.filters.credit === -1 ? "" : props.filters.credit.toString();
+        let curCreditType = props.filters.creditType;
+
         curCreditType = curCreditType.join("/");
-        localStorage.setItem("courseName", curCourseName);
-        localStorage.setItem("level", curLevel);
-        localStorage.setItem("credit", curCredit);
-        localStorage.setItem("creditType", curCreditType);
         history.push({
             pathname: "/search",
             state: [curCourseName, curLevel, curCredit, curCreditType]
         });
+        setCheckedState(new Array(FILTER_ITEMS.length).fill(false));
     };
 
     const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
@@ -183,9 +154,7 @@ export default function SearchFilter(props) {
 
     return (
         <div className="search-bar">
-            <Button onClick={handleClick}>
-                <FontAwesomeIcon className="filterIcon" icon={faCaretDown} />
-            </Button>
+            
             <Menu
                 anchorEl={anchorEl}
                 keepMounted
@@ -223,6 +192,9 @@ export default function SearchFilter(props) {
                     }
                 }}
                 onChange={onChangeCourseNameTextInput}/>
+            <Button onClick={handleClick}>
+                <FontAwesomeIcon className="filterIcon" icon={faCaretDown} />
+            </Button>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"

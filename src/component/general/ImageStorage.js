@@ -10,5 +10,6 @@ export default {
     login: require("../../img/log-in.png").default,
     commentLogo: require("../../img/hdlogo.png").default,
     quarter: require("../../img/quarter.png").default,
-    selection: require("../../img/Vector.png").default
+    selection: require("../../img/Vector.png").default,
+    backToTop: require("../../img/top.jpg").default
 }

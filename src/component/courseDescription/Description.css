@@ -204,6 +204,10 @@
     margin-top: 1rem;
 }
 
+.descriptionTop {
+    margin-top: 10rem;
+    margin-right: 3rem;
+}
 
 /* Media Control screen larger than 320px */ 
 @media (min-width: 460px)
@@ -254,6 +258,8 @@
     }
 
 }
+
+
 
 /* Media Control screen larger than 768px */ 
 @media (min-width: 1000px)
