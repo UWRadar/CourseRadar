@@ -18,8 +18,7 @@ export class Banner extends Component {
                 className={"banner" + position}
                 style={{
                     backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + item.image + ")"
-                }}
-            >
+                }}>
                 <button
                     className="arrow arrow-left"
                     title="上一张"
@@ -37,7 +36,13 @@ export class Banner extends Component {
                         activeStyle={{
                             color: "white",
                         }}>
-                        <button className="hide-on-mobile">详情</button>
+                        <button
+                            className="hide-on-mobile"
+                            onClick={() => {
+                                window.open(item.link)
+                            }}>
+                            详情
+                        </button>
                     </NavLink>
 
                 </div>
@@ -72,8 +77,7 @@ export class Banner extends Component {
             <div
                 className="banner-placeholder"
                 onMouseEnter={this.props.onMouseEnter}
-                onMouseLeave={this.props.onMouseLeave}
-            >
+                onMouseLeave={this.props.onMouseLeave}>
                 <div className={"banner-area" + (this.props.noAnimation ? " no-animation" : "")}>{bannerItems}</div>
             </div>
         )

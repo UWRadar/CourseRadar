@@ -81,7 +81,7 @@ a:hover {
 
 #simple-meanubutton {
     display: flex;
-} 
+}
 
 #course-radar {
     width: 60vmin;
@@ -89,22 +89,15 @@ a:hover {
     display: none;
 }
 
-
-
 #course-radar2 {
     display: none;
     cursor: pointer;
 }
 
-@media screen and (min-width: 500px) {
-
-    
-}
 #simple-menu2 {
     display: flex;
     flex-direction: column;
 }
-
 
 @media screen and (min-width: 900px) {
     #large-header {
@@ -127,9 +120,11 @@ a:hover {
     #right-upper-icons {
         display: flex;
     }
+
     #simple-meanubutton {
         display: none;
-    } 
+    }
+
     #course-radar {
         width: 30vmin;
         margin-left: 2vw;
