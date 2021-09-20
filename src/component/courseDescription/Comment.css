@@ -151,6 +151,10 @@ hr .rounded {
     margin-bottom: auto;
 }
 
+.likeCount {
+    text-align: center;
+}
+
 /* Media Control screen larger than 320px */ 
 @media (min-width: 480px)
 {

@@ -43,7 +43,6 @@ export default class CourseDescription extends Component {
             })
             .then((data) => {
                 if (data) {
-                    console.log(data);
                     this.replaceNullWithZero(data.result[0])
                     this.setState({
                         courseInfo: data.result[0],
@@ -63,11 +62,23 @@ export default class CourseDescription extends Component {
                 }
             })
             .then(data => {
+                console.log(data.result);
                 this.setState({
                     allComments: data.result
                 })
             })
 
+    }
+
+    async getAllCommentLikeQuantity(data) {
+        let parsedComment = data.map(async (element) => {
+            
+        })
+
+        this.setState({
+            allComments : parsedComment
+        });
+        
     }
 
     render() {
