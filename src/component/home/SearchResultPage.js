@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, {Component, useState} from "react"
 import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
 
@@ -8,8 +8,52 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import ServerConfig from "../config/ServerConfig";
+import {useLocation} from "react-router-dom";
 
-export default class SearchResultPage extends Component {
+// Proposed router URL: /search/cse142?course_level=100,200&credit_number=1,2&course_type=c,div
+// Also, I decide to use the modern function declaration instead of "old-fashioned?" class component as I expect to have a major re-write this SearchResultPage component
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+export default function SearchResultPage(props) {
+
+    courseCards: [],
+        courseName: "",
+        courseLevel: "",
+        courseCredit: "",
+        courseCreditType: "",
+        // subCourseCards: [],
+        selectLevel: "",
+        selectCredit: "",
+        selectCreditType: "",
+        loaded: false,
+
+    const [loaded, setLoaded] = useState(false);
+    const [courseCards, setCourseCards] = useState([]);
+
+
+    let query = useQuery();
+
+    return (
+        <div>
+            {name ? (
+                <h3>
+                    The <code>name</code> in the query string is &quot;{name}
+                    &quot;
+                </h3>
+            ) : (
+                <h3>There is no name in the query string</h3>
+            )}
+        </div>
+    );
+}
+
+
+class SearchResultPage extends Component {
 
     // const SearchResultPage = (props) => {
     constructor(props) {
