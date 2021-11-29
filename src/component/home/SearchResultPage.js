@@ -40,6 +40,8 @@ export default function SearchResultPage(props) {
         courseLevel_init = query.get("course_level").split(",");
         if (courseLevel_init.includes("all")) {
             courseLevel_init = ["all"]
+        } else if(!courseLevel_init.every(r=> LEVELS.concat(["all"]).includes(r))) {
+            courseLevel_init = ["all"]; // default to all for malformed query
         }
     }
 
@@ -51,6 +53,8 @@ export default function SearchResultPage(props) {
         creditNumber_init = query.get("credit_number").split(",");
         if (creditNumber_init.includes("all")) {
             creditNumber_init = ["all"]
+        } else if(!creditNumber_init.every(r=> CREDITS.concat(["all"]).includes(r))) {
+            creditNumber_init = ["all"]; // default to all for malformed query
         }
     }
 
@@ -61,7 +65,9 @@ export default function SearchResultPage(props) {
     } else {
         courseType_init = query.get("course_type").split(",");
         if (courseType_init.includes("all")) {
-            courseType_init = ["all"]
+            courseType_init = ["all"];
+        } else if(!courseType_init.every(r=> CREDIT_TYPES.concat(["all", "IS", "None"]).includes(r))) {
+            courseType_init = ["all"]; // default to all for malformed query
         }
     }
 
