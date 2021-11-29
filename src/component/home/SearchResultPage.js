@@ -78,9 +78,9 @@ export default function SearchResultPage(props) {
         console.log("handleFilterChange(" + destination + ", " + newValue);
         if(destination === "courseLevel") {
             // Toggling between all and not all
-            if(newValue==="all" && courseLevel.indexOf("all")<=0) {
+            if(newValue === "all" && courseLevel.indexOf("all")<0) {
                 setCourseLevel(["all"]);
-            } else if (courseLevel === ["all"] && newValue !== "all") {
+            } else if (courseLevel[0] === "all" && newValue !== "all") {
                 setCourseLevel([newValue]);
             }
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
@@ -99,9 +99,9 @@ export default function SearchResultPage(props) {
             }
         } else if(destination === "creditNumber") {
             // Toggling between all and not all
-            if(newValue==="all" && creditNumber.indexOf("all")<=0) {
+            if(newValue==="all" && creditNumber.indexOf("all")<0) {
                 setCreditNumber(["all"]);
-            } else if (creditNumber === ["all"] && newValue !== "all") {
+            } else if (creditNumber[0] === "all" && newValue !== "all") {
                 setCreditNumber([newValue]);
             }
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
@@ -120,29 +120,29 @@ export default function SearchResultPage(props) {
             }
         } else if(destination === "courseType") {
             // Toggling between all and not all
-            if(newValue==="all" && creditNumber.indexOf("all")<=0) {
+            if(newValue==="all" && courseType.indexOf("all")<0) {
                 setCourseType(["all"]);
-            } else if (creditNumber === ["all"] && newValue !== "all") {
+            } else if (courseType[0]==="all" && newValue !== "all" && newValue !== "None") {
                 setCourseType([newValue]);
             }
             // Toggle between None and not None
-            else if(newValue==="None" && creditNumber.indexOf("None")<=0) {
+            else if(newValue==="None" && courseType.indexOf("None")<0) {
                 setCourseType(["None"]);
-            } else if (creditNumber === ["None"] && newValue !== "None") {
+            } else if (courseType[0]=== "None" && newValue !== "all" && newValue !== "None") {
                 setCourseType([newValue]);
             }
             // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && newValue !== "None" && creditNumber.indexOf(newValue)>=0) {
+            else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue)>=0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedLevel = creditNumber.filter(e => e !== newValue);
+                const updatedLevel = courseType.filter(e => e !== newValue);
                 if(updatedLevel.size === 0) {
                     setCourseType(["all"]);
                 } else {
                     setCourseType(updatedLevel);
                 }
-            } else if (newValue !== "all" && newValue !== "None" && creditNumber.indexOf(newValue)<0) {
+            } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue)<0) {
                 // Non Mutative way to concat an array
-                setCourseType(creditNumber.concat(newValue));
+                setCourseType(courseType.concat(newValue));
             }
         }
     }
@@ -193,22 +193,17 @@ function SearchFilter(props) {
                 })}
             </RadioGroup>
             <FormLabel component="legend">通识类别</FormLabel>
-            <RadioGroup
-                aria-label="gender"
-                name="controlled-radio-buttons-group"
-                value={props.courseType.indexOf("all") >= 0 ? "all" : ""}
-                onChange={(value)=>{console.log(value);props.handleFilterChange("courseType", value)}}
-            >
-                <FormControlLabel value="all" control={<Radio/>} label="全部"/>
+                <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={()=>{props.handleFilterChange("courseType", "all")}}/>} label="全部"/>
                 {CREDIT_TYPES.map((input) => {
                     if(input!=="None") {
-                        return (<FormControlLabel
+                        return (
+                            <div>
+                            <FormControlLabel
                             control={<Checkbox checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0} onChange={()=>{props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)}}/>}
-                            label={input}/>);
+                            label={input}/></div>);
                     }
                 })}
-                <FormControlLabel value="None" control={<Radio/>} label="无通识学分"/>
-            </RadioGroup>
+                <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={()=>{props.handleFilterChange("courseType", "None")}}/>} label="无通识学分"/>
         </div>
     )
 }
