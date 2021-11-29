@@ -75,27 +75,36 @@ export default function SearchResultPage(props) {
 
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
-        console.log("handleFilterChange(" + destination + ", " + newValue);
+        //console.log("handleFilterChange(" + destination + ", " + newValue);
+        let url = new URL(document.URL);
+        let params = new URLSearchParams(url.search);
         if (destination === "courseLevel") {
+            // ES6 way to copy/clone an array
+            let newCourseLevel = [...courseLevel];
             // Toggling between all and not all
             if (newValue === "all" && courseLevel.indexOf("all") < 0) {
-                setCourseLevel(["all"]);
+                newCourseLevel = ["all"];
             } else if (courseLevel[0] === "all" && newValue !== "all") {
-                setCourseLevel([newValue]);
+                newCourseLevel = [newValue];
             }
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
             else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedLevel = courseLevel.filter(e => e !== newValue);
+                const updatedLevel = newCourseLevel.filter(e => e !== newValue);
                 if (updatedLevel.size === 0) {
-                    setCourseLevel(["all"]);
+                    newCourseLevel = ["all"];
                 } else {
-                    setCourseLevel(updatedLevel);
+                    newCourseLevel = updatedLevel;
                 }
             } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
                 // Non Mutative way to concat an array
-                setCourseLevel(courseLevel.concat(newValue));
+                newCourseLevel = newCourseLevel.concat(newValue);
             }
+
+            params.set('course_level', newCourseLevel.join(","));
+            window.history.pushState(null, null, '?' + params.toString());
+
+            setCourseLevel(newCourseLevel);
         } else if (destination === "creditNumber") {
             // Toggling between all and not all
             if (newValue === "all" && creditNumber.indexOf("all") < 0) {
