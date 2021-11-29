@@ -2,6 +2,7 @@ import React, {Component, useState} from "react"
 import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
 
+import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -73,23 +74,27 @@ export default function SearchResultPage(props) {
 }
 
 function SearchFilter(props) {
-    const LEVELS = ["100", "200", "300", "400", "500", "all"];
-    const CREDITS = ["1", "2", "3", "4", "5", "all"];
-    const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA", "all"];
+    const LEVELS = ["100", "200", "300", "400", "500"];
+    const CREDITS = ["1", "2", "3", "4", "5"];
+    const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
     return(
         <div className="filter">
             <h1>二次筛选</h1>
             <h2>课程级别</h2>
-            <RadioGroup value={props.courseLevel} onChange={props.setCourseLevel}>
-                {LEVELS.map((input) => {
-                    return (<FormControlLabel value={input} control={<Radio/>} label={input}/>);
-                })}
-                {/* <FormControlLabel value="100" control={<Radio />} label="100" />
-                        <FormControlLabel value="200" control={<Radio />} label="200" />
-                        <FormControlLabel value="300" control={<Radio />} label="300" />
-                        <FormControlLabel value="400" control={<Radio />} label="400" /> */}
-                <FormControlLabel value="" control={<Radio/>} label="all levels"/>
-            </RadioGroup>
+            <FormControl component="fieldset">
+                <FormLabel component="legend">课程级别</FormLabel>
+                <RadioGroup
+                    aria-label="gender"
+                    name="controlled-radio-buttons-group"
+                    value={props.courseLevel.indexOf('all') >= 0 ? 'all': ''}
+                    onChange={props.setCourseLevel}
+                >
+                    <FormControlLabel value="all" control={<Radio />} label="All Levels" />
+                    {LEVELS.map((input) => {
+                        return (<FormControlLabel control={<Checkbox defaultChecked={props.courseLevel.indexOf(input) >= 0 ? true : false} />} label={input} />);
+                    })}
+                </RadioGroup>
+            </FormControl>
             <h2>学分</h2>
             <RadioGroup value={props.creditNumber} onChange={props.setCreditNumber}>
                 {CREDITS.map((input) => {
@@ -100,7 +105,6 @@ function SearchFilter(props) {
                         <FormControlLabel value="3" control={<Radio />} label="3" />
                         <FormControlLabel value="4" control={<Radio />} label="4" />
                         <FormControlLabel value="5" control={<Radio />} label="5" /> */}
-                <FormControlLabel value="" control={<Radio/>} label="all credits"/>
             </RadioGroup>
             <h2>课程类型</h2>
             <RadioGroup value={props.courseType} onChange={props.setCourseType}>
@@ -115,7 +119,6 @@ function SearchFilter(props) {
                         <FormControlLabel value="QSR" control={<Radio />} label="QSR" />
                         <FormControlLabel value="VLPA" control={<Radio />} label="VLPA" />
                         <FormControlLabel value="W" control={<Radio />} label="W" /> */}
-                <FormControlLabel value="" control={<Radio/>} label="all credit types"/>
             </RadioGroup>
         </div>
     )
