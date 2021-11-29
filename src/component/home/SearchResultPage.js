@@ -1,14 +1,11 @@
-import React, {Component, useState} from "react"
+import React, {useState} from "react"
 import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import ServerConfig from "../config/ServerConfig";
 import {useLocation, useParams} from "react-router-dom";
 
 // Proposed router URL: /search/cse142?course_level=100,200&credit_number=1,2&course_type=C,DIV
