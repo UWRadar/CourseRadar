@@ -8,7 +8,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import {useLocation, useParams} from "react-router-dom";
 
-// Proposed router URL: /search/cse142?course_level=100,200&credit_number=1,2&course_type=C,DIV
+
+// Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
+// Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1%2C4&course_type=DIV%2CIS
 // Also, I decide to use the modern function declaration instead of "old-fashioned?" class component as I expect to have a major re-write this SearchResultPage component
 
 // Global Functions
@@ -34,7 +36,7 @@ export default function SearchResultPage(props) {
     if (query.get("course_level") === null) {
         courseLevel_init = ["all"];
     } else {
-        courseLevel_init = query.get("course_level").split(",");
+        courseLevel_init = query.get("course_level").split(".");
         if (courseLevel_init.includes("all")) {
             courseLevel_init = ["all"]
         } else if(!courseLevel_init.every(r=> LEVELS.concat(["all"]).includes(r))) {
@@ -47,7 +49,7 @@ export default function SearchResultPage(props) {
     if (query.get("credit_number") === null) {
         creditNumber_init = ["all"];
     } else {
-        creditNumber_init = query.get("credit_number").split(",");
+        creditNumber_init = query.get("credit_number").split(".");
         if (creditNumber_init.includes("all")) {
             creditNumber_init = ["all"]
         } else if(!creditNumber_init.every(r=> CREDITS.concat(["all"]).includes(r))) {
@@ -60,7 +62,7 @@ export default function SearchResultPage(props) {
     if (query.get("course_type") === null) {
         courseType_init = ["all"];
     } else {
-        courseType_init = query.get("course_type").split(",");
+        courseType_init = query.get("course_type").split(".");
         if (courseType_init.includes("all")) {
             courseType_init = ["all"];
         } else if(!courseType_init.every(r=> CREDIT_TYPES.concat(["all", "IS", "None"]).includes(r))) {
@@ -105,7 +107,7 @@ export default function SearchResultPage(props) {
                 newCourseLevel = courseLevel.concat(newValue);
             }
 
-            params.set('course_level', newCourseLevel.join(","));
+            params.set('course_level', newCourseLevel.join("."));
             window.history.pushState(null, null, '?' + params.toString());
 
             setCourseLevel(newCourseLevel);
@@ -133,7 +135,7 @@ export default function SearchResultPage(props) {
                 newCreditNumber = creditNumber.concat(newValue);
             }
 
-            params.set('credit_number', newCreditNumber.join(","));
+            params.set('credit_number', newCreditNumber.join("."));
             window.history.pushState(null, null, '?' + params.toString());
 
             setCreditNumber(newCreditNumber);
@@ -167,7 +169,7 @@ export default function SearchResultPage(props) {
                 // Non Mutative way to concat an array
                 newCourseType = courseType.concat(newValue);
             }
-            params.set('course_type', newCourseType.join(","));
+            params.set('course_type', newCourseType.join("."));
             window.history.pushState(null, null, '?' + params.toString());
 
             setCourseType(newCourseType);
