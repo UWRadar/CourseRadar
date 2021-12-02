@@ -150,7 +150,10 @@ h1 {
     }
 }
 
-
+.tooltips>img {
+    max-width: 2rem;
+    margin-top: .3rem;
+}
 @media screen and (min-width: 1023px) {
     #courseCardLink {
         margin: 3px;

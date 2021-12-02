@@ -2,6 +2,29 @@ import React, { Component } from "react"
 import "./CourseCard.css"
 import Img from "./Mapping"
 import { NavLink } from 'react-router-dom'
+import like from '../../img/talk-active.png';
+import ServerConfig from "../config/ServerConfig";
+
+const toggleLike = (e, name) => {
+    e.preventDefault();
+    console.log(name);
+    fetch(ServerConfig.SERVER_URL + "/api/togglelike?courseName=" + name)
+        .then(res => {
+            if(res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        })
+        .then(data => {
+            console.log(data);
+            if(data.state == 0){
+                alert("已取消收藏");
+            } else {
+                alert("已收藏");
+            }
+        })
+}
 
 const CourseCard = (props) => {
     /* 需要有传进的props以显示对应的课程和正确链接 */
@@ -43,6 +66,12 @@ const CourseCard = (props) => {
                             <div class="tag credit">
                                 <div class="tooltips" id="5cre">
                                     <p>{props.credit}</p>
+                                </div>
+                            </div>
+
+                            <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName)}>
+                                <div class="tooltips" id="add">
+                                    <img src={like} alt="like"  />
                                 </div>
                             </div>
                         </div>
