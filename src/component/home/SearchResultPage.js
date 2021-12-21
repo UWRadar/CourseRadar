@@ -7,16 +7,17 @@ import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import {useLocation, useParams} from "react-router-dom";
+import {CircularProgress} from "@material-ui/core";
 
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
-// Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1%2C4&course_type=DIV%2CIS
+// Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
 // Also, I decide to use the modern function declaration instead of "old-fashioned?" class component as I expect to have a major re-write this SearchResultPage component
 
 // Global Functions
 const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5"];
-// Took out None, since it"s also a utility value (should be mutually exclusive selection)
+// Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
 function useQuery() {
@@ -70,7 +71,7 @@ export default function SearchResultPage(props) {
         }
     }
 
-    // Note: need to extract parameter first before I can able to set states
+    // Note: need to extract parameter first before I can set states
     const [courseName, setCourseName] = useState(courseName_init);
     const [courseLevel, setCourseLevel] = useState(courseLevel_init);
     const [creditNumber, setCreditNumber] = useState(creditNumber_init);
@@ -184,9 +185,22 @@ export default function SearchResultPage(props) {
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-            </div>
+                {loaded ? <LoadingScreen/> : courseCards == null || courseCards.length === 0 ? <LoadingScreen/> : <LoadingScreen/>}
+            </div> 
         </div>
     );
+}
+
+function LoadingScreen(props) {
+    return(
+        <div className="loading-small">
+            <div className='loading_container'>
+                <CircularProgress color="secondary" />
+                <span>Loading Results</span>
+            </div>
+            {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
+        </div>
+    )
 }
 
 function SearchFilter(props) {
