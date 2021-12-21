@@ -45,7 +45,7 @@ export default class LoginPage extends Component {
         return (
             <div className="login-container" aria-label="Seaching area">
                 <div id="login-description">
-                    <img src={logo} alt="Logo" />
+                    <img className = "login-logo" src={logo} alt="Logo" />
                     <p>用户可以收藏、点赞课评</p>
                     <p>未来会根据收藏/浏览的课评进行推荐</p>
                 </div>
@@ -54,7 +54,9 @@ export default class LoginPage extends Component {
                     <input id="password" type="password" name="password" placeholder="密码" onChange={evt => this.setState({ loginPassword: evt.target.value })} />
                     <button id="loging-main" aria-label="Login button" onClick={() => { this.login() }}>登录</button>
                     <p className="link-bar">
-                        <a onClick={() => this.loginWithGoogle()}>使用 Google 账号登录</a>
+                        <img src="./img/google-login.png" className="google-login" alt="login with google" onClick={() => this.loginWithGoogle()}></img>
+                    </p>
+                    <p className="link-bar">
                         <a id="sign-up" className="float-right" onClick={() => this.setPage(2)}>注册账号</a>
                     </p>
                 </div>
@@ -83,7 +85,7 @@ export default class LoginPage extends Component {
             </div>
         )
     }
-
+//<a onClick={() => this.loginWithGoogle()}>使用 Google 账号登录</a>
     login() {
         if (!this.state.loginEmail || !this.state.loginPassword) {
             alert("请输入邮箱和密码。")

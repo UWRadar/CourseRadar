@@ -40,7 +40,7 @@ class ProfilePage extends Component {
         const renderFavCourses = () => {
             const favCourses = this.state.favCourses
             if (favCourses.length == 0) {
-                return <img id="no-result" src="./img/no-result.png" />
+                return <img id="no-result" src="./img/no-favorite.png" />
             } else {
                 return favCourses.map(element => (
                     <CourseCard
