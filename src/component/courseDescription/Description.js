@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { NavLink } from 'react-router-dom'
 import background from "../../img/guthrie.jpeg";
+import GradeDistribution from "./GradeDistribution"
 
 
 
@@ -116,6 +117,8 @@ const Description = (props) => {
                     <div className="col-12" id="smallScreenDescription">
                             <p className="courseDesription">{props.courseItems.description}</p>   
                     </div>
+
+                    <GradeDistribution/>
             </div>
 
             
