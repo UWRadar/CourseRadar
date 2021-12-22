@@ -8,6 +8,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import {Link, useLocation, useParams} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
+import CourseCard from "../general/CourseCard";
 
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
@@ -192,7 +193,7 @@ export default function SearchResultPage(props) {
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/> : <SearchResult/> : <LoadingScreen/>}
+                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/> : <SearchResult courseCards={courseCards}/> : <LoadingScreen/>}
             </div>
         </div>
     );
@@ -275,7 +276,13 @@ function ErrorScreen(props) {
 }
 
 function SearchResult(props) {
-
+    return (
+        <div>
+            {props.courseCards.map(element => (
+                <CourseCard key={element.courseName} courseName={element.courseName} courseDescription={element.courseDescription} tags={element.tags} credit={element.credit}/>
+            ))}
+        </div>
+        )
 }
 
 function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn, setIsErrorOccurredCallBackFn) {
