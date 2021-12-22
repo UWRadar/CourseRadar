@@ -1,5 +1,4 @@
 import React, {useState} from "react"
-import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -8,6 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import {Link, useLocation, useParams} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
+import ServerConfig from "../config/ServerConfig";
 
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
@@ -180,6 +180,8 @@ export default function SearchResultPage(props) {
     // Confirmed that parameters are passed as array;
     // console.log("Search Query: course searched: " + courseName.toString() + " course level: " + courseLevel.toString() + " credit number: " + creditNumber.toString() + " course type: " + courseType.toString());
 
+    fetchCourse(courseName, courseLevel_init,creditNumber_init, courseType_init, setCourseCards, setLoaded);
+
     return (
         <div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
@@ -189,34 +191,6 @@ export default function SearchResultPage(props) {
             </div>
         </div>
     );
-}
-
-function LoadingScreen(props) {
-    return (
-        <div className='loading_container'>
-            {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
-            <CircularProgress color="secondary" size="75px"/>
-            <span className='loading_text'>正在查询，请稍候...</span>
-        </div>
-    )
-}
-
-function ErrorScreen(props) {
-    return (
-            <div className='loading_container'>
-                <img className='loading' src="../img/Course-DNE.png"/>
-                <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
-                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'white'}} activeStyle={{color: 'red'}}>填写课评</Link></div>
-            </div>
-    )
-}
-
-function SearchResult(props) {
-
-}
-
-function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all') {
-
 }
 
 function SearchFilter(props) {
@@ -274,3 +248,76 @@ function SearchFilter(props) {
         </div>
     )
 }
+
+function LoadingScreen(props) {
+    return (
+        <div className='loading_container'>
+            {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
+            <CircularProgress color="secondary" size="75px"/>
+            <span className='loading_text'>正在查询，请稍候...</span>
+        </div>
+    )
+}
+
+function ErrorScreen(props) {
+    return (
+            <div className='loading_container'>
+                <img className='loading' src="../img/Course-DNE.png"/>
+                <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
+                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'white'}} activeStyle={{color: 'red'}}>填写课评</Link></div>
+            </div>
+    )
+}
+
+function SearchResult(props) {
+
+}
+
+function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn) {
+
+    let paramsObj = {courseName: courseName, curLevel: courseLevel, curCredit: creditNumber, curCreditType: courseType};
+    let searchParams = new URLSearchParams(paramsObj);
+
+    searchParams.toString();
+    const currentUrl = ServerConfig.SERVER_URL + "/api/search?" + searchParams.toString();
+
+    console.log(currentUrl);
+
+    fetch(currentUrl)
+        .then(checkStatus)
+        .then(res => {
+            let courses = res.result;
+            let courseTemp = [];
+            for (let i = 0; i < courses.length; i++) {
+                let course = courses[i];
+                let curCreditType = course.creditType;
+                let curTag = null;
+                if (curCreditType !== null) {
+                    curTag = curCreditType.split("/");
+                }
+                courseTemp.push({
+                    courseName: course.courseName,
+                    courseDescription: course.courseFullName,
+                    tags: curTag,
+                    credit: course.credit[0]
+                })
+            }
+            setCourseCardsCallBackFn(courseTemp);
+            setLoadedCallBackFn(true);
+        })
+        .catch(exception=>{setCourseCardsCallBackFn([]); setLoadedCallBackFn(true)});
+}
+
+function checkStatus(response) {
+    if (response.ok) {
+        if (response.status === 200) {
+            return response.json()
+        } else {
+            return {result: []};
+        }
+
+    } else {
+        return Promise.reject(new Error(response.status + ": " + response.statusText))
+    }
+}
+
