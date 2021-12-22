@@ -187,16 +187,35 @@ export default function SearchResultPage(props) {
         fetchCourse(courseName, courseLevel_init,creditNumber_init, courseType_init, setCourseCards, setLoaded, setIsErrorOccurred);
     }, [courseLevel, creditNumber, courseType]);
 
-
-    return (
-        <div className="search-result">
+    if(!loaded) {
+        return(
+            <div className="search-result">
+                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                              handleFilterChange={handleFilterChange}/>
+                <div className="course-list2">
+                    <LoadingScreen/>
+                </div>
+            </div>
+        )
+    } else if (loaded && courseCards.length === 0) {
+        return(<div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/> : <SearchResult courseCards={courseCards}/> : <LoadingScreen/>}
+                <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/>
             </div>
-        </div>
-    );
+        </div>)
+    } else {
+        return (
+            <div className="search-result">
+                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                              handleFilterChange={handleFilterChange}/>
+                <div className="course-list2">
+                    <SearchResult courseCards={courseCards}/>
+                </div>
+            </div>
+        );
+    }
 }
 
 function SearchFilter(props) {
@@ -277,7 +296,7 @@ function ErrorScreen(props) {
 
 function SearchResult(props) {
     return (
-        <div>
+        <div className="course-list2">
             {props.courseCards.map(element => (
                 <CourseCard key={element.courseName} courseName={element.courseName} courseDescription={element.courseDescription} tags={element.tags} credit={element.credit}/>
             ))}
