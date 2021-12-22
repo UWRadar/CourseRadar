@@ -29,7 +29,7 @@
     position: relative;
     top: 11vh;
     display: grid;
-    grid-template-columns: 1fr 10fr;
+    grid-template-columns: 175px auto;
     grid-template-rows: 1fr;
 }
 
@@ -48,11 +48,17 @@
 .loading_container{
     width: 100%;
     height: calc(100vh - 11vh);
-    background-color: rgba(111, 111, 111, 0.8);
+    background-color: rgba(111, 111, 111, 0.8); /* debugging this result container */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.loading_text {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 30px;
 }
 
 @media screen and (min-width: 900px) {

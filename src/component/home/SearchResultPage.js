@@ -6,7 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import {useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 
 
@@ -40,7 +40,7 @@ export default function SearchResultPage(props) {
         courseLevel_init = query.get("course_level").split(".");
         if (courseLevel_init.includes("all")) {
             courseLevel_init = ["all"]
-        } else if(!courseLevel_init.every(r=> LEVELS.concat(["all"]).includes(r))) {
+        } else if (!courseLevel_init.every(r => LEVELS.concat(["all"]).includes(r))) {
             courseLevel_init = ["all"]; // default to all for malformed query
         }
     }
@@ -53,7 +53,7 @@ export default function SearchResultPage(props) {
         creditNumber_init = query.get("credit_number").split(".");
         if (creditNumber_init.includes("all")) {
             creditNumber_init = ["all"]
-        } else if(!creditNumber_init.every(r=> CREDITS.concat(["all"]).includes(r))) {
+        } else if (!creditNumber_init.every(r => CREDITS.concat(["all"]).includes(r))) {
             creditNumber_init = ["all"]; // default to all for malformed query
         }
     }
@@ -66,7 +66,7 @@ export default function SearchResultPage(props) {
         courseType_init = query.get("course_type").split(".");
         if (courseType_init.includes("all")) {
             courseType_init = ["all"];
-        } else if(!courseType_init.every(r=> CREDIT_TYPES.concat(["all", "IS", "None"]).includes(r))) {
+        } else if (!courseType_init.every(r => CREDIT_TYPES.concat(["all", "IS", "None"]).includes(r))) {
             courseType_init = ["all"]; // default to all for malformed query
         }
     }
@@ -76,7 +76,7 @@ export default function SearchResultPage(props) {
     const [courseLevel, setCourseLevel] = useState(courseLevel_init);
     const [creditNumber, setCreditNumber] = useState(creditNumber_init);
     const [courseType, setCourseType] = useState(courseType_init);
-    const [loaded, setLoaded] = useState(false);
+    const [loaded, setLoaded] = useState(true);
     const [courseCards, setCourseCards] = useState([]);
 
     // Custom data cleaning function to account for mutually exclusive selection
@@ -185,22 +185,38 @@ export default function SearchResultPage(props) {
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                {loaded ? <LoadingScreen/> : courseCards == null || courseCards.length === 0 ? <LoadingScreen/> : <LoadingScreen/>}
-            </div> 
+                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName}/> : <SearchResult/> : <LoadingScreen/>}
+            </div>
         </div>
     );
 }
 
 function LoadingScreen(props) {
-    return(
-        <div className="loading-small">
-            <div className='loading_container'>
-                <CircularProgress color="secondary" />
-                <span>Loading Results</span>
-            </div>
+    return (
+        <div className='loading_container'>
             {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
+            <CircularProgress color="secondary" size="75px"/>
+            <span className='loading_text'>正在查询，请稍候...</span>
         </div>
     )
+}
+
+function ErrorScreen(props) {
+    return (
+            <div className='loading_container'>
+                <img className='loading' src="../img/Course-DNE.png"/>
+                <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
+                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'white'}} activeStyle={{color: 'red'}}>填写课评</Link></div>
+            </div>
+    )
+}
+
+function SearchResult(props) {
+
+}
+
+function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all') {
+
 }
 
 function SearchFilter(props) {
@@ -209,37 +225,52 @@ function SearchFilter(props) {
             <h1>二次筛选</h1>
             {/*<h2>课程级别</h2>*/}
             <FormLabel component="legend">课程级数</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {props.handleFilterChange("courseLevel", "all")}}/>} label="全部"/>
+            <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
+                props.handleFilterChange("courseLevel", "all")
+            }}/>} label="全部"/>
             {LEVELS.map((input) => {
-                    return (<div>
-                                <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
-                                                                     onChange={() => {props.handleFilterChange("courseLevel", input)}}/>}
-                                                  label={input}/>
-                            </div>);
+                return (<div>
+                    <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
+                                                         onChange={() => {
+                                                             props.handleFilterChange("courseLevel", input)
+                                                         }}/>}
+                                      label={input}/>
+                </div>);
             })}
             <FormLabel component="legend">学分数量</FormLabel>
-                <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {props.handleFilterChange("creditNumber", "all")}}/>} label="全部"/>
-                {CREDITS.map((input) => {
-                    return (<div>
-                                <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
-                                                                     onChange={() => {props.handleFilterChange("creditNumber", input)}}/>}
-                                                  label={input}/>
-                            </div>);
-                })}
+            <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
+                props.handleFilterChange("creditNumber", "all")
+            }}/>} label="全部"/>
+            {CREDITS.map((input) => {
+                return (<div>
+                    <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
+                                                         onChange={() => {
+                                                             props.handleFilterChange("creditNumber", input)
+                                                         }}/>}
+                                      label={input}/>
+                </div>);
+            })}
             <FormLabel component="legend">通识类别</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {props.handleFilterChange("courseType", "all")}}/>} label="全部"/>
+            <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
+                props.handleFilterChange("courseType", "all")
+            }}/>} label="全部"/>
             {CREDIT_TYPES.map((input) => {
                 if (input !== "None") {
                     return (
                         <div>
                             <FormControlLabel
-                                control={<Checkbox checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
-                                                   onChange={() => {props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)}}/>}
+                                control={<Checkbox
+                                    checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
+                                    onChange={() => {
+                                        props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
+                                    }}/>}
                                 label={input}/>
                         </div>);
                 }
             })}
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {props.handleFilterChange("courseType", "None")}}/>} label="无通识学分"/>
+            <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
+                props.handleFilterChange("courseType", "None")
+            }}/>} label="无通识学分"/>
         </div>
     )
 }
