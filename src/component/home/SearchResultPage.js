@@ -184,7 +184,7 @@ export default function SearchResultPage(props) {
 
 
     useEffect(() => {
-        fetchCourse(courseName, courseLevel_init,creditNumber_init, courseType_init, setCourseCards, setLoaded, setIsErrorOccurred);
+        fetchCourse(courseName, courseLevel, creditNumber, courseType, setCourseCards, setLoaded, setIsErrorOccurred);
     }, [courseLevel, creditNumber, courseType]);
 
     if(!loaded) {
