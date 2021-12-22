@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -77,6 +77,7 @@ export default function SearchResultPage(props) {
     const [creditNumber, setCreditNumber] = useState(creditNumber_init);
     const [courseType, setCourseType] = useState(courseType_init);
     const [loaded, setLoaded] = useState(true);
+    const [isErrorOccurred, setIsErrorOccurred] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
 
     // Custom data cleaning function to account for mutually exclusive selection
@@ -180,14 +181,18 @@ export default function SearchResultPage(props) {
     // Confirmed that parameters are passed as array;
     // console.log("Search Query: course searched: " + courseName.toString() + " course level: " + courseLevel.toString() + " credit number: " + creditNumber.toString() + " course type: " + courseType.toString());
 
-    fetchCourse(courseName, courseLevel_init,creditNumber_init, courseType_init, setCourseCards, setLoaded);
+
+    useEffect(() => {
+        fetchCourse(courseName, courseLevel_init,creditNumber_init, courseType_init, setCourseCards, setLoaded, setIsErrorOccurred);
+    }, [courseLevel, creditNumber, courseType]);
+
 
     return (
         <div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName}/> : <SearchResult/> : <LoadingScreen/>}
+                {loaded ? courseCards == null || courseCards.length === 0 ? <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/> : <SearchResult/> : <LoadingScreen/>}
             </div>
         </div>
     );
@@ -203,7 +208,7 @@ function SearchFilter(props) {
                 props.handleFilterChange("courseLevel", "all")
             }}/>} label="全部"/>
             {LEVELS.map((input) => {
-                return (<div>
+                return (<div key={input}>
                     <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
                                                          onChange={() => {
                                                              props.handleFilterChange("courseLevel", input)
@@ -216,7 +221,7 @@ function SearchFilter(props) {
                 props.handleFilterChange("creditNumber", "all")
             }}/>} label="全部"/>
             {CREDITS.map((input) => {
-                return (<div>
+                return (<div key={input}>
                     <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
                                                          onChange={() => {
                                                              props.handleFilterChange("creditNumber", input)
@@ -231,7 +236,7 @@ function SearchFilter(props) {
             {CREDIT_TYPES.map((input) => {
                 if (input !== "None") {
                     return (
-                        <div>
+                        <div key={input}>
                             <FormControlLabel
                                 control={<Checkbox
                                     checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
@@ -273,7 +278,7 @@ function SearchResult(props) {
 
 }
 
-function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn) {
+function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn, setIsErrorOccurredCallBackFn) {
 
     let paramsObj = {courseName: courseName, curLevel: courseLevel, curCredit: creditNumber, curCreditType: courseType};
     let searchParams = new URLSearchParams(paramsObj);
@@ -284,7 +289,20 @@ function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', cour
     console.log(currentUrl);
 
     fetch(currentUrl)
-        .then(checkStatus)
+        .then(function (response) {
+            if (response.ok) {
+                if (response.status === 200) {
+                    return response.json()
+                } else {
+                    setCourseCardsCallBackFn([]);
+                    setIsErrorOccurredCallBackFn(true);
+                    return {result: []};
+                }
+
+            } else {
+                return Promise.reject(new Error(response.status + ": " + response.statusText))
+            }
+        })
         .then(res => {
             let courses = res.result;
             let courseTemp = [];
@@ -300,24 +318,12 @@ function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', cour
                     courseDescription: course.courseFullName,
                     tags: curTag,
                     credit: course.credit[0]
-                })
+                });
             }
+            setIsErrorOccurredCallBackFn(false);
             setCourseCardsCallBackFn(courseTemp);
             setLoadedCallBackFn(true);
         })
-        .catch(exception=>{setCourseCardsCallBackFn([]); setLoadedCallBackFn(true)});
-}
-
-function checkStatus(response) {
-    if (response.ok) {
-        if (response.status === 200) {
-            return response.json()
-        } else {
-            return {result: []};
-        }
-
-    } else {
-        return Promise.reject(new Error(response.status + ": " + response.statusText))
-    }
+        .catch(exception=>{setCourseCardsCallBackFn([]); setIsErrorOccurredCallBackFn(true)});
 }
 
