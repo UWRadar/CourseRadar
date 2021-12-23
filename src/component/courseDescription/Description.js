@@ -1,4 +1,6 @@
-import React, { Component } from "react"
+import React, { component } from "react"
+import ReactHover, { Trigger, Hover } from "react-hover";
+import HoverComponent from "./HoverComponent";
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import "./Description.css"
@@ -20,6 +22,14 @@ const Description = (props) => {
     const handleClick = () => {
         window.location.href = "/"
     }
+
+
+
+    const optionsCursorTrueWithMargin = {
+        followCursor:true,
+        shiftX:-700,
+        shiftY:-500
+  }
 
     return (
         <div>
@@ -87,18 +97,25 @@ const Description = (props) => {
                         <p className="courseDesription">{props.courseItems.description}</p>
                     </div>             
                     <div className="col-12 col-lg-4">
-                        <LinearProgressBar 
-                            completed={props.courseItems.difficulty / 5 * 100} 
-                            content={difficulty} 
-                            text="课程难度" />
-                        <LinearProgressBar 
-                            completed={props.courseItems.grading / 5 * 100} 
-                            content={grading} 
-                            text="评分难度"/>
-                        <LinearProgressBar 
-                            completed={props.courseItems.workload / 5 * 100}
-                            content={workload} 
-                            text="作业量"/>
+                        <ReactHover options={optionsCursorTrueWithMargin}>
+                            <Trigger type='trigger'>
+                                <LinearProgressBar 
+                                    completed={props.courseItems.difficulty / 5 * 100} 
+                                    content={difficulty} 
+                                    text="课程难度" />
+                            </Trigger>
+                            <Hover type='hover'>
+                                <HoverComponent />
+                            </Hover>
+                        </ReactHover>
+                            <LinearProgressBar 
+                                completed={props.courseItems.grading / 5 * 100} 
+                                content={grading} 
+                                text="评分难度"/>
+                            <LinearProgressBar 
+                                completed={props.courseItems.workload / 5 * 100}
+                                content={workload} 
+                                text="作业量"/>
                     </div>
 
                     <div className="col-12 col-lg-3" id="barCol">

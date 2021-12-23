@@ -12,6 +12,7 @@ export default class CourseDescription extends Component {
             allComments: [],
             courseName: link["match"].params.courseName,
             courseInfo: {},
+            workloadMetric: {},
             receivedBackEndData: false
         }
     }
@@ -23,6 +24,7 @@ export default class CourseDescription extends Component {
         });
         this.getAllCommentFromCoursename();
         this.getCourseRatingByCoursename();
+        this.getCourseRatingMetricWorkload();
     }
 
     replaceNullWithZero(courseRating) {
@@ -42,7 +44,7 @@ export default class CourseDescription extends Component {
             })
             .then((data) => {
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     this.replaceNullWithZero(data.result[0])
                     this.setState({
                         courseInfo: data.result[0],
@@ -69,13 +71,32 @@ export default class CourseDescription extends Component {
 
     }
 
+    getCourseRatingMetricWorkload() {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETMETRIC + "?courseName=" + this.state.courseName + "&metricName=workload")
+            .then((response) => {
+                if (response.ok)
+                    return response.json();
+                else
+                    return {};
+            })
+            .then((data) => {
+                if (data) {
+                    console.log(data);
+                    this.setState({
+                        workloadMetric: data.result
+                    })
+                }
+            })
+    }
+
     render() {
         return (
             <div className="container-fluid" id="outerCotainer">
                 <div className="col" id="description">
                     {this.state.receivedBackEndData && <Description
                         courseItems={this.state.courseInfo}
-                        courseName={this.state.courseName} />}
+                        courseName={this.state.courseName} 
+                        workloadCounts={this.state.workloadMetric}/>}
 
                     {this.state.receivedBackEndData && <p className="commentTitle">课程评价</p>}
                     

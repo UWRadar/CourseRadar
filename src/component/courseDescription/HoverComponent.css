@@ -1,0 +1,7 @@
+.hover {
+    background-color: rgb(248, 234, 255);
+    width: 300px;
+    height: 200px;
+    border-style: dashed;
+    border-color: rgb(189, 154, 230);
+  }
