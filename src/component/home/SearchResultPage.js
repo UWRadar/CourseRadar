@@ -26,7 +26,28 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
+// FIXME: Course DNE screen is not triggered when searched course is empty, possibly React router issue
 export default function SearchResultPage(props) {
+    // Extract course searched from url
+    let courseName_init = useParams()["courseName"];
+
+    if(courseName_init === undefined || courseName_init.length === 0) {
+        console.log("Search Page: no course search typed");
+        return(
+            <div className="search-result">
+                <div className='loading_container'>
+                    <img className='loading' src="../img/Course-DNE.png"/>
+                    <div className='loading_text'>请在搜索框中输入欲查询的课程</div>
+                </div>
+            </div>
+        )
+    }
+
+    return(<SearchResultHome/>);
+}
+
+
+function SearchResultHome(props) {
     // Fetch URL parameter
     let query = useQuery();
 
@@ -78,7 +99,8 @@ export default function SearchResultPage(props) {
     const [creditNumber, setCreditNumber] = useState(creditNumber_init);
     const [courseType, setCourseType] = useState(courseType_init);
     const [loaded, setLoaded] = useState(true);
-    const [isErrorOccurred, setIsErrorOccurred] = useState(false);
+    const [isCourseDNE, setIsCourseDNE] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
 
     // Custom data cleaning function to account for mutually exclusive selection
@@ -179,12 +201,8 @@ export default function SearchResultPage(props) {
         }
     }
 
-    // Confirmed that parameters are passed as array;
-    // console.log("Search Query: course searched: " + courseName.toString() + " course level: " + courseLevel.toString() + " credit number: " + creditNumber.toString() + " course type: " + courseType.toString());
-
-
     useEffect(() => {
-        fetchCourse(courseName, courseLevel, creditNumber, courseType, setCourseCards, setLoaded, setIsErrorOccurred);
+        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
     }, [courseLevel, creditNumber, courseType]);
 
     if(!loaded) {
@@ -197,12 +215,12 @@ export default function SearchResultPage(props) {
                 </div>
             </div>
         )
-    } else if (loaded && courseCards.length === 0) {
+    } else if (isCourseDNE || errorMessage) {
         return(<div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                <ErrorScreen courseName = {courseName} isErrorOccurred = {isErrorOccurred}/>
+                <ErrorScreen courseName = {courseName} errorMessage = {isCourseDNE ? "Course Not Exist" : errorMessage}/>
             </div>
         </div>)
     } else {
@@ -285,11 +303,20 @@ function LoadingScreen(props) {
 }
 
 function ErrorScreen(props) {
-    return (
+    if(props.errorMessage === "Course Not Exist") {
+        return (
             <div className='loading_container'>
                 <img className='loading' src="../img/Course-DNE.png"/>
                 <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
                 <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'white'}} activeStyle={{color: 'red'}}>填写课评</Link></div>
+            </div>
+        )
+    }
+    return (
+            <div className='loading_container'>
+                <img className='loading' src="../img/Course-DNE.png"/>
+                <div className='loading_text'>出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
+                <div className='loading_text'>{props.errorMessage}</div>
             </div>
     )
 }
@@ -304,13 +331,18 @@ function SearchResult(props) {
         )
 }
 
-function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn, setIsErrorOccurredCallBackFn) {
+function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+    // Only show loading screen if the course list is previously empty
+    if(courseCards === undefined || courseCards.length === 0) {
+        setLoadedCallBackFn(false);
+    }
 
     // Example backend search query:
     // You may assume that courseName, courseLevel, creditNumber, courseType are not null
+    // You may assume that no value will be repeated in a query, but (for query that can have multiple values) you may not assume that values are in sorted order. Hence, courseLevel=400.100.200.300 may occur.
     // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
 
-    let paramsObj = {courseName: courseName, curLevel: courseLevel, curCredit: creditNumber, curCreditType: courseType};
+    let paramsObj = {courseName: courseName, curLevel: courseLevel.join('.'), curCredit: creditNumber.join('.'), curCreditType: courseType.join('.')};
     let searchParams = new URLSearchParams(paramsObj);
 
     searchParams.toString();
@@ -323,16 +355,17 @@ function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', cour
             if (response.ok) {
                 if (response.status === 200) {
                     if(response.result === "course not found") {
-                        // TODO: this will trigger course DNE screen
+                        setCourseCardsCallBackFn([]);
+                        setIsCourseDNECallBackFn(true);
                     }
                     return response.json()
                 } else {
                     setCourseCardsCallBackFn([]);
-                    setIsErrorOccurredCallBackFn(true);
+                    setErrorMessageCallBackFn(response.status);
                     return {result: []};
                 }
-
             } else {
+                setErrorMessageCallBackFn(response.status + ": " + response.statusText);
                 return Promise.reject(new Error(response.status + ": " + response.statusText))
             }
         })
@@ -353,10 +386,10 @@ function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', cour
                     credit: course.credit[0]
                 });
             }
-            setIsErrorOccurredCallBackFn(false);
+            setErrorMessageCallBackFn(false);
             setCourseCardsCallBackFn(courseTemp);
             setLoadedCallBackFn(true);
         })
-        .catch(exception=>{setCourseCardsCallBackFn([]); setIsErrorOccurredCallBackFn(true)});
+        .catch(exception=>{setCourseCardsCallBackFn([]); setErrorMessageCallBackFn(exception.toString());});
 }
 
