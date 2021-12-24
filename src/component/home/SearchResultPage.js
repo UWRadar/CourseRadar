@@ -169,7 +169,7 @@ export default function SearchResultPage(props) {
                     newCourseType = updatedCourseType;
                 }
             } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
-                // Non Mutative way to concat an array
+                // Non-Mutative way to concat an array
                 newCourseType = courseType.concat(newValue);
             }
             params.set('course_type', newCourseType.join("."));
@@ -306,6 +306,10 @@ function SearchResult(props) {
 
 function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', courseType = 'all', setCourseCardsCallBackFn, setLoadedCallBackFn, setIsErrorOccurredCallBackFn) {
 
+    // Example backend search query:
+    // You may assume that courseName, courseLevel, creditNumber, courseType are not null
+    // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
+
     let paramsObj = {courseName: courseName, curLevel: courseLevel, curCredit: creditNumber, curCreditType: courseType};
     let searchParams = new URLSearchParams(paramsObj);
 
@@ -318,6 +322,9 @@ function fetchCourse(courseName, courseLevel = 'all', creditNumber = 'all', cour
         .then(function (response) {
             if (response.ok) {
                 if (response.status === 200) {
+                    if(response.result === "course not found") {
+                        // TODO: this will trigger course DNE screen
+                    }
                     return response.json()
                 } else {
                     setCourseCardsCallBackFn([]);
