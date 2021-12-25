@@ -203,7 +203,9 @@ function SearchResultHome(props) {
 
     useEffect(() => {
         fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
-    }, [courseLevel, creditNumber, courseType]);
+    }, [courseName, courseLevel, creditNumber, courseType]);
+
+    function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 
     if(!loaded) {
         return(
@@ -220,7 +222,7 @@ function SearchResultHome(props) {
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
             <div className="course-list2">
-                <ErrorScreen courseName = {courseName} errorMessage = {isCourseDNE ? "Course Not Exist" : errorMessage}/>
+                <ErrorScreen courseName = {courseName} courseLevel = {courseLevel} creditNumber = {creditNumber} courseType = {courseType} resetFilter={resetFilter} errorMessage = {isCourseDNE ? "Course Not Exist" : errorMessage}/>
             </div>
         </div>)
     } else {
@@ -304,11 +306,19 @@ function LoadingScreen(props) {
 
 function ErrorScreen(props) {
     if(props.errorMessage === "Course Not Exist") {
+        if(![props.courseLevel, props.creditNumber, props.courseType].every(arr => {return arr.length === 1 && arr[0] === "all"})) {
+            return (
+                <div className='loading_container'>
+                    <img className='loading' src="../img/Course-DNE.png"/>
+                    <div className='loading_text'>很抱歉，我们找不到符合条件的课程，建议您<span style={{cursor: 'pointer', color: 'purple'}} onClick={props.resetFilter}>扩大筛选条件</span></div>
+                </div>
+            )
+        }
         return (
             <div className='loading_container'>
                 <img className='loading' src="../img/Course-DNE.png"/>
                 <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
-                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'white'}} activeStyle={{color: 'red'}}>填写课评</Link></div>
+                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'purple'}} activeStyle={{color: 'purple'}}>填写课评</Link></div>
             </div>
         )
     }
@@ -348,12 +358,12 @@ function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], 
     searchParams.toString();
     const currentUrl = ServerConfig.SERVER_URL + "/api/search?" + searchParams.toString();
 
-    console.log(currentUrl);
+    // console.log(currentUrl);
 
     fetch(currentUrl)
         .then(function (response) {
             if (response.ok) {
-                console.log(response);
+                // console.log(response);
                 if (response.status === 200) {
                     return response.json()
                 }
