@@ -17,7 +17,7 @@ import CourseCard from "../general/CourseCard";
 
 // Global Functions
 const LEVELS = ["100", "200", "300", "400", "500"];
-const CREDITS = ["1", "2", "3", "4", "5"];
+const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
