@@ -342,7 +342,7 @@ function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], 
     // You may assume that no value will be repeated in a query, but (for query that can have multiple values) you may not assume that values are in sorted order. Hence, courseLevel=400.100.200.300 may occur.
     // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
 
-    let paramsObj = {courseName: courseName, curLevel: courseLevel.join('.'), curCredit: creditNumber.join('.'), curCreditType: courseType.join('.')};
+    let paramsObj = {courseName: courseName, level: courseLevel.join('.'), credit: creditNumber.join('.'), creditType: courseType.join('.')};
     let searchParams = new URLSearchParams(paramsObj);
 
     searchParams.toString();
@@ -353,12 +353,14 @@ function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], 
     fetch(currentUrl)
         .then(function (response) {
             if (response.ok) {
+                console.log(response);
                 if (response.status === 200) {
-                    if(response.result === "course not found") {
+                    return response.json()
+                }
+                if (response.status === 204) {
+                        setLoadedCallBackFn(true);
                         setCourseCardsCallBackFn([]);
                         setIsCourseDNECallBackFn(true);
-                    }
-                    return response.json()
                 } else {
                     setCourseCardsCallBackFn([]);
                     setErrorMessageCallBackFn(response.status);
@@ -386,9 +388,10 @@ function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], 
                     credit: course.credit[0]
                 });
             }
+            setIsCourseDNECallBackFn(false);
             setErrorMessageCallBackFn(false);
-            setCourseCardsCallBackFn(courseTemp);
             setLoadedCallBackFn(true);
+            setCourseCardsCallBackFn(courseTemp);
         })
         .catch(exception=>{setCourseCardsCallBackFn([]); setErrorMessageCallBackFn(exception.toString());});
 }
