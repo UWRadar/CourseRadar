@@ -53,6 +53,9 @@ function SearchResultHome(props) {
 
     // Extract course searched from url
     let courseName_init = useParams()["courseName"];
+    if (courseName_init === null) {
+        courseName_init = "all";
+    }
 
     // Extract course_level query parameter
     let courseLevel_init;
@@ -310,7 +313,7 @@ function ErrorScreen(props) {
             return (
                 <div className='loading_container'>
                     <img className='loading' src="../img/Course-DNE.png"/>
-                    <div className='loading_text'>很抱歉，我们找不到符合条件的课程，建议您<span style={{cursor: 'pointer', color: 'purple'}} onClick={props.resetFilter}>扩大筛选条件</span></div>
+                    <div className='loading_text'>很抱歉，我们找不到满足这些筛选条件的课程，建议您<span style={{cursor: 'pointer', color: 'purple'}} onClick={props.resetFilter}>扩大筛选条件</span></div>
                 </div>
             )
         }
@@ -341,7 +344,7 @@ function SearchResult(props) {
         )
 }
 
-function fetchCourse(courseName, courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
     // Only show loading screen if the course list is previously empty
     if(courseCards === undefined || courseCards.length === 0) {
         setLoadedCallBackFn(false);

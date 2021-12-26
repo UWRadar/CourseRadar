@@ -7,9 +7,10 @@
     background-color: #fafafa;
     display: none;
     padding: 15px;
-    /*height: calc(100vh - 11vh);*/
-    /*overflow: scroll;*/
-    /*position: relative;*/
+    height: calc(100vh - 11vh);
+    overflow: scroll;
+    top: 11vh;
+    position: sticky;
 }
 
 .filter h1 {
