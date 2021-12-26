@@ -117,19 +117,15 @@ export default function SearchFilter(props) {
     }
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-      };
-      const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const handleClick = (event) => {setAnchorEl(event.currentTarget);};
+    const handleClose = () => {setAnchorEl(null);};
     const history = useHistory();
       // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
       function submitSearch(event) {
           event.preventDefault();
           const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
           const searchParams = new URLSearchParams(paramsObj);
-          history.push("/search/" + courseName + "?" + searchParams);
+          history.push("/search/" + courseName + "?" + searchParams.toString());
       }
 
     return (
@@ -155,14 +151,13 @@ export default function SearchFilter(props) {
                 className="large-header-input"
                 id="outlined-basic"
                 label="搜索"
-                placeholder="e.g. CSE 142, Engl"
+                placeholder="想要找什么课～.. 例如：CSE 142, Engl"
                 onKeyDown={(e) => {if (e.keyCode === 13) submitSearch(e);}}
                 value={courseName}
                 onChange={(event)=>setCourseName(event.target.value)}/>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
-
                 onClick={submitSearch}
             >
             Search</button>
