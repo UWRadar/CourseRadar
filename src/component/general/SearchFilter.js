@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-ui/core'
-import { Grid } from '@material-ui/core';
 import {Redirect, useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
@@ -25,14 +24,6 @@ export default function SearchFilter(props) {
         </div>
     )
 
-
-    // const [filters, setFilters] = useState([
-    //     // initialize textInput filter in the default state
-    //     {
-    //         type: "courseName",
-    //         value: ""
-    //     }
-    // ]);
     const [courseName, setCourseName] = useState("");
     const [courseLevel, setCourseLevel] = useState(["all"]);
     const [creditNumber, setCreditNumber] = useState(["all"]);
@@ -124,113 +115,6 @@ export default function SearchFilter(props) {
             setCourseType(newCourseType);
         }
     }
-
-    // onClickCheckbox (updated)
-    // const handleOnChangeClickBox = (start, end, position, isSingleChoice) => {
-    //
-    //     const updatedChecked = checkedState.map((item, index) =>{
-    //         if (isSingleChoice && index >= start && index <= end && index != position) {
-    //             return false;
-    //         } else {
-    //             return index === position ? !item : item
-    //         }
-    //
-    //     });
-    //
-    //
-    //     setCheckedState(updatedChecked);
-    //     let tempFilterArr = [filters[0]];
-    //     for (let i = 0; i < updatedChecked.length; i++) {
-    //         if (updatedChecked[i]) {
-    //             tempFilterArr.push(FILTER_ITEMS[i]);
-    //         }
-    //     }
-    //     setFilters(tempFilterArr);
-    // };
-    //
-    // const handleOnChangeRadioCredit = (event) => {
-    //     setCredit(event.target.value);
-    // }
-    //
-    // const handleOnChangeRadioLevel = (event) => {
-    //     setLevel(event.target.value);
-    // }
-
-    // Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
-
-    // textInput onChange (updated)
-    // const onChangeCourseNameTextInput = (event) => {
-    //     let curFilterArr = filters;
-    //     // update courseName value in filters
-    //     curFilterArr[0].value = event.target.value;
-    //     setFilters(curFilterArr);
-    // };
-
-    // generate Checkbox tags (updated)
-    // const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
-    //     const result = [];
-    //     for (let i = startIndex; i <= endIndex; i++) {
-    //
-    //
-    //         result.push(
-    //             <div className="single-filter-item">
-    //                 <Checkbox
-    //                     checked={checkedState[i]}
-    //                     onChange={() => handleOnChangeClickBox(startIndex, endIndex, i, isSingleChoice)}
-    //                     className="checkbox"
-    //                 />
-    //                 <label> {FILTER_ITEMS[i].value} </label>
-    //             </div>
-    //         )
-    //     }
-    //     return result;
-    // }
-
-    // Updated, now it'll open a URL with query parameter
-
-
-    // const searchFilters = () => {
-    //     console.log(filters);
-    //     let curCourseName = "";
-    //     let curLevel = (level === -1) ? "" : level;
-    //     let curCredit = (credit === -1) ? "" : credit;
-    //     let curCreditType = [];
-    //     for (let i = 0; i < filters.length; i++) {
-    //         let element = filters[i];
-    //         switch (element.type) {
-    //             case 'courseName':
-    //                 curCourseName = element.value;
-    //                 break;
-    //             case 'creditType':
-    //                 curCreditType.push(element.value);
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //     }
-    //     curCreditType = curCreditType.join("/");
-    //     localStorage.setItem("courseName", curCourseName);
-    //     localStorage.setItem("level", curLevel);
-    //     localStorage.setItem("credit", curCredit);
-    //     localStorage.setItem("creditType", curCreditType);
-    //     history.push({
-    //         pathname: "/search",
-    //         state: [curCourseName, curLevel, curCredit, curCreditType]
-    //     });
-    // };
-
-    // const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
-    //     return (
-    //         <div onClick={(event) => {event.stopPropagation()}}>
-    //             <MenuItem value="level" className="selection">
-    //                 <Grid>
-    //                     <p>{regionName}</p>
-    //                     {generateCheckboxArr(startIndex, endIndex, isSingleChoice)}
-    //                 </Grid>
-    //             </MenuItem>
-    //         </div>
-    //     )
-    // }
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleClick = (event) => {
