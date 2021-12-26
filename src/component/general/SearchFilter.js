@@ -1,23 +1,22 @@
 import React, { useState } from "react"
 import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-ui/core'
 import { Grid } from '@material-ui/core';
-import { NavLink, Link } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
 import ImageStorage from "../general/ImageStorage"
-import SearchResultPage from "../home/SearchResultPage"
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+const LEVELS = ["100", "200", "300", "400", "500"];
+const CREDITS = ["1", "2", "3", "4", "5", "5+"];
+// Took out None, since it's also a utility value (should be mutually exclusive selection)
+const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
 export default function SearchFilter(props) {
-
-    const history = useHistory();
     const [openMenu, setOpenMenu] = useState(false);
 
     const selectionIcon = (
@@ -27,151 +26,211 @@ export default function SearchFilter(props) {
     )
 
 
-
-    // level: 0-3, credit: 4-8, creditType: 9-16
-    const FILTER_ITEMS = [
-        {type: "level", value: 100},
-        {type: "level", value: 200},
-        {type: "level", value: 300},
-        {type: "level", value: 400},
-        {type: "credit", value: 1},
-        {type: "credit", value: 2},
-        {type: "credit", value: 3},
-        {type: "credit", value: 4},
-        {type: "credit", value: 5},
-        {type: "creditType", value: "C"},
-        {type: "creditType", value: "DIV"},
-        {type: "creditType", value: "I&S"},
-        {type: "creditType", value: "N/A"},
-        {type: "creditType", value: "NW"},
-        {type: "creditType", value: "QSR"},
-        {type: "creditType", value: "VLPA"},
-    ];
-
-    const [filters, setFilters] = useState([
-        // initialize textInput filter in the default state
-        {
-            type: "courseName",
-            value: ""
-        }
-    ]);
-
-    const [credit, setCredit] = useState(-1);
-    const [level, setLevel] = useState(-1);
+    // const [filters, setFilters] = useState([
+    //     // initialize textInput filter in the default state
+    //     {
+    //         type: "courseName",
+    //         value: ""
+    //     }
+    // ]);
+    const [courseName, setCourseName] = useState("");
+    const [courseLevel, setCourseLevel] = useState(["all"]);
+    const [creditNumber, setCreditNumber] = useState(["all"]);
+    const [courseType, setCourseType] = useState(["all"]);
 
     // Apply Filters Btn: first click or else
     const [isFirstClick, toggleIsFirstClick] = useState(true);
 
-    // Checkbox (updated)
-    const [checkedState, setCheckedState] = useState(new Array(FILTER_ITEMS.length).fill(false));
+    // Custom data cleaning function to account for mutually exclusive selection
+    function handleFilterChange(destination, newValue) {
+        //console.log("handleFilterChange(" + destination + ", " + newValue);
+        if (destination === "courseLevel") {
+            // ES6 way to copy/clone an array
+            let newCourseLevel = [...courseLevel];
+
+            // Toggling between all and not all
+            if (newValue === "all" && courseLevel.indexOf("all") < 0) {
+                newCourseLevel = ["all"];
+            } else if (courseLevel[0] === "all" && newValue !== "all") {
+                newCourseLevel = [newValue];
+            }
+            // When it's not all, remove value if it's exist, except we do all if we have nothing left
+            else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
+                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+                const updatedLevel = newCourseLevel.filter(e => e !== newValue);
+                if (updatedLevel[0] === "" || updatedLevel.length === 0) {
+                    newCourseLevel = ["all"];
+                } else {
+                    newCourseLevel = updatedLevel;
+                }
+            } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
+                // Non Mutative way to concat an array
+                newCourseLevel = courseLevel.concat(newValue);
+            }
+            setCourseLevel(newCourseLevel);
+        } else if (destination === "creditNumber") {
+            // ES6 way to copy/clone an array
+            let newCreditNumber = [...creditNumber];
+
+            // Toggling between all and not all
+            if (newValue === "all" && creditNumber.indexOf("all") < 0) {
+                newCreditNumber = ["all"];
+            } else if (creditNumber[0] === "all" && newValue !== "all") {
+                newCreditNumber = [newValue];
+            }
+            // When it's not all, remove value if it's exist, except we do all if we have nothing left
+            else if (newValue !== "all" && creditNumber.indexOf(newValue) >= 0) {
+                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+                const updatedCreditNumber = newCreditNumber.filter(e => e !== newValue);
+                if (updatedCreditNumber[0] === "" || updatedCreditNumber.length === 0) {
+                    newCreditNumber = ["all"];
+                } else {
+                    newCreditNumber = updatedCreditNumber;
+                }
+            } else if (newValue !== "all" && creditNumber.indexOf(newValue) < 0) {
+                // Non Mutative way to concat an array
+                newCreditNumber = creditNumber.concat(newValue);
+            }
+            setCreditNumber(newCreditNumber);
+        } else if (destination === "courseType") {
+            // ES6 way to copy/clone an array
+            let newCourseType = [...courseType];
+
+            // Toggling between all and not all
+            if (newValue === "all" && courseType.indexOf("all") < 0) {
+                newCourseType = ["all"];
+            } else if (courseType[0] === "all" && newValue !== "all" && newValue !== "None") {
+                newCourseType = [newValue];
+            }
+            // Toggle between None and not None
+            else if (newValue === "None" && courseType.indexOf("None") < 0) {
+                newCourseType = ["None"];
+            } else if (courseType[0] === "None" && newValue !== "all" && newValue !== "None") {
+                newCourseType = [newValue];
+            }
+            // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
+            else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
+                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+                const updatedCourseType = newCourseType.filter(e => e !== newValue);
+                if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
+                    newCourseType = ["all"];
+                } else {
+                    newCourseType = updatedCourseType;
+                }
+            } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
+                // Non-Mutative way to concat an array
+                newCourseType = courseType.concat(newValue);
+            }
+            setCourseType(newCourseType);
+        }
+    }
 
     // onClickCheckbox (updated)
-    const handleOnChangeClickBox = (start, end, position, isSingleChoice) => {
-        
-        const updatedChecked = checkedState.map((item, index) =>{
-            if (isSingleChoice && index >= start && index <= end && index != position) {
-                return false;
-            } else {
-                return index === position ? !item : item
-            }
-            
-        });
-        
-        
-        setCheckedState(updatedChecked);
-        let tempFilterArr = [filters[0]];
-        for (let i = 0; i < updatedChecked.length; i++) {
-            if (updatedChecked[i]) {
-                tempFilterArr.push(FILTER_ITEMS[i]);
-            }
-        }
-        setFilters(tempFilterArr);
-    };
-
-    const handleOnChangeRadioCredit = (event) => {
-        setCredit(event.target.value);
-    }
-
-    const handleOnChangeRadioLevel = (event) => {
-        setLevel(event.target.value);
-    }
+    // const handleOnChangeClickBox = (start, end, position, isSingleChoice) => {
+    //
+    //     const updatedChecked = checkedState.map((item, index) =>{
+    //         if (isSingleChoice && index >= start && index <= end && index != position) {
+    //             return false;
+    //         } else {
+    //             return index === position ? !item : item
+    //         }
+    //
+    //     });
+    //
+    //
+    //     setCheckedState(updatedChecked);
+    //     let tempFilterArr = [filters[0]];
+    //     for (let i = 0; i < updatedChecked.length; i++) {
+    //         if (updatedChecked[i]) {
+    //             tempFilterArr.push(FILTER_ITEMS[i]);
+    //         }
+    //     }
+    //     setFilters(tempFilterArr);
+    // };
+    //
+    // const handleOnChangeRadioCredit = (event) => {
+    //     setCredit(event.target.value);
+    // }
+    //
+    // const handleOnChangeRadioLevel = (event) => {
+    //     setLevel(event.target.value);
+    // }
 
     // Autofill input base: https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#autofill
 
-
-
     // textInput onChange (updated)
-    const onChangeCourseNameTextInput = (event) => {
-        let curFilterArr = filters;
-        // update courseName value in filters
-        curFilterArr[0].value = event.target.value;
-        setFilters(curFilterArr);
-    };
+    // const onChangeCourseNameTextInput = (event) => {
+    //     let curFilterArr = filters;
+    //     // update courseName value in filters
+    //     curFilterArr[0].value = event.target.value;
+    //     setFilters(curFilterArr);
+    // };
 
     // generate Checkbox tags (updated)
-    const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
-        const result = [];
-        for (let i = startIndex; i <= endIndex; i++) {
-        
+    // const generateCheckboxArr = (startIndex, endIndex, isSingleChoice) => {
+    //     const result = [];
+    //     for (let i = startIndex; i <= endIndex; i++) {
+    //
+    //
+    //         result.push(
+    //             <div className="single-filter-item">
+    //                 <Checkbox
+    //                     checked={checkedState[i]}
+    //                     onChange={() => handleOnChangeClickBox(startIndex, endIndex, i, isSingleChoice)}
+    //                     className="checkbox"
+    //                 />
+    //                 <label> {FILTER_ITEMS[i].value} </label>
+    //             </div>
+    //         )
+    //     }
+    //     return result;
+    // }
 
-            result.push(
-                <div className="single-filter-item">
-                    <Checkbox
-                        checked={checkedState[i]}
-                        onChange={() => handleOnChangeClickBox(startIndex, endIndex, i, isSingleChoice)}
-                        className="checkbox"
-                    />
-                    <label> {FILTER_ITEMS[i].value} </label>
-                </div>
-            )
-        }
-        return result;
-    }
+    // Updated, now it'll open a URL with query parameter
 
-    // Search query. onClickUpdateFilterBtn (updated)
-    // example url input: /api/search?courseName=cse&level=100/200&credit=1/2&creditType=i&s/qsr
-    const searchFilters = () => {
-        console.log(filters);
-        let curCourseName = "";
-        let curLevel = (level === -1) ? "" : level;
-        let curCredit = (credit === -1) ? "" : credit;
-        let curCreditType = [];
-        for (let i = 0; i < filters.length; i++) {
-            let element = filters[i];
-            switch (element.type) {
-                case 'courseName':
-                    curCourseName = element.value;
-                    break;
-                case 'creditType':
-                    curCreditType.push(element.value);
-                    break;
-                default:
-                    break;
-            }
-        }
-        curCreditType = curCreditType.join("/");
-        localStorage.setItem("courseName", curCourseName);
-        localStorage.setItem("level", curLevel);
-        localStorage.setItem("credit", curCredit);
-        localStorage.setItem("creditType", curCreditType);
-        history.push({
-            pathname: "/search",
-            state: [curCourseName, curLevel, curCredit, curCreditType]
-        });
-    };
 
-    const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
-        return (
-            <div onClick={(event) => {event.stopPropagation()}}>
-                <MenuItem value="level" className="selection">
-                    <Grid>
-                        <p>{regionName}</p>
-                        {generateCheckboxArr(startIndex, endIndex, isSingleChoice)}
-                    </Grid>
-                </MenuItem>
-            </div>
-        )
-    }
+    // const searchFilters = () => {
+    //     console.log(filters);
+    //     let curCourseName = "";
+    //     let curLevel = (level === -1) ? "" : level;
+    //     let curCredit = (credit === -1) ? "" : credit;
+    //     let curCreditType = [];
+    //     for (let i = 0; i < filters.length; i++) {
+    //         let element = filters[i];
+    //         switch (element.type) {
+    //             case 'courseName':
+    //                 curCourseName = element.value;
+    //                 break;
+    //             case 'creditType':
+    //                 curCreditType.push(element.value);
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    //     curCreditType = curCreditType.join("/");
+    //     localStorage.setItem("courseName", curCourseName);
+    //     localStorage.setItem("level", curLevel);
+    //     localStorage.setItem("credit", curCredit);
+    //     localStorage.setItem("creditType", curCreditType);
+    //     history.push({
+    //         pathname: "/search",
+    //         state: [curCourseName, curLevel, curCredit, curCreditType]
+    //     });
+    // };
+
+    // const dropDownRegion = (regionName, startIndex, endIndex, isSingleChoice) => {
+    //     return (
+    //         <div onClick={(event) => {event.stopPropagation()}}>
+    //             <MenuItem value="level" className="selection">
+    //                 <Grid>
+    //                     <p>{regionName}</p>
+    //                     {generateCheckboxArr(startIndex, endIndex, isSingleChoice)}
+    //                 </Grid>
+    //             </MenuItem>
+    //         </div>
+    //     )
+    // }
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleClick = (event) => {
@@ -180,6 +239,14 @@ export default function SearchFilter(props) {
       const handleClose = () => {
     setAnchorEl(null);
   };
+    const history = useHistory();
+      // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
+      function submitSearch(event) {
+          event.preventDefault();
+          const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
+          const searchParams = new URLSearchParams(paramsObj);
+          history.push("/search/" + courseName + "?" + searchParams);
+      }
 
     return (
         <div className="search-bar">
@@ -197,40 +264,85 @@ export default function SearchFilter(props) {
                     {selectionIcon}
                 </MenuItem>
 
-
-                <div className="selection-container">
-                    {
-                        dropDownRegion("Course Level", 0, 3, true)
-                    }
-
-                    {
-                        dropDownRegion("Credit", 4, 8, true)
-                    }
-
-                    {
-                        dropDownRegion("Credit Type", 9, 15, false)
-                    }
-                </div>
+                <DropdownFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                              handleFilterChange={handleFilterChange}/>
         </Menu>
             <TextField
                 className="large-header-input"
                 id="outlined-basic"
                 label="搜索"
                 placeholder="e.g. CSE 142, Engl"
-                onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                        searchFilters();
-                    }
-                }}
-                onChange={onChangeCourseNameTextInput}/>
+                onKeyDown={(e) => {if (e.keyCode === 13) submitSearch(e);}}
+                value={courseName}
+                onChange={(event)=>setCourseName(event.target.value)}/>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
 
-                onClick={searchFilters}
+                onClick={submitSearch}
             >
             Search</button>
         </div>
 
+    )
+}
+
+function DropdownFilter(props) {
+    return (
+        <div className="selection-container">
+            <div className="header_filter_column">
+                <FormLabel component="legend">课程级数</FormLabel>
+                <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
+                    props.handleFilterChange("courseLevel", "all")
+                }}/>} label="全部"/>
+                {LEVELS.map((input) => {
+                    return (<div key={input}>
+                        <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
+                                                             onChange={() => {
+                                                                 props.handleFilterChange("courseLevel", input)
+                                                             }}/>}
+                                          label={input}/>
+                    </div>);
+                })}
+            </div>
+            <div className="header_filter_column">
+                <FormLabel component="legend">学分数量</FormLabel>
+                <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
+                    props.handleFilterChange("creditNumber", "all")
+                }}/>} label="全部"/>
+                {CREDITS.map((input) => {
+                    return (<div key={input}>
+                        <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
+                                                             onChange={() => {
+                                                                 props.handleFilterChange("creditNumber", input)
+                                                             }}/>}
+                                          label={input}/>
+                    </div>);
+                })}
+            </div>
+            <div className="header_filter_column">
+                <FormLabel component="legend">通识类别</FormLabel>
+                <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
+                    props.handleFilterChange("courseType", "all")
+                }}/>} label="全部"/>
+                {CREDIT_TYPES.map((input) => {
+                    if (input !== "None") {
+                        return (
+                            <div key={input}>
+                                <FormControlLabel
+                                    control={<Checkbox
+                                        checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
+                                        onChange={() => {
+                                            props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
+                                        }}/>}
+                                    label={input}/>
+                            </div>);
+                    }
+                })}
+                <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
+                    props.handleFilterChange("courseType", "None")
+                }}/>} label="无通识学分"/>
+            </div>
+        </div>
     )
 }
