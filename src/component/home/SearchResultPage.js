@@ -26,28 +26,7 @@ function useQuery() {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-// FIXME: Course DNE screen is not triggered when searched course is empty, possibly React router issue
 export default function SearchResultPage(props) {
-    // Extract course searched from url
-    let courseName_init = useParams()["courseName"];
-
-    if(courseName_init === undefined || courseName_init.length === 0) {
-        console.log("Search Page: no course search typed");
-        return(
-            <div className="search-result">
-                <div className='loading_container'>
-                    <img className='loading' src="../img/Course-DNE.png"/>
-                    <div className='loading_text'>请在搜索框中输入欲查询的课程</div>
-                </div>
-            </div>
-        )
-    }
-
-    return(<SearchResultHome/>);
-}
-
-
-function SearchResultHome(props) {
     // Fetch URL parameter
     let query = useQuery();
 
@@ -101,6 +80,7 @@ function SearchResultHome(props) {
     const [courseLevel, setCourseLevel] = useState(courseLevel_init);
     const [creditNumber, setCreditNumber] = useState(creditNumber_init);
     const [courseType, setCourseType] = useState(courseType_init);
+    const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
     const [loaded, setLoaded] = useState(true);
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
