@@ -309,7 +309,7 @@ function ErrorScreen(props) {
             <div className='loading_container'>
                 <img className='loading' src="../img/Course-DNE.png"/>
                 <div className='loading_text'>出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
-                <div className='loading_text'>{props.errorMessage}</div>
+                <div className='loading_text'><div className='error_stack_trace'>{props.errorMessage}</div></div>
             </div>
     )
 }
@@ -324,7 +324,7 @@ function SearchResult(props) {
         )
 }
 
-function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
     // Only show loading screen if the course list is previously empty
     if(courseCards === undefined || courseCards.length === 0) {
         setLoadedCallBackFn(false);
@@ -341,31 +341,24 @@ function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['
     searchParams.toString();
     const currentUrl = ServerConfig.SERVER_URL + "/api/search?" + searchParams.toString();
 
-    // console.log(currentUrl);
-
-    fetch(currentUrl)
-        .then(function (response) {
-            if (response.ok) {
-                // console.log(response);
-                if (response.status === 200) {
-                    return response.json()
-                }
-                if (response.status === 204) {
-                        setLoadedCallBackFn(true);
-                        setCourseCardsCallBackFn([]);
-                        setIsCourseDNECallBackFn(true);
-                } else {
-                    setCourseCardsCallBackFn([]);
-                    setErrorMessageCallBackFn(response.status);
-                    return {result: []};
-                }
-            } else {
-                setErrorMessageCallBackFn(response.status + ": " + response.statusText);
-                return Promise.reject(new Error(response.status + ": " + response.statusText))
-            }
-        })
-        .then(res => {
-            let courses = res.result;
+    // Practice re-write this code using async/await
+    try {
+        // Display loading screen only if we don't have any course card displays previously
+        if(courseCards.length === 0) {
+            setLoadedCallBackFn(false);
+        }
+        setIsCourseDNECallBackFn(false);
+        setErrorMessageCallBackFn(false);
+        const results = await fetch(currentUrl);
+        // console.log(currentUrl);
+        if(results.status === 204) {
+            setLoadedCallBackFn(true);
+            setCourseCardsCallBackFn([]);
+            setIsCourseDNECallBackFn(true);
+        } else if(results.status === 200) {
+            // const resultJSON = await results.json();
+            let jsonParsing = await results.json();
+            let courses = jsonParsing.result;
             let courseTemp = [];
             for (let i = 0; i < courses.length; i++) {
                 let course = courses[i];
@@ -385,7 +378,58 @@ function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['
             setErrorMessageCallBackFn(false);
             setLoadedCallBackFn(true);
             setCourseCardsCallBackFn(courseTemp);
-        })
-        .catch(exception=>{setCourseCardsCallBackFn([]); setErrorMessageCallBackFn(exception.toString());});
-}
+        }
 
+    } catch (err) {
+        setLoadedCallBackFn(true);
+        setErrorMessageCallBackFn(true);
+        setCourseCardsCallBackFn([]);
+        // Print out stack trace of this error on this webpage
+        setErrorMessageCallBackFn(err.stack);
+    }
+    //
+    // fetch(currentUrl)
+    //     .then(function (response) {
+    //         if (response.ok) {
+    //             // console.log(response);
+    //             if (response.status === 200) {
+    //                 return response.json()
+    //             }
+    //             if (response.status === 204) {
+    //                     setLoadedCallBackFn(true);
+    //                     setCourseCardsCallBackFn([]);
+    //                     setIsCourseDNECallBackFn(true);
+    //             } else {
+    //                 setCourseCardsCallBackFn([]);
+    //                 setErrorMessageCallBackFn(response.status);
+    //                 return {result: []};
+    //             }
+    //         } else {
+    //             setErrorMessageCallBackFn(response.status + ": " + response.statusText);
+    //             return Promise.reject(new Error(response.status + ": " + response.statusText))
+    //         }
+    //     })
+    //     .then(res => {
+    //         let courses = res.result;
+    //         let courseTemp = [];
+    //         for (let i = 0; i < courses.length; i++) {
+    //             let course = courses[i];
+    //             let curCreditType = course.creditType;
+    //             let curTag = null;
+    //             if (curCreditType !== null) {
+    //                 curTag = curCreditType.split("/");
+    //             }
+    //             courseTemp.push({
+    //                 courseName: course.courseName,
+    //                 courseDescription: course.courseFullName,
+    //                 tags: curTag,
+    //                 credit: course.credit[0]
+    //             });
+    //         }
+    //         setIsCourseDNECallBackFn(false);
+    //         setErrorMessageCallBackFn(false);
+    //         setLoadedCallBackFn(true);
+    //         setCourseCardsCallBackFn(courseTemp);
+    //     })
+    //     .catch(exception=>{setCourseCardsCallBackFn([]); setErrorMessageCallBackFn(exception.toString());});
+}

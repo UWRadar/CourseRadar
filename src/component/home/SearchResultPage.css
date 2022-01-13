@@ -55,12 +55,24 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    overflow: scroll;
 }
 
 .loading_text {
     font-weight: bold;
     font-size: 20px;
     margin-top: 30px;
+    position: relative;
+    width: 50vw;
+    text-align: center;
+}
+
+.error_stack_trace {
+    text-align: left;
+    position: absolute;
+    width: 50vw;
+    left: 0;
+    right: 0;
 }
 
 @media screen and (min-width: 900px) {
