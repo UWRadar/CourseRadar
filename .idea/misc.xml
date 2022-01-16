@@ -4,7 +4,11 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
+          <option name="caretOffset" value="1450" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/general/SearchFilter.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1567" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/home/SearchResultPage.js" />
         </OpenedFileInfo>
       </list>

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-ui/core'
-import {Redirect, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Menu from '@material-ui/core/Menu';
@@ -35,6 +35,8 @@ export default function SearchFilter(props) {
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
         //console.log("handleFilterChange(" + destination + ", " + newValue);
+        let url = new URL(document.URL);
+        let params = new URLSearchParams(url.search);
         if (destination === "courseLevel") {
             // ES6 way to copy/clone an array
             let newCourseLevel = [...courseLevel];
@@ -58,6 +60,10 @@ export default function SearchFilter(props) {
                 // Non Mutative way to concat an array
                 newCourseLevel = courseLevel.concat(newValue);
             }
+
+            params.set('course_level', newCourseLevel.join("."));
+            window.history.pushState(null, null, '?' + params.toString());
+
             setCourseLevel(newCourseLevel);
         } else if (destination === "creditNumber") {
             // ES6 way to copy/clone an array
@@ -82,6 +88,10 @@ export default function SearchFilter(props) {
                 // Non Mutative way to concat an array
                 newCreditNumber = creditNumber.concat(newValue);
             }
+
+            params.set('credit_number', newCreditNumber.join("."));
+            window.history.pushState(null, null, '?' + params.toString());
+
             setCreditNumber(newCreditNumber);
         } else if (destination === "courseType") {
             // ES6 way to copy/clone an array
@@ -103,6 +113,7 @@ export default function SearchFilter(props) {
             else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedCourseType = newCourseType.filter(e => e !== newValue);
+                console.log(updatedCourseType);
                 if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
                     newCourseType = ["all"];
                 } else {
@@ -112,6 +123,9 @@ export default function SearchFilter(props) {
                 // Non-Mutative way to concat an array
                 newCourseType = courseType.concat(newValue);
             }
+            params.set('course_type', newCourseType.join("."));
+            window.history.pushState(null, null, '?' + params.toString());
+
             setCourseType(newCourseType);
         }
     }
@@ -120,13 +134,14 @@ export default function SearchFilter(props) {
     const handleClick = (event) => {setAnchorEl(event.currentTarget);};
     const handleClose = () => {setAnchorEl(null);};
     const history = useHistory();
-      // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
-      function submitSearch(event) {
-          event.preventDefault();
-          const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
-          const searchParams = new URLSearchParams(paramsObj);
-          history.push("/search/" + courseName + "?" + searchParams.toString());
-      }
+
+    // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
+    function submitSearch(event) {
+        event.preventDefault();
+        const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
+        const searchParams = new URLSearchParams(paramsObj);
+        history.push("/search/" + courseName + "?" + searchParams.toString());
+    }
 
     return (
         <div className="search-bar">

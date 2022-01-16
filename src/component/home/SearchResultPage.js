@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useCallback} from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -28,13 +28,10 @@ function useQuery() {
 
 export default function SearchResultPage(props) {
     // Fetch URL parameter
-    let query = useQuery();
+    const query = useQuery();
 
     // Extract course searched from url
-    let courseName_init = useParams()["courseName"];
-    if (courseName_init === null) {
-        courseName_init = "all";
-    }
+    const courseName_init = useParams()["courseName"];
 
     // This function will extract course level, credit number, and credit type parameter's value
     // Default to all if it does not exist or contains unacceptable values
@@ -54,7 +51,7 @@ export default function SearchResultPage(props) {
     }
 
     // Note: need to extract parameter first before I can set states
-    const [courseName, setCourseName] = useState(courseName_init);
+    const [courseName, setCourseName] =  useState(courseName_init === null ? "all" : courseName_init); // default to all if the course name is not provided
     const [courseLevel, setCourseLevel] = useState(extractParam("course_level", LEVELS));
     const [creditNumber, setCreditNumber] = useState(extractParam("credit_number", CREDITS));
     const [courseType, setCourseType] = useState(extractParam("course_type", CREDIT_TYPES, ["IS", "None"]));
@@ -65,59 +62,107 @@ export default function SearchResultPage(props) {
     const [courseCards, setCourseCards] = useState([]);
 
     // Custom data cleaning function to account for mutually exclusive selection
-    function handleFilterChange(dest, newVal) {
+    function handleFilterChange(destination, newValue) {
         //console.log("handleFilterChange(" + destination + ", " + newValue);
         let url = new URL(document.URL);
         let params = new URLSearchParams(url.search);
-        if (dest === "courseLevel") {
-            changeFilter(courseLevel, newVal, "course_level", setCourseLevel);
-        } else if (dest === "creditNumber") {
-            changeFilter(creditNumber, newVal, "credit_number", setCreditNumber);
-        }else if (dest === "courseType") {
-            changeFilter(courseType, newVal, "course_type", setCourseType, true);
-        }
-        function changeFilter(originalVar, newValue, queryParam, setStateFn, hasNone = false) {
+        if (destination === "courseLevel") {
             // ES6 way to copy/clone an array
-            let result = [...originalVar];
+            let newCourseLevel = [...courseLevel];
 
             // Toggling between all and not all
-            if (newValue === "all" && originalVar.indexOf("all") < 0) {
-                result = ["all"];
-            } else if (originalVar[0] === "all" && newValue !== "all" && (!hasNone || newValue !== "None")) {
-                result = [newValue];
+            if (newValue === "all" && courseLevel.indexOf("all") < 0) {
+                newCourseLevel = ["all"];
+            } else if (courseLevel[0] === "all" && newValue !== "all") {
+                newCourseLevel = [newValue];
             }
-
-            // Toggle between None and not None (it's only effective if hasNone is true)
-            else if (!hasNone || (newValue === "None" && courseType.indexOf("None") < 0)) {
-                result = ["None"];
-            } else if (!hasNone || (courseType[0] === "None" && newValue !== "all" && newValue !== "None")) {
-                result = [newValue];
-            }
-
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && (!hasNone || newValue !== "None") && originalVar.indexOf(newValue) >= 0) {
+            else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedLevel = result.filter(e => e !== newValue);
+                const updatedLevel = newCourseLevel.filter(e => e !== newValue);
                 if (updatedLevel[0] === "" || updatedLevel.length === 0) {
-                    result = ["all"];
+                    newCourseLevel = ["all"];
                 } else {
-                    result = updatedLevel;
+                    newCourseLevel = updatedLevel;
                 }
-            } else if (newValue !== "all" && (!hasNone || newValue !== "None") && originalVar.indexOf(newValue) < 0) {
+            } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
                 // Non Mutative way to concat an array
-                result = originalVar.concat(newValue);
+                newCourseLevel = courseLevel.concat(newValue);
             }
 
-            params.set(queryParam, result.join("."));
+            params.set('course_level', newCourseLevel.join("."));
             window.history.pushState(null, null, '?' + params.toString());
 
-            setStateFn(result);
+            setCourseLevel(newCourseLevel);
+        } else if (destination === "creditNumber") {
+            // ES6 way to copy/clone an array
+            let newCreditNumber = [...creditNumber];
+
+            // Toggling between all and not all
+            if (newValue === "all" && creditNumber.indexOf("all") < 0) {
+                newCreditNumber = ["all"];
+            } else if (creditNumber[0] === "all" && newValue !== "all") {
+                newCreditNumber = [newValue];
+            }
+            // When it's not all, remove value if it's exist, except we do all if we have nothing left
+            else if (newValue !== "all" && creditNumber.indexOf(newValue) >= 0) {
+                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+                const updatedCreditNumber = newCreditNumber.filter(e => e !== newValue);
+                if (updatedCreditNumber[0] === "" || updatedCreditNumber.length === 0) {
+                    newCreditNumber = ["all"];
+                } else {
+                    newCreditNumber = updatedCreditNumber;
+                }
+            } else if (newValue !== "all" && creditNumber.indexOf(newValue) < 0) {
+                // Non Mutative way to concat an array
+                newCreditNumber = creditNumber.concat(newValue);
+            }
+
+            params.set('credit_number', newCreditNumber.join("."));
+            window.history.pushState(null, null, '?' + params.toString());
+
+            setCreditNumber(newCreditNumber);
+        } else if (destination === "courseType") {
+            // ES6 way to copy/clone an array
+            let newCourseType = [...courseType];
+
+            // Toggling between all and not all
+            if (newValue === "all" && courseType.indexOf("all") < 0) {
+                newCourseType = ["all"];
+            } else if (courseType[0] === "all" && newValue !== "all" && newValue !== "None") {
+                newCourseType = [newValue];
+            }
+            // Toggle between None and not None
+            else if (newValue === "None" && courseType.indexOf("None") < 0) {
+                newCourseType = ["None"];
+            } else if (courseType[0] === "None" && newValue !== "all" && newValue !== "None") {
+                newCourseType = [newValue];
+            }
+            // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
+            else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
+                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+                const updatedCourseType = newCourseType.filter(e => e !== newValue);
+                console.log(updatedCourseType);
+                if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
+                    newCourseType = ["all"];
+                } else {
+                    newCourseType = updatedCourseType;
+                }
+            } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
+                // Non-Mutative way to concat an array
+                newCourseType = courseType.concat(newValue);
+            }
+            params.set('course_type', newCourseType.join("."));
+            window.history.pushState(null, null, '?' + params.toString());
+
+            setCourseType(newCourseType);
         }
     }
 
     useEffect(() => {
         fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
     }, [courseName, courseLevel, creditNumber, courseType]);
+
 
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 
