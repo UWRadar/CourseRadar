@@ -8,7 +8,13 @@ import ServerConfig from "../config/ServerConfig";
 const toggleLike = (e, name) => {
     e.preventDefault();
     console.log(name);
-    fetch(ServerConfig.SERVER_URL + "/api/togglelike?courseName=" + name)
+    fetch(ServerConfig.SERVER_URL + "/api/togglelike", {
+        body: JSON.stringify({
+            courseName: name.toLowerCase()
+        }),
+        credentials: "include",
+        method: "POST"
+    })
         .then(res => {
             if(res.ok) {
                 return res.json();
@@ -18,8 +24,9 @@ const toggleLike = (e, name) => {
         })
         .then(data => {
             console.log(data);
-            if(data.state == 0){
+            if(data.state === 0){
                 alert("已取消收藏");
+                window.location.reload(false);
             } else {
                 alert("已收藏");
             }
@@ -28,6 +35,7 @@ const toggleLike = (e, name) => {
 
 const CourseCard = (props) => {
     /* 需要有传进的props以显示对应的课程和正确链接 */
+    console.log(props);
     const firstNonAlpha = props.courseName.search(/\d/);
     let name = props.courseName.substring(0, firstNonAlpha).toUpperCase();
     if (Img[name] == undefined) {
