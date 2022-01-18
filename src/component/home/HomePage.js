@@ -49,6 +49,32 @@ export default class HomePage extends Component {
         // this.getAds();
         this.getPopular();
         this.getRecommended();
+        this.getUserInfo();
+    }
+
+    getUserInfo() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                this.setState({
+                    email: data.email,
+                    favCourses: data.favCourses,
+                    username: data.username,
+                    redirectToLogin: false
+                })
+            }
+        }).catch(() => {
+            this.setState({
+                redirectToLogin: true
+            })
+        })
     }
 
     changeActiveTab(tabName) {
@@ -214,6 +240,7 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
                             />
                         ))
                     }
@@ -225,6 +252,7 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
                             />
                         ))
                     }

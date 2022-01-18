@@ -48,6 +48,7 @@ class ProfilePage extends Component {
                         courseDescription={element.courseDescription}
                         tags={element.tags}
                         credit={element.credit}
+                        loginStatus={!this.state.redirectToLogin}
                     />
                 ))
             }

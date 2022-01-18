@@ -1,13 +1,21 @@
-import React, { Component } from "react"
+import React, { Component, useState, useEffect } from "react"
 import "./CourseCard.css"
 import Img from "./Mapping"
 import { NavLink } from 'react-router-dom'
-import like from '../../img/talk-active.png';
+import like from '../../img/like.svg';
+import unlike from '../../img/unlike.svg';
 import ServerConfig from "../config/ServerConfig";
+import {withRouter, Redirect} from 'react-router-dom';
 
-const toggleLike = (e, name) => {
+const toggleLike = (e, name, loginStatus, setLogin) => {
     e.preventDefault();
     console.log(name);
+    // if user do not login, redirect to login page
+    if(!loginStatus) {
+        setLogin(true);
+        alert("Please login first!");
+        return
+    }
     fetch(ServerConfig.SERVER_URL + "/api/togglelike", {
         body: JSON.stringify({
             courseName: name.toLowerCase()
@@ -33,15 +41,61 @@ const toggleLike = (e, name) => {
         })
 }
 
+const isFavorite = (loginStatus, name) => {
+    console.log(name)
+    if(!loginStatus) {
+        return false;
+    }   else {
+        fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+            body: JSON.stringify({
+                courseName: name.toLowerCase()
+            }),
+            credentials: "include",
+            method: "POST"
+        }).then(res => {
+            if(res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        }).then(data => {
+            console.log(data);
+            if(data.state === 0) {
+                return false;
+            } else {
+                return true;
+            }
+        })
+    }
+}
+
+
 const CourseCard = (props) => {
     /* 需要有传进的props以显示对应的课程和正确链接 */
     console.log(props);
+
+    // use hooks to lead user to login page if not login
+    const [login, setLogin] = useState(false);
+    //const [favorite, setFavorite] = useState(false);
+
+    //setFavorite(isFavorite(login, props.name));
+    const favorite = () => {isFavorite(props.loginStatus, props.courseName)};
+    //setFavorite(isFavorite(props.loginStatus, props.courseName));
+    // useEffect (() => {
+    //     setFavorite(isFavorite(props.loginStatus, props.courseName));
+    // }, []);
+    console.log(favorite);  
     const firstNonAlpha = props.courseName.search(/\d/);
     let name = props.courseName.substring(0, firstNonAlpha).toUpperCase();
-    if (Img[name] == undefined) {
+    if (Img[name] === undefined) {
         name = "DEFAULT";
     }
-        
+    
+    // if user do not login and press favorite, redirect to login page
+    if (login) {
+        return (<Redirect to="/login" />)
+    }
+    
     return (
         <NavLink
             to={"/CourseDetail/" + props.courseName.replace("/\s/g", "")}
@@ -77,9 +131,9 @@ const CourseCard = (props) => {
                                 </div>
                             </div>
 
-                            <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName)}>
+                            <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
                                 <div class="tooltips" id="add">
-                                    <img src={like} alt="like"  />
+                                    {favorite ?  <img src={like} alt="like"  /> : <img src={unlike} alt="unlike" />}
                                 </div>
                             </div>
                         </div>
