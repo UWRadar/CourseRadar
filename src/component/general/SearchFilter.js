@@ -129,7 +129,7 @@ export default function SearchFilter(props) {
         event.preventDefault();
         const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
         const searchParams = new URLSearchParams(paramsObj);
-        history.push("/search/" + courseName + "?" + searchParams.toString());
+        history.push({pathname:"/search/" + courseName + "?" + searchParams.toString(), state: [courseName, courseLevel, creditNumber, courseType]});
     }
 
     return (
