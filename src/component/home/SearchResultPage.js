@@ -42,7 +42,7 @@ export default function SearchResultPage(props) {
         } else {
             result = query.get(queryName).split(".");
             if (result.includes("all")) {
-                result = ["all"]
+                result = ["all"];
             } else if (!result.every(r => referenceConst.concat(["all"].concat(extraAllowedValue)).includes(r))) {
                 result = ["all"]; // default to all for malformed query
             }

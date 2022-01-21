@@ -60,10 +60,6 @@ export default function SearchFilter(props) {
                 // Non Mutative way to concat an array
                 newCourseLevel = courseLevel.concat(newValue);
             }
-
-            params.set('course_level', newCourseLevel.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
             setCourseLevel(newCourseLevel);
         } else if (destination === "creditNumber") {
             // ES6 way to copy/clone an array
@@ -88,10 +84,6 @@ export default function SearchFilter(props) {
                 // Non Mutative way to concat an array
                 newCreditNumber = creditNumber.concat(newValue);
             }
-
-            params.set('credit_number', newCreditNumber.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
             setCreditNumber(newCreditNumber);
         } else if (destination === "courseType") {
             // ES6 way to copy/clone an array
@@ -123,9 +115,6 @@ export default function SearchFilter(props) {
                 // Non-Mutative way to concat an array
                 newCourseType = courseType.concat(newValue);
             }
-            params.set('course_type', newCourseType.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
             setCourseType(newCourseType);
         }
     }

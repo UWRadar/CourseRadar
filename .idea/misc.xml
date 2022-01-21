@@ -4,8 +4,12 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/README.md" />
+          <option name="caretOffset" value="4417" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/general/SearchFilter.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2321" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/home/SearchResultPage.js" />
         </OpenedFileInfo>
       </list>
     </option>
