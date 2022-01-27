@@ -10,7 +10,7 @@ import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 import { NavLink } from "react-router-dom"
-import SearchBar from "../general/SearchFilter"
+import SearchBar from "../search/SearchFilter"
 import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {

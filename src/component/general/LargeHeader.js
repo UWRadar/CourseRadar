@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ImageStorage from "./ImageStorage"
-import SearchFilter from "./SearchFilter";
+import SearchFilter from "../search/SearchFilter";
 import ServerConfig from "../config/ServerConfig"
 import { NavLink } from 'react-router-dom'
 import "./LargeHeader.css"

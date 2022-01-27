@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Switch, Link, Redirect} from "react-rout
 import HomePage from "../home/HomePage"
 import LoginPage from "../login/LoginPage"
 import ProfilePage from "../profile/ProfilePage"
-import SearchResultPage from "../home/SearchResultPage"
+import SearchResultPage from "../search/SearchResultPage"
 import SurveyPage from "../survey/SurveyPage"
 // import SearchResultPage from "../search-result-page/SearchResultPage"
 import LargeHeader from "../general/LargeHeader"
