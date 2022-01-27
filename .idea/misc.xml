@@ -4,20 +4,24 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="107" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/src/index.js" />
+          <option name="caretOffset" value="4755" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/SearchResultPage.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="244" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/src/controller/ReduxStore.js" />
+          <option name="caretOffset" value="7303" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/SearchFilter.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="462" />
+          <option name="caretOffset" value="1148" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/controller/SearchQuerySlice.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1878" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/SearchResultPage.js" />
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/App.js" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/index.js" />
         </OpenedFileInfo>
       </list>
     </option>

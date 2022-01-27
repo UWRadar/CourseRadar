@@ -12,11 +12,13 @@ import store from './controller/ReduxStore'
 
 ReactDOM.render(
     // David Xie: Add react-redux dependency for cross-component state management
-    <Provider store={store}>
+
       <React.StrictMode>
+        <Provider store={store}>
         <Routing />
+        </Provider>
       </React.StrictMode>
-    </Provider>,
+    ,
   document.getElementById('root')
 );
 
