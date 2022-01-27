@@ -12,12 +12,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/src/controller/ReduxStore.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2185" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/SearchResultPage.js" />
+          <option name="caretOffset" value="462" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/controller/SearchQuerySlice.js" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="403" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/controller/SearchQuerySlice.js" />
+          <option name="caretOffset" value="1878" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/component/search/SearchResultPage.js" />
         </OpenedFileInfo>
       </list>
     </option>

@@ -1,27 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// Global constants
-const LEVELS = ["100", "200", "300", "400", "500"];
-const CREDITS = ["1", "2", "3", "4", "5", "5+"];
-// Took out None, since it's also a utility value (should be mutually exclusive selection)
-const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
-
-function checkValue(currArr, referenceConst, extraAllowedValue=[]) {
-    if (currArr.includes("all")) {
-        return ["all"];
-    } else if (!currArr.every(r => referenceConst.concat(["all"].concat(extraAllowedValue)).includes(r))) {
-        return ["all"]; // default to all for malformed query
-    }
-    return currArr;
-}
-
 export const searchSlice = createSlice({
     name: 'search_param',
+    // This controller only stores state that needs to be shared in both search bar and search result page
+    // States that are only used in 1 component will not be used here (and stored in its component.js file instead)
     initialState: {
         courseName: "all",
         courseLevel: ["all"],
         creditNumber: ["all"],
-        creditType: ["all"],
+        courseType: ["all"],
     },
     // Listen to state change event
     reducers: {
@@ -29,22 +16,22 @@ export const searchSlice = createSlice({
             if(action.payload === undefined) {
                 state.courseName = "all";
             }  else {
-                state.courseName = action.payload.replace(/[^a-zA-Z0-9]/gi, ""); // Only keep alphanumeric characters
+                state.courseName = action.payload;
             }
         },
         setCourseLevel: (state, action) => {
-            state.courseLevel = checkValue(action.payload, LEVELS);
+            state.courseLevel = action.payload;
         },
         setCreditNumber: (state, action) => {
-            state.creditNumber = checkValue(action.payload, CREDITS);
+            state.creditNumber = action.payload;
         },
-        setCreditType: (state, action) => {
-            state.creditType = checkValue(action.payload, CREDIT_TYPES, ["IS", "None"]);
+        setCourseType: (state, action) => {
+            state.courseType = action.payload;
         }
     }
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { setCourseName, setCourseLevel, setCreditNumber, setCreditType } = searchSlice.actions
+export const { setCourseName, setCourseLevel, setCreditNumber, setCourseType } = searchSlice.actions
 
 export default searchSlice.reducer

@@ -10,6 +10,10 @@ import {CircularProgress} from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
+// Redux
+import { useSelector, useDispatch } from 'react-redux'
+import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
+
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -27,6 +31,13 @@ function useQuery() {
 }
 
 export default function SearchResultPage(props) {
+    // Read Redux States
+    const courseName = useSelector(state => state.courseName.value);
+    const courseLevel = useSelector(state => state.courseLevel.value);
+    const creditNumber = useSelector(state => state.creditNumber.value);
+    const courseType = useSelector(state => state.courseType.value);
+    const dispatch = useDispatch();
+
     const id = useParams();
 
     // Fetch URL parameter
@@ -56,20 +67,18 @@ export default function SearchResultPage(props) {
     }
 
     // Note: need to extract parameter first before I can set states
-    const [courseName, setCourseName] =  useState(courseName_init === null ? "all" : courseName_init); // default to all if the course name is not provided
-    const [courseLevel, setCourseLevel] = useState(extractParam("course_level", LEVELS));
-    const [creditNumber, setCreditNumber] = useState(extractParam("credit_number", CREDITS));
-    const [courseType, setCourseType] = useState(extractParam("course_type", CREDIT_TYPES, ["IS", "None"]));
-
+    dispatch(setCourseName(courseName_init === null ? "all" : courseName_init));
+    dispatch(setCourseLevel(extractParam("course_level", LEVELS)));
+    dispatch(setCreditNumber(extractParam("credit_number", CREDITS)));
+    dispatch(setCourseType(extractParam("course_type", CREDIT_TYPES, ["IS", "None"])));
 
     const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
     const [loaded, setLoaded] = useState(true);
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
-    const history = useHistory();
 
-    // Custom data cleaning function to account for mutually exclusive selection
+// Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
         //console.log("handleFilterChange(" + destination + ", " + newValue);
         let url = new URL(document.URL);
@@ -99,10 +108,9 @@ export default function SearchResultPage(props) {
             }
 
             params.set('course_level', newCourseLevel.join("."));
-            // console.log(params.toString());
-            // console.log(courseLevel);
-            history.push("/search/" + courseName + "?" + params.toString());
-            setCourseLevel(newCourseLevel);
+            window.history.pushState(null, null, '?' + params.toString());
+
+            dispatch(setCourseLevel(newCourseLevel));
         } else if (destination === "creditNumber") {
             // ES6 way to copy/clone an array
             let newCreditNumber = [...creditNumber];
@@ -128,9 +136,9 @@ export default function SearchResultPage(props) {
             }
 
             params.set('credit_number', newCreditNumber.join("."));
-            history.push("/search/" + courseName + "?" + params.toString());
+            window.history.pushState(null, null, '?' + params.toString());
 
-            setCreditNumber(newCreditNumber);
+            dispatch(setCreditNumber(newCreditNumber));
         } else if (destination === "courseType") {
             // ES6 way to copy/clone an array
             let newCourseType = [...courseType];
@@ -151,7 +159,7 @@ export default function SearchResultPage(props) {
             else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedCourseType = newCourseType.filter(e => e !== newValue);
-                // console.log(updatedCourseType);
+                console.log(updatedCourseType);
                 if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
                     newCourseType = ["all"];
                 } else {
@@ -162,80 +170,15 @@ export default function SearchResultPage(props) {
                 newCourseType = courseType.concat(newValue);
             }
             params.set('course_type', newCourseType.join("."));
-            history.push("/search/" + courseName + "?" + params.toString());
+            window.history.pushState(null, null, '?' + params.toString());
 
-            setCourseType(newCourseType);
+            dispatch(setCourseType(newCourseType));
         }
     }
-
-    function arrayEquals(a, b) {
-        return Array.isArray(a) &&
-            Array.isArray(b) &&
-            a.length === b.length &&
-            a.every((val, index) => val === b[index]);
-    }
-    const [firstLoad, setFirstLoad] = useState(true);
-    function extractParam2(queryObj, queryName, referenceConst, extraAllowedValue = []) {
-        if(queryObj.has(queryName)) { // if ("key" in object)
-            let result = queryObj.get(queryName).split(".");
-            if (result.includes("all")) {
-                return ["all"];
-            } else if (!result.every(r => referenceConst.concat(["all"].concat(extraAllowedValue)).includes(r))) {
-                return ["all"]; // default to all for malformed query
-            }
-            return result;
-        } else {
-            return ["all"];
-        }
-    }
-
 
     useEffect(() => {
-        let courseName = undefined;
-        let courseLevel = undefined;
-        let creditNumber = undefined;
-        let courseType = undefined;
-
-        // First load
-        if(firstLoad) {
-            courseName = id["courseName"];
-            courseName = courseName === null ? "all" : courseName;
-            courseLevel = extractParam("course_level", LEVELS);
-            creditNumber = extractParam("credit_number", CREDITS);
-            courseType =  extractParam("course_type", CREDIT_TYPES, ["IS", "None"]);
-            setFirstLoad(false);
-        }
-
-        // Subsequent change
-        else {
-            const idString = id["courseName"];
-            courseName = idString;
-            courseName = courseName === null ? "all" : courseName;
-            courseName = courseName.indexOf("?") >= 0 ? courseName.slice(0, courseName.indexOf("?")) : courseName;
-
-            // no Query
-            if(idString.indexOf("?") < 0) {
-                courseLevel = ["all"];
-                creditNumber = ["all"];
-                courseType = ["all"];
-            } else {
-                const searchParams1 = new URLSearchParams(idString.slice(idString.indexOf("?"))); // an object
-                courseLevel = extractParam2(searchParams1, "course_level", LEVELS);
-                creditNumber = extractParam2(searchParams1, "credit_number", CREDITS);
-                courseType = extractParam2(searchParams1, "course_type", CREDIT_TYPES, ["IS", "None"]);
-            }
-        }
-
-        console.log("something has changed");
-        // console.log(test);
-        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage).then(() => {
-
-        });
-        setCourseName(courseName);
-        setCourseLevel(courseLevel);
-        setCreditNumber(creditNumber);
-        setCourseType(courseType);
-    }, [id]);
+        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
+    }, [courseName, courseLevel, creditNumber, courseType]);
 
 
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
