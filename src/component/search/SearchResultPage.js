@@ -1,18 +1,18 @@
-import React, {useEffect, useState, useCallback} from "react"
+import React, {useEffect, useState} from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import {Link, useHistory, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
 // Redux
-import { useSelector, useDispatch } from 'react-redux'
-import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
+import {useDispatch, useSelector} from 'react-redux'
+import {setCourseLevel, setCourseName, setCourseType, setCreditNumber} from './controller/SearchQuerySlice'
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -37,7 +37,6 @@ export default function SearchResultPage(props) {
     const courseType = useSelector(state => state.search.courseType);
     const dispatch = useDispatch();
 
-
     // Extract course name from URL
     const pathName = window.location.pathname; // anything right before ? mark
     const pathNameArr = pathName.split('/');
@@ -46,20 +45,9 @@ export default function SearchResultPage(props) {
         dispatch(setCourseName(pathNameArr.at(-1)));
     }
 
-
     // Extract course searched from url parameter
-    const initialValFromParam = {
-        courseName: "all",
-        courseLevel: ["all"],
-        creditNumber: ["all"],
-        courseType: ["all"],
-    };
-
-    let url = window.location;
-    // alert(url);
-    const params = (new URL(url)).searchParams;
+    const params = (new URL(window.location)).searchParams;
     const levelArr = extractParam(params, "course_level", LEVELS);
-    // alert(levelArr);
     if(!arrayEquals(levelArr, courseLevel)) {
         dispatch(setCourseLevel(levelArr));
     }
@@ -86,7 +74,6 @@ export default function SearchResultPage(props) {
                 result = ["all"]; // default to all for malformed query
             }
         }
-        console.log(result);
         return result;
     }
 
