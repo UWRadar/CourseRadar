@@ -49,6 +49,9 @@ export default function SearchResultPage(props) {
                 result = ["all"]; // default to all for malformed query
             }
         }
+        if(queryName === "course_level") {
+            console.log(result);
+        }
         return result;
     }
 
@@ -57,6 +60,8 @@ export default function SearchResultPage(props) {
     const [courseLevel, setCourseLevel] = useState(extractParam("course_level", LEVELS));
     const [creditNumber, setCreditNumber] = useState(extractParam("credit_number", CREDITS));
     const [courseType, setCourseType] = useState(extractParam("course_type", CREDIT_TYPES, ["IS", "None"]));
+
+
     const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
     const [loaded, setLoaded] = useState(true);
     const [isCourseDNE, setIsCourseDNE] = useState(false);
@@ -94,6 +99,8 @@ export default function SearchResultPage(props) {
             }
 
             params.set('course_level', newCourseLevel.join("."));
+            // console.log(params.toString());
+            // console.log(courseLevel);
             history.push("/search/" + courseName + "?" + params.toString());
             setCourseLevel(newCourseLevel);
         } else if (destination === "creditNumber") {

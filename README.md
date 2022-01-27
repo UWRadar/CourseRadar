@@ -1,103 +1,357 @@
-# Course Evaluation Website React.js Front-end repository 
+const http = require('http');
+const Search = require('../service/search');
+const dbPassword = require("../dbconn.json");
+const AccountServiceManager = require("../service/AccountServiceManager");
+const mysql = require('mysql');
+const User = require("../service/User");
+const Advertisement = require('../service/Advertisement');
+const Cookies = require("cookies");
+const util = require('util');
+const urlParser = require('url');
+const firebaseKey = require("../firebase-key.json");
+const firebase = require("firebase-admin");
+const CourseCommentManager = require("../service/CourseCommentManager");
+const NewsFeedServiceManager = require('../service/NewsFeedServiceManager');
+class Server {
+    constructor() {
+        this.url = dbPassword.server_url;
+        this.dbname = dbPassword.database_name;
+        this.username = dbPassword.username;
+        this.passwd = dbPassword.password;
+        this.port = dbPassword.port;
 
-## Links
+        this.pool = mysql.createPool({
+            connectionLimit: 10,
+            host: this.url,
+            user: this.username,
+            password: this.passwd,
+            database: this.dbname
+        });
+        this.headers = {
+            "Access-Control-Allow-Credentials": "true",
+            // "Access-Control-Allow-Origin": "http://localhost:3000"
+            "Access-Control-Allow-Origin": " http://192.168.102.161:3000"
+        };
 
-[Public GitHub Link (my contribution branch)](https://github.com/UWRadar/CourseRadar/tree/search_result_improvement)
+        this.accountServiceManager = new AccountServiceManager(this.pool);
+        this.search = new Search(this.pool);
+        this.ad = new Advertisement(this.pool);
+        this.courseCommentManager = new CourseCommentManager(this.pool);
+        this.newsfeedServiceManager = new NewsFeedServiceManager(this.pool);
+    }
 
-[Official website url is here](https://www.uwclassmates.com)
+    /*
+        Authenticate request from client using the token stored in cookies
 
-[My site design and development journal](https://www.davidxie.net/projects/uw-course-evaluation-website) (password is `GreeTings#^Hii12` please don't share it with other people. Thank you!)
+        @param req The HTTP request from client
+        @param rsp The HTTP response to client
+    */
+    authenticateRequest(req, rsp) {
+        const cookies = new Cookies(req, rsp);
+        const token = cookies.get("token");
+        const tokenType = cookies.get("token-type");
+        if (!token || !tokenType) {
+            return false;
+        }
+        if (tokenType === "firebase") {
+            return this.authenticateRequestFirebase(token);
+        } else if (tokenType === "ohcm") {
+            const query = util.promisify(this.pool.query).bind(this.pool);
+            return this.authenticateRequestSQL(token, query);
+        } else {
+            return false;
+        }
+    }
 
-## About this site
+    // Authentication method for firebase/google logins
+    async authenticateRequestFirebase(token) {
+        if (!token)
+            return false;
 
-This website present student submitting course evaluations on selected University of Washington classes, with the goal of helping incoming freshmen to build their best possible course schedules. This website is specially created for Chinese-speaking international students in UW, such as those from China and other Southeast Asian countries.
+        if (firebase.apps.length == 0) {
+            firebase.initializeApp({
+                credential: firebase.credential.cert(firebaseKey)
+            });
+        } else {
+            firebase.app();
+        }
 
-## My responsibility and contribution
+        const result = await firebase
+            .auth()
+            .verifyIdToken(token)
+            .then((decodedUser) => { return true; })
+            .catch((error) => {
+                return false;
+            })
+        return result;
+    }
 
-- Refactored search page React Component to display results by parsing URL query parameters.
-  - I am responsible for writing and improving these following files, relative to project source root.
-  - `src/component/home/SearchResultPage.js`
-  - `src/component/home/SearchResultPage.css`
-  - `src/component/general/SearchFilter.js`
-  - `src/component/general/SearchFilter.css`
-- Refactored Node.js backend server to handle complex course search queries and prevent SQL injections.
-  - Unfortunately, I could not share the site's back-end code repository due to information security concern in our project group.
-- Design the site's home page and course detail page's appearance.
-- Help other teammates to solve programming issues for site's Front-end and Back-end codes
-  - For instance, I assist another teammate to embed `svg` XML content in a web page.
+    // Authentication method for normal logins
+    async authenticateRequestSQL(token, query) {
+        const result = await query("SELECT 1 From Sessions As S Where S.token = ?", token);
+        return (result.length == 1);
+    }
 
-# Commands for developers to test and build this site
+    doAction(path, query, out, req) {
+        switch (path) {
+            case '/api/changeprofile':
+                /**
+                 * @method POST
+                 * @param password - the MD5 encoded new password
+                 * @param username - new username
+                 * The token cookie will be used.
+                */
+                this.getPostData(req, (postData) => {
+                    const user = new User(out, req);
+                    user.changeProfile(postData);
+                })
+                break;
+            case '/api/retrieveRating':
+                this.courseCommentManager.getCourseRatingByCourseName(query['courseName'], out);
+                break;
+            case '/api/getPast':
+                //this.accountServiceManager.getCommentsFromUserId(query["userId"], out);
+                out.end(JSON.stringify({ "error": "Unimplemented" }));
+                break;
 
-This front-end works the best if you have our Node.js back-end server running. Unfortunately, I could not share the site's back-end code repository due to information security concern in our project group.
+            case '/api/search':
+                var self = this;
+                this.search.search(query["courseName"], query["credit"], query["level"], query["creditType"], function (result) {
+                    if (result == null) {
+                        out.writeHead(204, self.headers)
+                        out.end(JSON.stringify({ "result": "results not found", "success": 0 }));
+                    } else {
+                        out.writeHead(200, self.headers)
+                        out.end(JSON.stringify({ "result": result, "success": 1 }));
+                    }
+                });
+                break;
+            case '/api/retrieveComment':
+                this.courseCommentManager.getCommentsByCourseName(query['name'], out);
+                break;
+            case '/api/like':
+                this.authenticateRequest(req, out)
+                    .then((res) => {
+                        if (res)
+                            this.getPostData(req, (postData) => {
+                                const like = new Like(out);
+                                like.update(postData.courseName, postData.userName, postData.commentID);
+                            });
+                        else
+                            this.authFailed(out);
+                    })
+                break;
 
-## Getting Started with Organization of Hua Classmate's React front-end
+            case '/api/login':
+                /**
+                 * @method POST
+                 * @param email
+                 * @param password - the MD5 encoded password
+                */
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+                this.getPostData(req, (postData) => {
+                    const user = new User(out, req);
+                    user.login(postData.email, postData.password);
+                });
+                break;
 
-## Available Scripts
+            case '/api/loginfirebase':
+                /**
+                 * @method POST
+                 * @param idToken
+                */
 
-In the project directory, you can run:
+                this.getPostData(req, (postData) => {
+                    const user = new User(out, req);
+                    if (postData.idToken == undefined || !postData.idToken) {
+                        out.writeHead(400, this.header);
+                        out.end(JSON.stringify({
+                            error: "Invalid request to log in",
+                            success: false
+                        }));
+                    }
+                    user.loginFirebase(postData.idToken);
+                });
+                break;
 
-### `npm start`
+            case '/api/logout':
+                /**
+                 * @method POST
+                 * No @param. The token cookie will be used.
+                 * @returns 204 if succeed; 500 if failed.
+                 */
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+                if (req.method == "POST") {
+                    const user = new User(out, req);
+                    user.logOut();
+                } else {
+                    out.writeHead(405); // Method Not Allowed
+                    out.end();
+                }
+                break;
+            case '/api/fillcomment':
+                /**
+                 * @method POST
+                 * @param comment - course comment
+                 * @param year - course year Ex.2021
+                 * @param quarter - course Quarter Ex Winter
+                 * @param professorName - professor for the quarter
+                 * @param gpa - GPA
+                 */
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+                this.getPostData(req, (postData) => {
+                    const comment = postData.comment;
+                    const year = postData.year;
+                    const quarter = postData.quarter;
+                    const name = postData.courseName;
+                    const professorName = postData.instructor;
+                    const gpa = postData.GPA;
+                    const language = postData.language;
+                    const workload = postData.workload;
+                    const grading = postData.grading;
+                    this.courseCommentManager.fillcomment(comment, year, quarter,
+                        name, professorName, gpa, grading, language, workload, out);
+                });
+                break;
 
-### `npm test`
+            case '/api/signup':
+                /**
+                 * @method POST
+                 * @param email
+                 * @param password - the MD5 encoded password
+                 *
+                 * Optional:
+                 * @param username
+                 */
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+                this.getPostData(req, (postData) => {
+                    const user = new User(out, req);
+                    user.signup(postData);
+                });
+                break;
 
-### `npm run build`
+            case '/api/userinfo':
+                /**
+                 * @method GET
+                 * No @param. The token cookie will be used.
+                 */
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+                const user = new User(out, req);
+                user.getUserInfo().then(info => {
+                    user.getFavCourses(info.id).then(favCourses => {
+                        info.favCourses = favCourses;
+                        delete info.id;
+                        out.end(JSON.stringify(info));
+                    })
+                });
+                break;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+            case '/api/verifyemail':
+                /**
+                 * @method POST
+                 * @param email
+                 * @param code - the verification code the user received in the email
+                 */
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+                this.getPostData(req, (postData) => {
+                    const user = new User(out, req);
+                    user.verifyEmail(postData.email, postData.code);
+                });
+                break;
 
-### `npm run eject`
+            case '/api/ad':
+                this.ad.get(out);
+                break;
+            case '/api/getRecommended':
+                this.newsfeedServiceManager.getRecommened(out);
+                break;
+            case '/api/getPopular':
+                this.newsfeedServiceManager.getPopularCourse(out);
+                break;
+            default:
+                out.writeHead(404);
+                out.end("404 Not Found");
+        }
+    }
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    authFailed(out) {
+        out.writeHead(403, this.headers);
+        out.end(JSON.stringify({
+            error: "Invalid token",
+            success: false
+        }))
+    }
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+    getPostData(req, callback) {
+        /*
+            To test a POST request:
+            1. Open http://localhost:9000/ in Chrome
+            2. Press F12 to open DevTools
+            3. Modify the following example code and run it in Console
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+            fetch("/api/verifyemail", {
+                body: JSON.stringify({
+                    email: "example@uw.edu",
+                    code: 123456
+                }),
+                method: "POST"
+            })
+        */
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+        let data = "";
+        req.on("data", chunk => {
+            data += chunk;
+        });
+        req.on("end", () => {
+            if (callback) {
+                if (req.headers["content-type"] == "application/x-www-form-urlencoded") {
+                    const json = {}
+                    if (data) {
+                        const parameters = data.split("&")
+                        for (let i = 0; i < parameters.length; i++) {
+                            const split = parameters[i].split("=")
+                            json[split[0]] = decodeURIComponent(split[1])
+                        }
+                    }
+                    callback(json)
+                } else {
+                    try {
+                        callback(JSON.parse(data));
+                    } catch {
+                        callback({});
+                    }
+                }
+            }
+        });
+    }
 
-### Code Splitting
+    run() {
+        //do not delete, this is for the callback function to refer back to the current object
+        var self = this;
+        const running = http.createServer(function (req, res) {
+            res.setHeader("Content-Type", "application/json");
+            if (req.headers.referer) {
+                const referrer = new URL(req.headers.referer);
+                switch (referrer.host) {
+                    case "localhost:3000":
+                    case "test.uwclassmate.com":
+                    case "uwclassmate.com":
+                        res.setHeader("Access-Control-Allow-Origin", referrer.protocol + "//" + referrer.host);
+                        res.setHeader("Access-Control-Allow-Credentials", "true");
+                }
+            }
+            // const reqSummary = new URL(req.url, "https://" + req.headers.host);
+            const reqSummary = urlParser.parse(req.url, true);
+            console.log(reqSummary.pathname);
+            console.log(reqSummary.query)
+            self.doAction(reqSummary.pathname, reqSummary.query, res, req);
+        });
+        console.log("Server running...");
+        running.listen(9000);
+    }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# CourseDBUpdater
+module.exports = Server;
