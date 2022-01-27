@@ -13,6 +13,7 @@ import CourseCard from "../general/CourseCard";
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
+import * as path from "path";
 
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
@@ -38,22 +39,48 @@ export default function SearchResultPage(props) {
     const courseType = useSelector(state => state.search.courseType);
     const dispatch = useDispatch();
 
-    const id = useParams();
 
-    // Fetch URL parameter
-    const query = useQuery();
+    // Extract course name from URL
+    const pathName = window.location.pathname; // anything right before ? mark
+    const pathNameArr = pathName.split('/');
+    if(pathNameArr[-1] !== "search") { // Otherwise, default "all" state is used if nothing comes after search
+        dispatch(setCourseName(pathNameArr[-1]));
+    }
 
-    // Extract course searched from url (this can be used as dependency in useEffect)
-    const courseName_init = useParams()["courseName"];
+
+    // Extract course searched from url parameter
+    const initialValFromParam = {
+        courseName: "all",
+        courseLevel: ["all"],
+        creditNumber: ["all"],
+        courseType: ["all"],
+    };
+
+    let url = window.location;
+    // alert(url);
+    const params = (new URL(url)).searchParams;
+    const levelArr = extractParam(params, "course_level", LEVELS);
+    // alert(levelArr);
+    if(!arrayEquals(levelArr, courseLevel)) {
+        dispatch(setCourseLevel(levelArr));
+    }
+    const creditArr = extractParam(params, "credit_number", CREDITS);
+    if(!arrayEquals(creditArr, creditNumber)) {
+        dispatch(setCreditNumber(creditArr));
+    }
+    const courseTypeArr = extractParam(params, "credit_type", CREDIT_TYPES, ["IS", "None"]);
+    if(!arrayEquals(courseTypeArr, courseType)) {
+        dispatch(setCourseType(courseTypeArr));
+    }
 
     // This function will extract course level, credit number, and credit type parameter's value
     // Default to all if it does not exist or contains unacceptable values
-    function extractParam(queryName, referenceConst, extraAllowedValue = []) {
+    function extractParam(queryObj, queryName, referenceConst, extraAllowedValue = []) {
         let result;
-        if (query.get(queryName) === null) {
+        if (queryObj.get(queryName) === null) {
             result = ["all"];
         } else {
-            result = query.get(queryName).split(".");
+            result = queryObj.get(queryName).split(".");
             if (result.includes("all")) {
                 result = ["all"]
             } else if (!result.every(r => referenceConst.concat(["all"].concat(extraAllowedValue)).includes(r))) {
@@ -64,11 +91,14 @@ export default function SearchResultPage(props) {
         return result;
     }
 
-    // Note: need to extract parameter first before I can set states
-    dispatch(setCourseName(courseName_init === null ? "all" : courseName_init));
-    dispatch(setCourseLevel(extractParam("course_level", LEVELS)));
-    dispatch(setCreditNumber(extractParam("credit_number", CREDITS)));
-    dispatch(setCourseType(extractParam("course_type", CREDIT_TYPES, ["IS", "None"])));
+    // This function that will check whether two arrays is equal, return boolean value
+    // It is useful for me to dispatch state update only if new state differs from old state
+    function arrayEquals(a, b) {
+        return Array.isArray(a) &&
+            Array.isArray(b) &&
+            a.length === b.length &&
+            a.every((val, index) => val === b[index]);
+    }
 
     const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
     const [loaded, setLoaded] = useState(true);
