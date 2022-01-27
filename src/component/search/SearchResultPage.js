@@ -32,10 +32,10 @@ function useQuery() {
 
 export default function SearchResultPage(props) {
     // Read Redux States
-    const courseName = useSelector(state => state.courseName.value);
-    const courseLevel = useSelector(state => state.courseLevel.value);
-    const creditNumber = useSelector(state => state.creditNumber.value);
-    const courseType = useSelector(state => state.courseType.value);
+    const courseName = useSelector(state => state.search.courseName);
+    const courseLevel = useSelector(state => state.search.courseLevel);
+    const creditNumber = useSelector(state => state.search.creditNumber);
+    const courseType = useSelector(state => state.search.courseType);
     const dispatch = useDispatch();
 
     const id = useParams();
@@ -179,7 +179,6 @@ export default function SearchResultPage(props) {
     useEffect(() => {
         fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
     }, [courseName, courseLevel, creditNumber, courseType]);
-
 
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 

@@ -10,12 +10,18 @@ import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 
+// Redux
+import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
+import {useDispatch} from "react-redux";
+
 const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
 export default function SearchFilter(props) {
+    const dispatch = useDispatch();
+
     const [openMenu, setOpenMenu] = useState(false);
 
     const selectionIcon = (
@@ -24,10 +30,11 @@ export default function SearchFilter(props) {
         </div>
     )
 
-    const [courseName, setCourseName] = useState("");
-    const [courseLevel, setCourseLevel] = useState(["all"]);
-    const [creditNumber, setCreditNumber] = useState(["all"]);
-    const [courseType, setCourseType] = useState(["all"]);
+    // Rename to *Local to distinguish between local state and global state that's shared across 2 components.
+    const [courseNameLocal, setCourseNameLocal] = useState("");
+    const [courseLevelLocal, setCourseLevelLocal] = useState(["all"]);
+    const [creditNumberLocal, setCreditNumberLocal] = useState(["all"]);
+    const [courseTypeLocal, setCourseTypeLocal] = useState(["all"]);
 
     // Apply Filters Btn: first click or else
     const [isFirstClick, toggleIsFirstClick] = useState(true);
@@ -39,16 +46,16 @@ export default function SearchFilter(props) {
         let params = new URLSearchParams(url.search);
         if (destination === "courseLevel") {
             // ES6 way to copy/clone an array
-            let newCourseLevel = [...courseLevel];
+            let newCourseLevel = [...courseLevelLocal];
 
             // Toggling between all and not all
-            if (newValue === "all" && courseLevel.indexOf("all") < 0) {
+            if (newValue === "all" && courseLevelLocal.indexOf("all") < 0) {
                 newCourseLevel = ["all"];
-            } else if (courseLevel[0] === "all" && newValue !== "all") {
+            } else if (courseLevelLocal[0] === "all" && newValue !== "all") {
                 newCourseLevel = [newValue];
             }
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
+            else if (newValue !== "all" && courseLevelLocal.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedLevel = newCourseLevel.filter(e => e !== newValue);
                 if (updatedLevel[0] === "" || updatedLevel.length === 0) {
@@ -56,23 +63,23 @@ export default function SearchFilter(props) {
                 } else {
                     newCourseLevel = updatedLevel;
                 }
-            } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
+            } else if (newValue !== "all" && courseLevelLocal.indexOf(newValue) < 0) {
                 // Non Mutative way to concat an array
-                newCourseLevel = courseLevel.concat(newValue);
+                newCourseLevel = courseLevelLocal.concat(newValue);
             }
-            setCourseLevel(newCourseLevel);
+            setCourseLevelLocal(newCourseLevel);
         } else if (destination === "creditNumber") {
             // ES6 way to copy/clone an array
-            let newCreditNumber = [...creditNumber];
+            let newCreditNumber = [...creditNumberLocal];
 
             // Toggling between all and not all
-            if (newValue === "all" && creditNumber.indexOf("all") < 0) {
+            if (newValue === "all" && creditNumberLocal.indexOf("all") < 0) {
                 newCreditNumber = ["all"];
-            } else if (creditNumber[0] === "all" && newValue !== "all") {
+            } else if (creditNumberLocal[0] === "all" && newValue !== "all") {
                 newCreditNumber = [newValue];
             }
             // When it's not all, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && creditNumber.indexOf(newValue) >= 0) {
+            else if (newValue !== "all" && creditNumberLocal.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedCreditNumber = newCreditNumber.filter(e => e !== newValue);
                 if (updatedCreditNumber[0] === "" || updatedCreditNumber.length === 0) {
@@ -80,29 +87,29 @@ export default function SearchFilter(props) {
                 } else {
                     newCreditNumber = updatedCreditNumber;
                 }
-            } else if (newValue !== "all" && creditNumber.indexOf(newValue) < 0) {
+            } else if (newValue !== "all" && creditNumberLocal.indexOf(newValue) < 0) {
                 // Non Mutative way to concat an array
-                newCreditNumber = creditNumber.concat(newValue);
+                newCreditNumber = creditNumberLocal.concat(newValue);
             }
-            setCreditNumber(newCreditNumber);
+            setCreditNumberLocal(newCreditNumber);
         } else if (destination === "courseType") {
             // ES6 way to copy/clone an array
-            let newCourseType = [...courseType];
+            let newCourseType = [...courseTypeLocal];
 
             // Toggling between all and not all
-            if (newValue === "all" && courseType.indexOf("all") < 0) {
+            if (newValue === "all" && courseTypeLocal.indexOf("all") < 0) {
                 newCourseType = ["all"];
-            } else if (courseType[0] === "all" && newValue !== "all" && newValue !== "None") {
+            } else if (courseTypeLocal[0] === "all" && newValue !== "all" && newValue !== "None") {
                 newCourseType = [newValue];
             }
             // Toggle between None and not None
-            else if (newValue === "None" && courseType.indexOf("None") < 0) {
+            else if (newValue === "None" && courseTypeLocal.indexOf("None") < 0) {
                 newCourseType = ["None"];
-            } else if (courseType[0] === "None" && newValue !== "all" && newValue !== "None") {
+            } else if (courseTypeLocal[0] === "None" && newValue !== "all" && newValue !== "None") {
                 newCourseType = [newValue];
             }
             // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
+            else if (newValue !== "all" && newValue !== "None" && courseTypeLocal.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedCourseType = newCourseType.filter(e => e !== newValue);
                 console.log(updatedCourseType);
@@ -111,11 +118,11 @@ export default function SearchFilter(props) {
                 } else {
                     newCourseType = updatedCourseType;
                 }
-            } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
+            } else if (newValue !== "all" && newValue !== "None" && courseTypeLocal.indexOf(newValue) < 0) {
                 // Non-Mutative way to concat an array
-                newCourseType = courseType.concat(newValue);
+                newCourseType = courseTypeLocal.concat(newValue);
             }
-            setCourseType(newCourseType);
+            setCourseTypeLocal(newCourseType);
         }
     }
 
@@ -127,9 +134,14 @@ export default function SearchFilter(props) {
     // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
     function submitSearch(event) {
         event.preventDefault();
-        const paramsObj = {course_level: courseLevel.join("."), credit_number: creditNumber.join("."), course_type: courseType.join(".")}
+        dispatch(setCourseName(courseNameLocal));
+        dispatch(setCourseLevel(courseLevelLocal));
+        dispatch(setCreditNumber(creditNumberLocal));
+        dispatch(setCourseType(courseTypeLocal));
+
+        const paramsObj = {course_level: courseLevelLocal.join("."), credit_number: creditNumberLocal.join("."), course_type: courseTypeLocal.join(".")}
         const searchParams = new URLSearchParams(paramsObj);
-        history.push({pathname:"/search/" + courseName + "?" + searchParams.toString(), state: [courseName, courseLevel, creditNumber, courseType]});
+        history.push({pathname:"/search/" + courseNameLocal + "?" + searchParams.toString(), state: [courseNameLocal, courseLevelLocal, creditNumberLocal, courseTypeLocal]});
     }
 
     return (
@@ -148,7 +160,7 @@ export default function SearchFilter(props) {
                     {selectionIcon}
                 </MenuItem>
 
-                <DropdownFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                <DropdownFilter courseLevel={courseLevelLocal} creditNumber={creditNumberLocal} courseType={courseTypeLocal}
                               handleFilterChange={handleFilterChange}/>
         </Menu>
             <TextField
@@ -157,8 +169,8 @@ export default function SearchFilter(props) {
                 label="搜索"
                 placeholder="想要找什么课～.. 例如：CSE 142, Engl"
                 onKeyDown={(e) => {if (e.keyCode === 13) submitSearch(e);}}
-                value={courseName}
-                onChange={(event)=>setCourseName(event.target.value)}/>
+                value={courseNameLocal}
+                onChange={(event)=>setCourseNameLocal(event.target.value)}/>
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
