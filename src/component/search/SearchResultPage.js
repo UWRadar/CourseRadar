@@ -60,7 +60,7 @@ export default function SearchResultPage(props) {
         dispatch(setCourseType(courseTypeArr));
     }
 
-    // This function will extract course level, credit number, and credit type parameter's value
+    // This function will extract course level, credit number, and credit type parameter's value (as function's return)
     // Default to all if it does not exist or contains unacceptable values
     function extractParam(queryObj, queryName, referenceConst, extraAllowedValue = []) {
         let result;
@@ -173,7 +173,6 @@ export default function SearchResultPage(props) {
             else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
                 // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
                 const updatedCourseType = newCourseType.filter(e => e !== newValue);
-                console.log(updatedCourseType);
                 if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
                     newCourseType = ["all"];
                 } else {
