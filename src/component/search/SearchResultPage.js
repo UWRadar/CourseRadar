@@ -13,8 +13,6 @@ import CourseCard from "../general/CourseCard";
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
-import * as path from "path";
-
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -69,7 +67,7 @@ export default function SearchResultPage(props) {
     if(!arrayEquals(creditArr, creditNumber)) {
         dispatch(setCreditNumber(creditArr));
     }
-    const courseTypeArr = extractParam(params, "credit_type", CREDIT_TYPES, ["IS", "None"]);
+    const courseTypeArr = extractParam(params, "course_type", CREDIT_TYPES, ["IS", "None"]);
     if(!arrayEquals(courseTypeArr, courseType)) {
         dispatch(setCourseType(courseTypeArr));
     }
