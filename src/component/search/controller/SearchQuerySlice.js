@@ -18,6 +18,7 @@ export const searchSlice = createSlice({
             }  else {
                 state.courseName = action.payload;
             }
+            console.log("setCourseName is called in reducer");
         },
         setCourseLevel: (state, action) => {
             state.courseLevel = action.payload;
