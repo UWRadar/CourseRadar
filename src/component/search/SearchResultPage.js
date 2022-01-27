@@ -43,8 +43,9 @@ export default function SearchResultPage(props) {
     // Extract course name from URL
     const pathName = window.location.pathname; // anything right before ? mark
     const pathNameArr = pathName.split('/');
-    if(pathNameArr[-1] !== "search") { // Otherwise, default "all" state is used if nothing comes after search
-        dispatch(setCourseName(pathNameArr[-1]));
+    // alert(pathNameArr.at(-1));
+    if(pathNameArr.at(-1) !== "search") { // Otherwise, default "all" state is used if nothing comes after search
+        dispatch(setCourseName(pathNameArr.at(-1)));
     }
 
 
@@ -106,7 +107,7 @@ export default function SearchResultPage(props) {
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
 
-// Custom data cleaning function to account for mutually exclusive selection
+    // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
         //console.log("handleFilterChange(" + destination + ", " + newValue);
         let url = new URL(document.URL);
