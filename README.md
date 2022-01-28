@@ -1,35 +1,3 @@
-# Course Evaluation Website React.js Front-end repository 
-
-## Links
-
-[Public GitHub Link (my contribution branch)](https://github.com/UWRadar/CourseRadar/tree/search_result_improvement)
-
-[Official website url is here](https://www.uwclassmates.com)
-
-[My site design and development journal](https://www.davidxie.net/projects/uw-course-evaluation-website) (password is `GreeTings#^Hii12` please don't share it with other people. Thank you!)
-
-## About this site
-
-This website present student submitting course evaluations on selected University of Washington classes, with the goal of helping incoming freshmen to build their best possible course schedules. This website is specially created for Chinese-speaking international students in UW, such as those from China and other Southeast Asian countries.
-
-## My responsibility and contribution
-
-- Refactored search page React Component to display results by parsing URL query parameters.
-  - I am responsible for writing and improving these following files, relative to project source root.
-  - `src/component/home/SearchResultPage.js`
-  - `src/component/home/SearchResultPage.css`
-  - `src/component/general/SearchFilter.js`
-  - `src/component/general/SearchFilter.css`
-- Refactored Node.js backend server to handle complex course search queries and prevent SQL injections.
-  - Unfortunately, I could not share the site's back-end code repository due to information security concern in our project group.
-- Design the site's home page and course detail page's appearance.
-- Help other teammates to solve programming issues for site's Front-end and Back-end codes
-  - For instance, I assist another teammate to embed `svg` XML content in a web page.
-
-# Commands for developers to test and build this site
-
-This front-end works the best if you have our Node.js back-end server running. Unfortunately, I could not share the site's back-end code repository due to information security concern in our project group.
-
 ## Getting Started with Organization of Hua Classmate's React front-end
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
