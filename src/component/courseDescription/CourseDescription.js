@@ -3,6 +3,8 @@ import Description from "./Description"
 import Comments from "./Comments"
 import "./Description.css"
 import ServerConfig from "../config/ServerConfig"
+import ReCAPTCHA from "react-google-recaptcha"
+
 export default class CourseDescription extends Component {
 
     constructor(link) {
@@ -14,6 +16,7 @@ export default class CourseDescription extends Component {
             courseInfo: {},
             receivedBackEndData: false
         }
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -21,8 +24,11 @@ export default class CourseDescription extends Component {
             filteredComment: [],
             allComments: []
         });
-        this.getAllCommentFromCoursename();
         this.getCourseRatingByCoursename();
+        if (this.captcha) {
+            this.captcha.reset();
+            this.captcha.execute();
+        }
     }
 
     replaceNullWithZero(courseRating) {
@@ -33,7 +39,6 @@ export default class CourseDescription extends Component {
     }
 
     getCourseRatingByCoursename() {
-        console.log("Hello");
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOURSERATING + "?courseName=" + this.state.courseName)
             .then((response) => {
                 if (response.ok)
@@ -53,8 +58,9 @@ export default class CourseDescription extends Component {
             })
     }
 
-    getAllCommentFromCoursename() {
-        fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOMMENT + "?name=" + this.state.courseName)
+    getAllCommentFromCoursename(token) {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETCOMMENT + "?name=" +
+                encodeURIComponent(this.state.courseName) + "&token=" + encodeURIComponent(token))
             .then((response) => {
                 if (response.ok)
                     return response.json();
@@ -68,6 +74,10 @@ export default class CourseDescription extends Component {
                 })
             })
 
+    }
+
+    onChange(token) {
+        this.getAllCommentFromCoursename(token);
     }
 
     render() {
@@ -85,6 +95,15 @@ export default class CourseDescription extends Component {
                     courseItems={this.state.courseInfo}
                     courseName={this.state.courseName} />}
                 <Comments commentItems={this.state.allComments} courseItems={this.state.courseInfo} />
+                    {this.state.receivedBackEndData && <p className="commentTitle">课程评价</p>}
+
+                    {this.state.receivedBackEndData && <Comments className="comments" comments={this.state.allComments}/>}
+                <ReCAPTCHA
+                        ref={(el) => {this.captcha = el;}}
+                        sitekey="6LcxSdYdAAAAAGjridWu6qudV4YNcpUVraQmHZor"
+                        size="invisible"
+                        onChange={this.onChange}
+                />
             </div>
         )
     }

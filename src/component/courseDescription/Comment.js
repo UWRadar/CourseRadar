@@ -1,35 +1,60 @@
-import React from "react"
+import React, { useState } from "react"
 import "./Comment.css"
-import { Grid } from '@material-ui/core';
-import { Row, Col } from 'reactstrap';
-import logo from '../../img/hdlogo.png';
+import { ReactComponent as QuarterLogo } from "../../img/quarter.svg"
+import { ReactComponent as ProfLogo } from "../../img/professor.svg"
+import ImageStorage from "../general/ImageStorage"
+import { ReactComponent as Heart } from "../../img/heartUnactive.svg"
+import { ReactComponent as HeartActive } from "../../img/heartActive.svg"
+import CommentRating from "./CommentRating"
+
+function upperTheFirstLetterOfEachWord(word) {
+    let name = word.split(" ");
+    if (name.length === 1) {
+        return name[0][0]?.toUpperCase() + name[0].slice(1);
+    } else {
+        return name[0][0]?.toUpperCase()
+            + name[0].slice(1) + " "
+            + name[1][0]?.toUpperCase()
+            + name[1].slice(1);
+    }
+}
 
 const Comment = (props) => {
+    let name = upperTheFirstLetterOfEachWord(props.content.professorName)
+    const [liked, setLiked] = useState(false);
     return (
-        <div className="CourseComment">
-            <Grid container xs={12}>
-                <Grid item xs={2} className='logo'>
-                    <img className='commentlogo' src={logo} alt="profile logo" />
-                </Grid>
-                <Grid item xs={10}>
-                        <p className='name'>{props.name}</p>
-                    <Row className='info'>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Quarter: </p><p className='answer'>{props.quarter}</p>
-                        </Col>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Professor: </p><p className='answer'>{props.professor}</p>
-                        </Col>
-                        <Col xs={12} lg={4}>
-                            <p className='question'>Grade: </p><p className='answer'>{props.gpa}</p>
-                        </Col>
-                    </Row>
-                    <Row className='commentdetail'>
-                        <p className='paragraph'>{props.comment}</p>
-                    </Row>
-                </Grid>
-            </Grid>
-        </div>   
+        <div className="container-fluid">
+            <div className="col">
+                <div className="commentName">
+                    <div className="commentID">
+
+                        <div className="commentDetail">
+                            <ProfLogo className="detailLogos" />
+                            <p className="commentQuarter">{name}</p>
+                        </div>
+                        <div className="commentDetail">
+                            <QuarterLogo className="detailLogos" />
+                            <p className="commentQuarter">{props.content.year + " " + props.content.quarter}</p>
+                        </div>
+
+                    </div>
+                    {!liked && <Heart onClick={() => setLiked(true)} />}
+                    {liked && <HeartActive onClick={() => setLiked(false)} />}
+
+                </div>
+
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <div class="g-recaptcha" data-sitekey="6Lf5BdYdAAAAADvdbVkKNJqxy5Lhhmd2917RDsm2"></div>
+                <p className="commentLabel">评论</p>
+                <p className="comment">{props.content.comment}</p>
+                <CommentRating
+                    difficulty={(props.content.workload + props.content.grading) / 2}
+                    workload={props.content.workload}
+                    gpa={props.content.gpa}
+                />
+                <hr class="rounded"></hr>
+            </div>
+        </div>
     )
 }
 
