@@ -187,7 +187,7 @@ export default class SurveyPage extends Component {
                                 courseContent is a required field.
                             </Form.Control.Feedback>   
                         </Form.Group>
-                        <Form.Group as={Row} controlId='formWorkload'>
+                        <Form.Group as={Row} controlId='formWorkload' className="top-margin">
                             <Form.Label column sm={2} className="text-md-left">
                                 任务量:
                             </Form.Label>
@@ -251,7 +251,7 @@ export default class SurveyPage extends Component {
                                 onChange={this.setComment}
                             />
                         </Form.Group>
-                        <Form.Group as={Row} controlId='formSurveyRemark'>
+                        <Form.Group as={Row} controlId='formSurveyRemark' className="top-margin">
                             <Form.Label column sm={2} className="text-md-left">
                                 备注（姓名或所属社团名称）:
                             </Form.Label>

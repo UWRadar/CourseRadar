@@ -33,7 +33,6 @@
     align-items: center;
     height: 3rem;
     margin-top: 5vh;
-    margin-right: 15vw;
 }
 
 .difficulty {
@@ -78,7 +77,7 @@ hr .rounded {
 
 .comment {
     margin-left: auto;
-    margin-right: 15vw;
+    margin-right: 0;
     text-align: justify;
     padding: 0;
 }
@@ -207,5 +206,9 @@ hr .rounded {
     }
     .info {
         padding-right: 18%;
+    }
+
+    .comment{
+        margin-right: 15vw;
     }
 }

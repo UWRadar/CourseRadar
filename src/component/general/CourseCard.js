@@ -35,7 +35,6 @@ const CourseCard = (props) => {
                                 return (<div class={"tag " + element} npnp>
                                     <div class="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>
-                                        {/* <span class="tooltiptext"> Quantitative and Symbolic Reasoning</span> */}
                                     </div>
                                 </div>);
                             })}

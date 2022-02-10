@@ -16,6 +16,10 @@
     width: 100%;
 }
 
+.banner:hover{
+  cursor: pointer;  
+}
+
 .banner.after {
     left: 100%;
 }

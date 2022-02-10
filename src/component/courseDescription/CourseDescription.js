@@ -70,17 +70,6 @@ export default class CourseDescription extends Component {
 
     }
 
-    async getAllCommentLikeQuantity(data) {
-        let parsedComment = data.map(async (element) => {
-            
-        })
-
-        this.setState({
-            allComments : parsedComment
-        });
-        
-    }
-
     render() {
         return (
             <div className="container-fluid" id="outerCotainer">

@@ -40,22 +40,16 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         this.resetInterval();
-        // this.getAds();
+        this.getAds();
         this.getPopular();
         this.getRecommended();
-        console.log("refreshing");
-    }
-
-    changeActiveTab(tabName) {
-        this.setState({
-            activeTab: tabName
-        })
     }
 
     getAds() {
+        
         fetch(ServerConfig.SERVER_URL + "/api/ad")
             .then(response => {
-                if (response.ok) {
+                if (response.status == 200) {
                     return response.json();
                 }
             })
@@ -66,10 +60,10 @@ export default class HomePage extends Component {
                         const item = data.result[key];
                         result.push({
                             title: item.title,
-                            subtitle: item.subtitle,
+                            subtitle: item.subTitle,
                             description: item.content,
-                            image: item.pic,
-                            link: item.redirect_link
+                            image: item.picLink,
+                            link: item.redirectLink
                         });
                     }
                     this.setState({
@@ -77,6 +71,12 @@ export default class HomePage extends Component {
                     });
                 }
             });
+    }
+
+    changeActiveTab(tabName) {
+        this.setState({
+            activeTab: tabName
+        })
     }
 
     getPopular() {
@@ -159,19 +159,6 @@ export default class HomePage extends Component {
 
         return (
             <div className="home">
-                {/* <div className="bg-img">
-                    <SearchBar />
-                    <div className="arrow-down" onClick={() => {
-                        let intervalId = setInterval(() => {
-                            let y1 = window.scrollY
-                            window.scrollTo(0, window.scrollY + 2)
-                            let y2 = window.scrollY
-                            if (y1 == y2 || window.scrollY > window.innerHeight) {
-                                clearInterval(intervalId)
-                            }
-                        }, 1)
-                    }}></div>
-                </div> */}
 
                 <Banner className="banner"
                     items={this.state.bannerItems}

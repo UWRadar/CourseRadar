@@ -9,14 +9,6 @@ import SurveyPage from "../survey/SurveyPage"
 import LargeHeader from "../general/LargeHeader"
 import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
-<<<<<<< HEAD
-import SideHoveringButtons from "../general/SideHoveringButtons"
-=======
-import { Fab } from "@material-ui/core";
-import HomeIcon from "@material-ui/icons/Home";
-import "../general/Fab.css";
-
->>>>>>> 8d561c3eace99103277b96a775611ff3d3e3bdd7
 export default class Routing extends Component {
 
     constructor() {
@@ -54,33 +46,25 @@ export default class Routing extends Component {
         return (
             <Router>
                 <div className="App">
-<<<<<<< HEAD
                     <LargeHeader 
                         updateFilter={(filter) => this.updateFilter(filter)} 
                         filter={this.state.filter}/>
                     
-=======
-                    <LargeHeader />
->>>>>>> 8d561c3eace99103277b96a775611ff3d3e3bdd7
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
-<<<<<<< HEAD
                         <Route path="/search">
                             <SearchResultPage 
                                 filter={this.state.filter}
                                 updateFilter={(filter) => this.updateFilter(filter)}
                             />
                         </Route>
-=======
-                        <Route path="/search" component={SearchResultPage} />
->>>>>>> 8d561c3eace99103277b96a775611ff3d3e3bdd7
                         <Route path="/CourseDetail/:courseName" component={CourseDescription} />
                         <Route path="/login" component={LoginPage} />
                     </Switch>
                     <Footer />
-                    <Fab
+                    {/* <Fab
                         className="fab"
                         color="primary"
                         aria-label="返回首页"
@@ -88,7 +72,7 @@ export default class Routing extends Component {
                             window.location.href = "/";
                         }}>
                         <HomeIcon />
-                    </Fab>
+                    </Fab> */}
                 </div>
             </Router>
         )

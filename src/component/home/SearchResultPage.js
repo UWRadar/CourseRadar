@@ -207,6 +207,7 @@ class SearchResultPage extends Component {
         const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
 
         const onChangeLevel = (event) => {
+            console.log(event.target.value);
             this.setState({ selectLevel: event.target.value });
             let tempFilter = this.props.filter;
             tempFilter.level = event.target.value;
