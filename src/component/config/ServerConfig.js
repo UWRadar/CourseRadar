@@ -9,5 +9,6 @@ export default {
     GETPOPULAR:      "/api/getPopular",
     UPDATELIKE:      "/api/like",
     GETLIKE:         "/api/getLike",
-    GETAD:           "/api/ad"
+    GETAD:           "/api/ad",
+    GETUSERINFO:        "/api/userinfo"
 }
