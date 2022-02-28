@@ -77,7 +77,6 @@ class ProfilePage extends Component {
             return result
         }
         return (
-            
             <Container classes={{ root: "profile-page" }} maxWidth="lg">
                 <Container maxWidth="xl" id="user-info-background" />
                 <section class="user-info">
