@@ -7,4 +7,5 @@ export default {
     GETRECOMMENDED:  "/api/getRecommended",
     GETPOPULAR:      "/api/getPopular",
     GETMETRIC:       "/api/metrics",
+    GETRATINGMETRICS:"/api/getRating",
 }

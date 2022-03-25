@@ -3,11 +3,13 @@ import Description from "./Description"
 import Comments from "./Comments"
 import "./Description.css"
 import ServerConfig from "../config/ServerConfig"
+import LinearProgressBar from "./LinearProgressBar"
 export default class CourseDescription extends Component {
 
     constructor(link) {
         super();
         this.state = {
+            ratingMetric: [],
             filteredComment: [],
             allComments: [],
             courseName: link["match"].params.courseName,
@@ -25,6 +27,7 @@ export default class CourseDescription extends Component {
         this.getAllCommentFromCoursename();
         this.getCourseRatingByCoursename();
         this.getCourseRatingMetricWorkload();
+        this.getRatingMetric();
     }
 
     replaceNullWithZero(courseRating) {
@@ -71,6 +74,24 @@ export default class CourseDescription extends Component {
 
     }
 
+    getRatingMetric() {
+        fetch(ServerConfig.SERVER_URL + ServerConfig.GETRATINGMETRICS + "?courseName=" + this.state.courseName)
+            .then((response) => {
+                if (response.ok)
+                    return response.json();
+                else 
+                    return [];
+            })
+            .then((data) => {
+                if (data) {
+                    console.log(data);
+                    this.setState({
+                        ratingMetric: data
+                    })
+                }
+            })
+    }
+
     getCourseRatingMetricWorkload() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETMETRIC + "?courseName=" + this.state.courseName + "&metricName=workload")
             .then((response) => {
@@ -96,8 +117,8 @@ export default class CourseDescription extends Component {
                     {this.state.receivedBackEndData && <Description
                         courseItems={this.state.courseInfo}
                         courseName={this.state.courseName} 
-                        workloadCounts={this.state.workloadMetric}/>}
-
+                        workloadCounts={this.state.workloadMetric}
+                        rating={this.state.ratingMetric} />}
                     {this.state.receivedBackEndData && <p className="commentTitle">课程评价</p>}
                     
                     {this.state.receivedBackEndData && <Comments className="comments" comments={this.state.allComments}/>}

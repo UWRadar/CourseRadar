@@ -1,5 +1,17 @@
+import React, { component } from "react"
+import ReactHover, { Trigger, Hover } from "react-hover";
+import TriggerComponent from "./TriggerComponent";
+import HoverComponent from "./HoverComponent";
+
+const optionsCursorTrueWithMargin = {
+    followCursor: true,
+    shiftX: -400,
+    shiftY: -400,
+}
+
 const LinearProgressBar = (props) => {
-    const { bgcolor, completed } = props;
+    const { bgcolor, completed, rating } = props;
+    console.log(rating);
     const containerStyles = {
         height: 12,
         width: '100%',
@@ -25,7 +37,19 @@ const LinearProgressBar = (props) => {
 
     return (
         <div style={{marginRight:"5%"}}>
-            <span >{`${props.text}`}</span>
+            <span>
+                {`${props.text}`}
+                {props.showQuestion && 
+                <ReactHover options={optionsCursorTrueWithMargin}>
+                <Trigger type='trigger'>
+                    <TriggerComponent/>
+                </Trigger>
+                <Hover type='hover'>
+                    <HoverComponent rating={rating}/>
+                </Hover>
+                </ReactHover>
+                }
+            </span>
             <div className="linearBar">
                 <div style={containerStyles}>
 
@@ -34,7 +58,9 @@ const LinearProgressBar = (props) => {
                     </div>
 
                 </div>
-                <p style={labelStyles}>{`${props.content}`}</p>
+                <p style={labelStyles}>
+                    {`${props.content}`}
+                </p>
             </div>
                 
                 
