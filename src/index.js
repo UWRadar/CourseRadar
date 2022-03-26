@@ -5,10 +5,20 @@ import App from './App';
 import Routing from './component/routing/Route'
 import reportWebVitals from './reportWebVitals';
 
+// David Xie: Add react-redux dependency for cross-component state management, which is needed for search bar communicate with search result page
+import { Provider } from 'react-redux'
+import store from './controller/ReduxStore'
+
+
 ReactDOM.render(
-  <React.StrictMode>
-    <Routing />
-  </React.StrictMode>,
+    // David Xie: Add react-redux dependency for cross-component state management
+
+      <React.StrictMode>
+        <Provider store={store}>
+        <Routing />
+        </Provider>
+      </React.StrictMode>
+    ,
   document.getElementById('root')
 );
 

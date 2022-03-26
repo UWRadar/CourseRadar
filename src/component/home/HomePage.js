@@ -5,6 +5,12 @@ import Banner from "./Banner"
 import CourseCard from "../general/CourseCard"
 import Tabs from "./Tabs"
 import "./HomePage.css"
+import { Footer, BigFooter } from "../general/Footer"
+import ImageStorage from "../general/ImageStorage.js"
+import LoginPage from "../general/LoginPage"
+import LargeHeader from "../general/LargeHeader"
+import { NavLink } from "react-router-dom"
+import SearchBar from "../search/SearchFilter"
 import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {
@@ -46,7 +52,7 @@ export default class HomePage extends Component {
     }
 
     getAds() {
-        
+
         fetch(ServerConfig.SERVER_URL + "/api/ad")
             .then(response => {
                 if (response.status == 200) {
