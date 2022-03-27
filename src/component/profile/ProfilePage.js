@@ -24,6 +24,31 @@ class ProfilePage extends Component {
         }
     }
 
+    componentDidMount() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                this.setState({
+                    email: data.email,
+                    favCourses: data.favCourses,
+                    username: data.username,
+                    redirectToLogin: false
+                })
+            }
+        }).catch(() => {
+            this.setState({
+                redirectToLogin: true
+            })
+        })
+    }
+
     render() {
         if (this.state.redirectToLogin) {
             return (<Redirect to="/login" />)
@@ -48,6 +73,8 @@ class ProfilePage extends Component {
                         courseDescription={element.courseDescription}
                         tags={element.tags}
                         credit={element.credit}
+                        loginStatus={!this.state.redirectToLogin}
+                        isFavorite={true}
                     />
                 ))
             }
@@ -76,7 +103,6 @@ class ProfilePage extends Component {
             return result
         }
         return (
-            
             <Container classes={{ root: "profile-page" }} maxWidth="lg">
                 <Container maxWidth="xl" id="user-info-background" />
                 <section class="user-info">
@@ -166,30 +192,7 @@ class ProfilePage extends Component {
         )
     }
 
-    componentDidMount() {
-        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
-            credentials: "include"
-        }).then(response => {
-            if (response.ok) {
-                return response.json()
-            } else if (response.status == 403) {
-                throw new Error("unauthorized")
-            }
-        }).then(data => {
-            if (data) {
-                this.setState({
-                    email: data.email,
-                    favCourses: data.favCourses,
-                    username: data.username,
-                    redirectToLogin: false
-                })
-            }
-        }).catch(() => {
-            this.setState({
-                redirectToLogin: true
-            })
-        })
-    }
+
 }
 
 export default withRouter(ProfilePage);

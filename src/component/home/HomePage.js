@@ -37,18 +37,84 @@ export default class HomePage extends Component {
             }],
             bannerNoAnimation: false,
             loaded: false,
+            favLoaded: false,
             recommened: [],
             popular: [],
             mostTaken: [],
-            activeTab: "trendy"
+            favorite: [],
+            activeTab: "trendy",
+            redirectToLogin: true
         }
     }
 
     componentDidMount() {
         this.resetInterval();
-        this.getAds();
+        // this.getAds();
+        this.getFavorite();
         this.getPopular();
         this.getRecommended();
+        this.getUserInfo();
+    }
+
+    getFavorite() {
+        // if (!this.state.redirectToLogin) {
+            console.log(333);
+            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+                body: JSON.stringify({
+                    // courseName: name.toLowerCase()
+                }),
+                credentials: "include",
+                method: "POST"
+            }).then(res => {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log(res);
+                }
+            }).then(data => {
+                console.log(data);
+                if (data && data["state"] === 1) {
+                    this.setState({
+                        favorite: data["data"]
+                    });
+                    // console.log(this.state.favorite.includes("arch150"));
+                }
+                this.setState({
+                    favLoaded: true
+                })
+                console.log(this.state.favorite);
+                // if(data.state === 0) {
+                //     return false;
+                // } else {
+                //     return true;
+                // }
+            })
+        // }
+    }
+
+    getUserInfo() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                this.setState({
+                    email: data.email,
+                    favorite: data.favCourses,
+                    username: data.username,
+                    redirectToLogin: false
+                })
+            }
+        }).catch(() => {
+            this.setState({
+                redirectToLogin: true
+            })
+        })
     }
 
     getAds() {
@@ -192,7 +258,7 @@ export default class HomePage extends Component {
                             <img class='loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
-                    {this.state.loaded && this.state.activeTab === "recommendation" &&
+                    {this.state.favLoaded && this.state.loaded && this.state.activeTab === "recommendation" &&
                         this.state.recommened.map(element => (
                             <CourseCard
                                 key={element.courseName}
@@ -200,10 +266,12 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
+                                isFavorite={this.state.favorite.includes(element.courseName)}
                             />
                         ))
                     }
-                    {this.state.loaded && this.state.activeTab === "trendy" &&
+                    {this.state.favLoaded && this.state.loaded && this.state.activeTab === "trendy" &&
                         this.state.popular.map(element => (
                             <CourseCard
                                 key={element.courseName}
@@ -211,6 +279,8 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
+                                isFavorite={this.state.favorite.includes(element.courseName)}
                             />
                         ))
                     }
