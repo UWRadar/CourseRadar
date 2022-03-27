@@ -13,10 +13,9 @@ export class Banner extends Component {
         if (!item) {
             return <div></div>
         }
-        console.log(item.image);
         return (
             <div
-                
+
                 className={"banner" + position}
                 style={{
                     backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + item.image + ")"
@@ -31,7 +30,7 @@ export class Banner extends Component {
                 <div
                     onClick={() => {
                         window.open(item.link)
-                    }} 
+                    }}
                     className="main">
                     <h1>{item.title}</h1>
                     <h2>{item.subtitle}</h2>

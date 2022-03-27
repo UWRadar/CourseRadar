@@ -15,7 +15,7 @@ class ProfilePage extends Component {
 
             email: null,
             username: null,
-
+            favLoaded: false,
             favCourses: [],
 
             newUsername: "",
@@ -25,6 +25,11 @@ class ProfilePage extends Component {
     }
 
     componentDidMount() {
+        this.getUserInfo();
+        this.getFavorite();
+    }
+
+    getUserInfo() {
         fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
             credentials: "include"
         }).then(response => {
@@ -49,6 +54,41 @@ class ProfilePage extends Component {
         })
     }
 
+    getFavorite() {
+        // if (!this.state.redirectToLogin) {
+            console.log(333);
+            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+                body: JSON.stringify({
+                    // courseName: name.toLowerCase()
+                }),
+                credentials: "include",
+                method: "POST"
+            }).then(res => {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log(res);
+                }
+            }).then(data => {
+                console.log(data);
+                if (data && data["state"] === 1) {
+                    this.setState({
+                        favCourses: data["data"]
+                    });
+                }
+                this.setState({
+                    favLoaded: true
+                })
+                console.log(this.state.favorite);
+                // if(data.state === 0) {
+                //     return false;
+                // } else {
+                //     return true;
+                // }
+            })
+        // }
+    }
+
     render() {
         if (this.state.redirectToLogin) {
             return (<Redirect to="/login" />)
@@ -63,7 +103,8 @@ class ProfilePage extends Component {
             text: "设置"
         }]
         const renderFavCourses = () => {
-            const favCourses = this.state.favCourses
+            const favCourses = this.state.favCourses;
+            console.log(favCourses);
             if (favCourses.length == 0) {
                 return <img id="no-result" src="./img/no-result.png" />
             } else {

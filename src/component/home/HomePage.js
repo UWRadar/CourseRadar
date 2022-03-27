@@ -74,10 +74,11 @@ export default class HomePage extends Component {
             }).then(data => {
                 console.log(data);
                 if (data && data["state"] === 1) {
+                    let favoriteCourseName = [];
+                    data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])})
                     this.setState({
-                        favorite: data["data"]
+                        favorite: favoriteCourseName
                     });
-                    // console.log(this.state.favorite.includes("arch150"));
                 }
                 this.setState({
                     favLoaded: true

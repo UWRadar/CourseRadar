@@ -91,6 +91,32 @@ export default function SearchResultPage(props) {
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
+    // favorite course state
+    const [favCourses, setFavCourses] = useState([]);
+
+    function getFavorite() {
+        fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+            body: JSON.stringify({
+                // courseName: name.toLowerCase()
+            }),
+            credentials: "include",
+            method: "POST"
+        }).then(res => {
+            if(res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        }).then(data => {
+            console.log(data);
+            if (data && data["state"] === 1) {
+                let favoriteCourseName = [];
+                data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])});
+                setFavCourses(favoriteCourseName);
+                console.log(favCourses);
+            }
+        })
+}
 
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
@@ -190,6 +216,7 @@ export default function SearchResultPage(props) {
     }
 
     useEffect(() => {
+        // getFavorite();
         fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
     }, [courseName, courseLevel, creditNumber, courseType]);
 
@@ -319,11 +346,20 @@ function ErrorScreen(props) {
     )
 }
 
+// function for add favorite courses
+
+
 function SearchResult(props) {
     return (
         <div className="course-list2">
             {props.courseCards.map(element => (
-                <CourseCard key={element.courseName} courseName={element.courseName} courseDescription={element.courseDescription} tags={element.tags} credit={element.credit}/>
+                <CourseCard
+                    key={element.courseName}
+                    courseName={element.courseName}
+                    courseDescription={element.courseDescription}
+                    tags={element.tags}
+                    credit={element.credit}
+                    isFavorite/>
             ))}
         </div>
         )
