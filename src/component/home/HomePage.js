@@ -57,7 +57,7 @@ export default class HomePage extends Component {
     }
 
     getFavorite() {
-        //if (!this.state.redirectToLogin) {
+        // if (!this.state.redirectToLogin) {
             console.log(333);
             fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
                 body: JSON.stringify({
@@ -73,7 +73,7 @@ export default class HomePage extends Component {
                 }
             }).then(data => {
                 console.log(data);
-                if (data["state"] === 1) {
+                if (data && data["state"] === 1) {
                     this.setState({
                         favorite: data["data"]
                     });
@@ -89,7 +89,7 @@ export default class HomePage extends Component {
                 //     return true;
                 // }
             })
-        //}
+        // }
     }
 
     getUserInfo() {
