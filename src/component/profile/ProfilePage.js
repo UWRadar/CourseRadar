@@ -6,7 +6,8 @@ import ImageStorage from "../general/ImageStorage"
 import Tabs from "../home/Tabs"
 import md5 from "md5"
 import ServerConfig from "../config/ServerConfig"
-export default class ProfilePage extends Component {
+import {withRouter, Redirect} from 'react-router-dom';
+class ProfilePage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -14,7 +15,7 @@ export default class ProfilePage extends Component {
 
             email: null,
             username: null,
-
+            favLoaded: false,
             favCourses: [],
 
             newUsername: "",
@@ -23,7 +24,75 @@ export default class ProfilePage extends Component {
         }
     }
 
+    componentDidMount() {
+        this.getUserInfo();
+        this.getFavorite();
+    }
+
+    getUserInfo() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                this.setState({
+                    email: data.email,
+                    favCourses: data.favCourses,
+                    username: data.username,
+                    redirectToLogin: false
+                })
+            }
+        }).catch(() => {
+            this.setState({
+                redirectToLogin: true
+            })
+        })
+    }
+
+    getFavorite() {
+        // if (!this.state.redirectToLogin) {
+            console.log(333);
+            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+                body: JSON.stringify({
+                    // courseName: name.toLowerCase()
+                }),
+                credentials: "include",
+                method: "POST"
+            }).then(res => {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log(res);
+                }
+            }).then(data => {
+                console.log(data);
+                if (data && data["state"] === 1) {
+                    this.setState({
+                        favCourses: data["data"]
+                    });
+                }
+                this.setState({
+                    favLoaded: true
+                })
+                console.log(this.state.favorite);
+                // if(data.state === 0) {
+                //     return false;
+                // } else {
+                //     return true;
+                // }
+            })
+        // }
+    }
+
     render() {
+        if (this.state.redirectToLogin) {
+            return (<Redirect to="/login" />)
+        }
         const tabItems = [{
             icon: "saveActive",
             id: "favCourses",
@@ -34,7 +103,8 @@ export default class ProfilePage extends Component {
             text: "设置"
         }]
         const renderFavCourses = () => {
-            const favCourses = this.state.favCourses
+            const favCourses = this.state.favCourses;
+            console.log(favCourses);
             if (favCourses.length == 0) {
                 return <img id="no-result" src="./img/no-result.png" />
             } else {
@@ -44,6 +114,8 @@ export default class ProfilePage extends Component {
                         courseDescription={element.courseDescription}
                         tags={element.tags}
                         credit={element.credit}
+                        loginStatus={!this.state.redirectToLogin}
+                        isFavorite={true}
                     />
                 ))
             }
@@ -86,7 +158,7 @@ export default class ProfilePage extends Component {
                                     method: "POST"
                                 }).then(response => {
                                     if (response.ok) {
-                                        window.location.href = "/login"
+                                        this.props.history.push("/login");
                                     } else {
                                         alert("退出登录时出错。")
                                     }
@@ -101,20 +173,6 @@ export default class ProfilePage extends Component {
                                 <img src={ImageStorage.email} />
                                 <span id="user-email">{this.state.email}</span>
                             </div>
-                            {/* <div id="user-sub-info">
-                                <div class="user-info-container">
-                                    <img src="./img/major.png" />
-                                    <span id="user-major"></span>
-                                </div>
-                                <div class="user-info-container">
-                                    <img src="./img/student.png" />
-                                    <span id="user-year-Info"><span id="graduate"></span> Graduate</span>
-                                </div>
-                                <div class="user-info-container">
-                                    <img src="./img/club.png" />
-                                    <span id="user-club"><span id="club-info"></span></span>
-                                </div>
-                            </div> */}
                         </div>
                     </Container>
                 </section>
@@ -175,25 +233,7 @@ export default class ProfilePage extends Component {
         )
     }
 
-    componentDidMount() {
-        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
-            credentials: "include"
-        }).then(response => {
-            if (response.ok) {
-                return response.json()
-            } else if (response.status == 403) {
-                throw new Error("unauthorized")
-            }
-        }).then(data => {
-            if (data) {
-                this.setState({
-                    email: data.email,
-                    favCourses: data.favCourses,
-                    username: data.username
-                })
-            }
-        }).catch(() => {
-            window.location.href = "/login"
-        })
-    }
+
 }
+
+export default withRouter(ProfilePage);

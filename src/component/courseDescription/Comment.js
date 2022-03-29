@@ -6,10 +6,10 @@ import ImageStorage from "../general/ImageStorage"
 import { ReactComponent as Heart } from "../../img/heartUnactive.svg"
 import { ReactComponent as HeartActive } from "../../img/heartActive.svg"
 import CommentRating from "./CommentRating"
-
+import ServerConfig from "../config/ServerConfig"
 function upperTheFirstLetterOfEachWord(word) {
     let name = word.split(" ");
-    if (name.length === 1) {
+    if (name.length == 1) {
         return name[0][0]?.toUpperCase() + name[0].slice(1);
     } else {
         return name[0][0]?.toUpperCase()
@@ -20,8 +20,33 @@ function upperTheFirstLetterOfEachWord(word) {
 }
 
 const Comment = (props) => {
-    let name = upperTheFirstLetterOfEachWord(props.content.professorName)
+    const [likeConstant, setLikeConstant] = useState(0);
     const [liked, setLiked] = useState(false);
+
+    const updateLikeCount = (isLike, id) => {
+        setLiked(isLike);
+        if (isLike) {
+            setLikeConstant(1);
+            fetch(ServerConfig.SERVER_URL
+                + ServerConfig.UPDATELIKE
+                + "?commentId= " + id)
+                .then((res) => {
+                    if (res.status != 200) {
+                        setLikeConstant(0);
+                        setLiked(!isLike);
+                        alert("登录后才能点赞哦!");
+                    }
+                })
+        } else {
+            setLikeConstant(0);
+        }
+    }
+
+    let name = upperTheFirstLetterOfEachWord(props.content.professorName)
+    let likeCount = props.content.likeCount;
+    if (likeCount === undefined){
+        likeCount = 0;
+    }
     return (
         <div className="container-fluid">
             <div className="col">
@@ -37,14 +62,16 @@ const Comment = (props) => {
                             <p className="commentQuarter">{props.content.year + " " + props.content.quarter}</p>
                         </div>
 
+
                     </div>
-                    {!liked && <Heart onClick={() => setLiked(true)} />}
-                    {liked && <HeartActive onClick={() => setLiked(false)} />}
+                    <div>
+                        {!liked && <Heart onClick={() => updateLikeCount(true, props.content.commentId)} /> }
+                        {liked && <HeartActive onClick={() => updateLikeCount(false, props.content.commentId)} /> }
+                        <p className="likeCount">{likeCount + likeConstant}</p>
+                    </div>
+
 
                 </div>
-
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                <div class="g-recaptcha" data-sitekey="6Lf5BdYdAAAAADvdbVkKNJqxy5Lhhmd2917RDsm2"></div>
                 <p className="commentLabel">评论</p>
                 <p className="comment">{props.content.comment}</p>
                 <CommentRating

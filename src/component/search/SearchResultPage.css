@@ -1,0 +1,93 @@
+:root {
+    --filter-width: 300px;
+}
+
+.filter {
+    /*box-shadow: 0 0 5px rgba(0,0,0,.2);*/
+    background-color: #fafafa;
+    display: none;
+    padding: 15px;
+    height: calc(100vh - 11vh);
+    overflow: scroll;
+    top: 11vh;
+    position: sticky;
+}
+
+.filter h1 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.filter h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.filter label {
+    margin-left: 5px;
+}
+
+.search-result {
+    position: relative;
+    top: 11vh;
+    display: grid;
+    grid-template-columns: 175px auto;
+    grid-template-rows: 1fr;
+}
+
+.search-result .course-list2 {
+    display: block;
+}
+
+.course-list2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 16rem);
+    grid-gap: 1rem;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.loading_container{
+    width: 100%;
+    height: calc(100vh - 11vh);
+    /*background-color: rgba(111, 111, 111, 0.8); !* debugging this result container *!*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.loading_text {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 30px;
+    position: relative;
+    width: 50vw;
+    text-align: center;
+}
+
+.error_stack_trace {
+    text-align: left;
+    position: absolute;
+    width: 50vw;
+    left: 0;
+    right: 0;
+}
+
+@media screen and (min-width: 900px) {
+    .filter {
+        display: block;
+    }
+    .search-result .course-list2 {
+        /*margin-left: calc(var(--filter-width));*/
+        /*width: calc(100% - var(--filter-width));*/
+    }
+}
+
+.no-result {
+    width: 70vmin;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

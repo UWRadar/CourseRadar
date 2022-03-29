@@ -37,7 +37,7 @@
 @media (min-width: 768px)
 {
     .ratingstar{
-        height: 140px;
+        height: 200px;
         width: 100%;
     }
     .cat{
@@ -48,7 +48,7 @@
 @media (min-width: 1024px)
 {
     .ratingstar{
-        height: 140px;
+        height: 200px;
         width: 85%;
     }
     .cat{
@@ -59,7 +59,7 @@
 @media (min-width: 1440px)
 {
     .ratingstar{
-        height: 140px;
+        height: 200px;
         width: 80%;
     }
     .cat{
@@ -69,4 +69,11 @@
         width: 20px;
         height: auto;
     }
+}
+
+#button {
+    background-color: rgba(181, 181, 189, 0.699);
+    margin: auto;
+    height: 2.5rem;
+    width: 10rem;
 }

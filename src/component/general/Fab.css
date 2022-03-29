@@ -1,0 +1,12 @@
+.fab {
+    bottom: 25px;
+    position: fixed !important;
+    right: 25px;
+    z-index: 2;
+}
+
+@media screen and (min-width: 900px) {
+    .fab {
+        display: none !important;
+    }
+}

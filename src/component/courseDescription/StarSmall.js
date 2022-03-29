@@ -17,9 +17,11 @@ const StarSmall = (props) => {
                                 <Row xs="2"><Col className="ratingCat">Workload: </Col><Col><StarRatings classname='small' rating={props.workRating} starDimension="15px" starRatedColor="rgb(230, 178, 84)" starSpacing="1px"/></Col></Row>
                                 <Row xs="2"><Col className="ratingCat">Avg.Grade: </Col><Col> <StarRatings classname='small' rating={props.avgRating} starDimension="15px" starRatedColor="rgb(230, 178, 84)" starSpacing="1px"/></Col></Row>
                             </Container>
+                            
                         </div>
                     </Col>
                 </Row>
+                
             </Container>
         </div>
     )

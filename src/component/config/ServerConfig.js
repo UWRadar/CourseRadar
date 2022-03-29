@@ -5,4 +5,7 @@ export default {
     FILLCOMMENT:     "/api/fillcomment",
     GETRECOMMENDED:  "/api/getRecommended",
     GETPOPULAR:      "/api/getPopular",
+    UPDATELIKE:      "/api/like",
+    GETLIKE:         "/api/getLike",
+    GETAD:           "/api/ad"
 }

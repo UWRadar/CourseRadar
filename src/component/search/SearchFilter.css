@@ -9,6 +9,10 @@
     align-items: left;
 }
 
+.filterIcon {
+    font-size: larger;
+}
+
 .selection-container{
     display: flex;
 }
@@ -20,16 +24,30 @@
 .large-header-input {
     margin-top: 1vh;
     font-size: larger;
-    width: 40vmin;
 }
 
 .search-bar{
     display: flex;
+    width: 80vmin;
+    margin: auto;
 }
 
 #apply-filter-btn {
     margin-left: 1vw;
 }
+
+.searchButton:hover {
+    color: white;
+    background-color: rgb(136, 105, 165);
+    border-color: rgb(136, 105, 165);
+}
+
+.searchButton {
+    background-color: transparent;
+    border-color:  rgb(119, 88, 148);
+    color: rgb(119, 88, 148);
+}
+
 
 @media screen and (min-width: 900px) {
     #selection-icon {
@@ -39,7 +57,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-    .large-header-input {
-        width: 50vmin;
+    .search-bar {
+        width: 100vmin;
     }
 }

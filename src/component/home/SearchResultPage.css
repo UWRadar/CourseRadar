@@ -5,13 +5,18 @@
 .filter {
     box-shadow: 0 0 5px rgba(0,0,0,.2);
     display: none;
-    height: calc(89vh - 5rem);
+    height: calc(100% - 11vh - 10rem);
     left: 0;
     overflow: auto;
     padding: 15px;
     position: fixed;
     top: 11vh;
     width: var(--filter-width);
+}
+
+.single-filter-item {
+    font-weight: bold;
+    margin-left: 0.25rem;
 }
 
 .filter h1 {
@@ -32,16 +37,24 @@
     padding: 11vh 0 5rem;
 }
 
-.search-result .course-list {
+.search-result .course-list2 {
     display: block;
+}
+
+.course-list2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 16rem);
+    grid-gap: 1rem;
+    justify-content: center;
+    min-height: 60vh;
 }
 
 @media screen and (min-width: 900px) {
     .filter {
         display: block;
     }
-    .search-result .course-list {
-        margin-left: var(--filter-width);
+    .search-result .course-list2 {
+        margin-left: calc(var(--filter-width));
         width: calc(100% - var(--filter-width));
     }
 }

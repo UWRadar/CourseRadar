@@ -10,12 +10,13 @@ import ImageStorage from "../general/ImageStorage.js"
 import LoginPage from "../general/LoginPage"
 import LargeHeader from "../general/LargeHeader"
 import { NavLink } from "react-router-dom"
-import SearchBar from "../general/SearchFilter"
+import SearchBar from "../search/SearchFilter"
 import ServerConfig from "../config/ServerConfig"
 
 export default class HomePage extends Component {
     constructor(props) {
         super(props)
+        this.intervalId = null
         this.state = {
             activeBanner: 0,
             bannerItems: [{
@@ -34,60 +35,163 @@ export default class HomePage extends Component {
                 description: "The quick brown fox jumps over the lazy dog",
                 image: "https://www.bing.com/th?id=OHR.BlueTitDaffs_ZH-CN3333224685_1920x1080.jpg"
             }],
-            loaded : false,
+            bannerNoAnimation: false,
+            loaded: false,
+            favLoaded: false,
             recommened: [],
             popular: [],
             mostTaken: [],
-            activeTab: "trendy"
+            favorite: [],
+            activeTab: "trendy",
+            redirectToLogin: true
         }
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.switchBanner(1)
-        }, 5000)
+        this.resetInterval();
+        // this.getAds();
+        this.getFavorite();
         this.getPopular();
         this.getRecommended();
+        this.getUserInfo();
+    }
+
+    getFavorite() {
+        // if (!this.state.redirectToLogin) {
+            console.log(333);
+            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+                body: JSON.stringify({
+                    // courseName: name.toLowerCase()
+                }),
+                credentials: "include",
+                method: "POST"
+            }).then(res => {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log(res);
+                }
+            }).then(data => {
+                console.log(data);
+                if (data && data["state"] === 1) {
+                    let favoriteCourseName = [];
+                    data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])})
+                    this.setState({
+                        favorite: favoriteCourseName
+                    });
+                }
+                this.setState({
+                    favLoaded: true
+                })
+                console.log(this.state.favorite);
+                // if(data.state === 0) {
+                //     return false;
+                // } else {
+                //     return true;
+                // }
+            })
+        // }
+    }
+
+    getUserInfo() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                this.setState({
+                    email: data.email,
+                    favorite: data.favCourses,
+                    username: data.username,
+                    redirectToLogin: false
+                })
+            }
+        }).catch(() => {
+            this.setState({
+                redirectToLogin: true
+            })
+        })
+    }
+
+    getAds() {
+
+        fetch(ServerConfig.SERVER_URL + "/api/ad")
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    const result = [];
+                    for (const key in data.result) {
+                        const item = data.result[key];
+                        result.push({
+                            title: item.title,
+                            subtitle: item.subTitle,
+                            description: item.content,
+                            image: item.picLink,
+                            link: item.redirectLink
+                        });
+                    }
+                    this.setState({
+                        bannerItems: result
+                    });
+                }
+            });
     }
 
     changeActiveTab(tabName) {
-        this.setState({activeTab: tabName})
+        this.setState({
+            activeTab: tabName
+        })
     }
 
     getPopular() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETPOPULAR)
-        .then(response => {
-            if (response.ok){
-                return response.json();
-            } else {
-                return [];
-            }
-        })
-        .then((data) => {
-            console.log(data)
-            this.setState({
-                popular: data.result
-            });
-        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            })
+            .then((data) => {
+                this.setState({
+                    popular: data.result
+                });
+            })
     }
 
     getRecommended() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETRECOMMENDED)
-        .then(response => {
-            if (response.ok){
-                return response.json();
-            } else {
-                return [];
-            }
-        })
-        .then((data) => {
-            console.log(data)
-            this.setState({
-                loaded : true,
-                recommened: data.result
-            });
-        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            })
+            .then((data) => {
+                this.setState({
+                    loaded: true,
+                    recommened: data.result
+                });
+            })
     }
+
+    resetInterval() {
+        clearInterval(this.intervalId);
+        this.intervalId = setInterval(() => {
+            this.switchBanner(1);
+        }, 5000);
+    }
+
     render() {
         const CourseTemp = [{
             courseName: "Info 340",
@@ -128,25 +232,20 @@ export default class HomePage extends Component {
 
         return (
             <div className="home">
-                {/* <div className="bg-img">
-                    <SearchBar />
-                    <div className="arrow-down" onClick={() => {
-                        let intervalId = setInterval(() => {
-                            let y1 = window.scrollY
-                            window.scrollTo(0, window.scrollY + 2)
-                            let y2 = window.scrollY
-                            if (y1 == y2 || window.scrollY > window.innerHeight) {
-                                clearInterval(intervalId)
-                            }
-                        }, 1)
-                    }}></div>
-                </div> */}
 
                 <Banner className="banner"
                     items={this.state.bannerItems}
                     active={this.state.activeBanner}
-                    onchange={(delta) => {
-                        this.switchBanner(delta)
+                    noAnimation={this.state.bannerNoAnimation}
+                    onChange={(delta) => {
+                        this.switchBanner(delta);
+                        this.resetInterval();
+                    }}
+                    onMouseEnter={() => {
+                        clearInterval(this.intervalId);
+                    }}
+                    onMouseLeave={() => {
+                        this.resetInterval();
                     }}
                 />
                 <Tabs
@@ -155,12 +254,12 @@ export default class HomePage extends Component {
                     setActiveTab={(data) => this.changeActiveTab(data)}
                 />
                 <div className="course-list">
-                    {!this.state.loaded && 
+                    {!this.state.loaded &&
                         <div class="loading-small">
-                                <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
+                            <img class='loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
-                    {this.state.loaded && this.state.activeTab === "recommendation" &&
+                    {this.state.favLoaded && this.state.loaded && this.state.activeTab === "recommendation" &&
                         this.state.recommened.map(element => (
                             <CourseCard
                                 key={element.courseName}
@@ -168,10 +267,12 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
+                                isFavorite={this.state.favorite.includes(element.courseName)}
                             />
                         ))
                     }
-                    {this.state.loaded && this.state.activeTab === "trendy" &&
+                    {this.state.favLoaded && this.state.loaded && this.state.activeTab === "trendy" &&
                         this.state.popular.map(element => (
                             <CourseCard
                                 key={element.courseName}
@@ -179,6 +280,8 @@ export default class HomePage extends Component {
                                 courseDescription={element.courseFullName}
                                 tags={element.creditType.split("/")}
                                 credit={element.credit}
+                                loginStatus={!this.state.redirectToLogin}
+                                isFavorite={this.state.favorite.includes(element.courseName)}
                             />
                         ))
                     }
@@ -187,20 +290,30 @@ export default class HomePage extends Component {
         )
     }
 
-
     switchBanner(delta) {
+        if (this.state.bannerNoAnimation) {
+            return
+        }
+        const bannerItems = this.state.bannerItems
         const newActive = this.state.activeBanner + delta
         const setActive = (newValue) => {
             this.setState({
                 activeBanner: newValue
             })
         }
-        if (newActive >= 0 && newActive < this.state.bannerItems.length) {
-            setActive(newActive)
-        } else if (newActive < 0) {
-            setActive(this.state.bannerItems.length - 1)
-        } else {
-            setActive(0)
+        setActive(newActive)
+        if (newActive < 0 || newActive > bannerItems.length - 1) {
+            setTimeout(() => {
+                this.setState({
+                    activeBanner: newActive < 0 ? bannerItems.length - 1 : 0,
+                    bannerNoAnimation: true
+                })
+            }, 500)
+            setTimeout(() => {
+                this.setState({
+                    bannerNoAnimation: false
+                })
+            }, 1000)
         }
     }
 }

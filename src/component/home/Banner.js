@@ -1,43 +1,53 @@
 import React, { useState } from "react"
+import { Component } from "react"
 import { NavLink } from "react-router-dom"
 import "./Banner.css"
-const Banner = (props) => {
-    const bannerItems = []
-    for (const key in props.items) {
-        const thisProps = props.items[key]
-        bannerItems.push(
+export class Banner extends Component {
+    constructor(props) {
+        super(props)
+        this.props = props
+    }
+
+    renderAnItem(index, position) {
+        const item = this.props.items[index]
+        if (!item) {
+            return <div></div>
+        }
+        return (
             <div
-                className={"banner" + (() => {
-                    if (key < props.active) {
-                        return " before"
-                    } else if (key > props.active) {
-                        return " after"
-                    } else {
-                        return ""
-                    }
-                })()}
+
+                className={"banner" + position}
                 style={{
-                    backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + thisProps.image + ")"
-                }}
-            >
+                    backgroundImage: "linear-gradient(to right, var(--theme-color), transparent), url(" + item.image + ")"
+                }}>
                 <button
                     className="arrow arrow-left"
                     title="上一张"
                     onClick={() => {
-                        props.onchange(-1)
+                        this.props.onChange(-1)
                     }}
                 ></button>
-                <div className="main">
-                    <h1>{thisProps.title}</h1>
-                    <h2>{thisProps.subtitle}</h2>
-                    <p className="hide-on-mobile">{thisProps.description}</p>
+                <div
+                    onClick={() => {
+                        window.open(item.link)
+                    }}
+                    className="main">
+                    <h1>{item.title}</h1>
+                    <h2>{item.subtitle}</h2>
+                    <p className="hide-on-mobile">{item.description}</p>
                     {/* 微信公众号界面链接 */}
                     <NavLink
                         to="/"
                         activeStyle={{
                             color: "white",
                         }}>
-                        <button className="hide-on-mobile">详情</button>
+                        <button
+                            className="hide-on-mobile"
+                            onClick={() => {
+                                window.open(item.link)
+                            }}>
+                            详情
+                        </button>
                     </NavLink>
 
                 </div>
@@ -45,17 +55,38 @@ const Banner = (props) => {
                     className="arrow arrow-right"
                     title="下一张"
                     onClick={() => {
-                        props.onchange(1)
+                        this.props.onChange(1)
                     }}
                 ></button>
             </div>
         )
     }
-    return (
-        <div className="banner-placeholder">
-            <div className="banner-area">{bannerItems}</div>
-        </div>
-    )
+
+    render() {
+        const active = this.props.active
+        const bannerItems = []
+        bannerItems.push(this.renderAnItem(this.props.items.length - 1, active == -1 ? "" : " before"))
+        for (const index in this.props.items) {
+            bannerItems.push(this.renderAnItem(index, (() => {
+                if (active === true || active == index) {
+                    return ""
+                } else if (index < active) {
+                    return " before"
+                } else {
+                    return " after"
+                }
+            })()))
+        }
+        bannerItems.push(this.renderAnItem(0, active == this.props.items.length ? "" : " after"))
+        return (
+            <div
+                className="banner-placeholder"
+                onMouseEnter={this.props.onMouseEnter}
+                onMouseLeave={this.props.onMouseLeave}>
+                <div className={"banner-area" + (this.props.noAnimation ? " no-animation" : "")}>{bannerItems}</div>
+            </div>
+        )
+    }
 }
 
 export default Banner
