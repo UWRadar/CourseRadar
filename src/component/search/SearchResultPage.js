@@ -359,7 +359,7 @@ function SearchResult(props) {
                     courseDescription={element.courseDescription}
                     tags={element.tags}
                     credit={element.credit}
-                    isFavorite/>
+                    isFavorite={false}/>
             ))}
         </div>
         )
