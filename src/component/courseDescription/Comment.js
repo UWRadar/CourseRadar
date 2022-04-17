@@ -27,8 +27,8 @@ const Comment = (props) => {
         setLiked(isLike);
         if (isLike) {
             setLikeConstant(1);
-            fetch(ServerConfig.SERVER_URL 
-                + ServerConfig.UPDATELIKE 
+            fetch(ServerConfig.SERVER_URL
+                + ServerConfig.UPDATELIKE
                 + "?commentId= " + id)
                 .then((res) => {
                     if (res.status != 200) {
@@ -61,16 +61,16 @@ const Comment = (props) => {
                             <QuarterLogo className="detailLogos" />
                             <p className="commentQuarter">{props.content.year + " " + props.content.quarter}</p>
                         </div>
-        
-                        
-                    </div>    
+
+
+                    </div>
                     <div>
                         {!liked && <Heart onClick={() => updateLikeCount(true, props.content.commentId)} /> }
-                        {liked && <HeartActive onClick={() => updateLikeCount(false, props.content.commentId)} /> }         
+                        {liked && <HeartActive onClick={() => updateLikeCount(false, props.content.commentId)} /> }
                         <p className="likeCount">{likeCount + likeConstant}</p>
                     </div>
-                               
-                
+
+
                 </div>
                 <p className="commentLabel">评论</p>
                 <p className="comment">{props.content.comment}</p>

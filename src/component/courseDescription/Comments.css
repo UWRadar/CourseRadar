@@ -66,15 +66,22 @@
     font-size: 20px;
 }
 
+.tip {
+    text-align: left;
+    margin-top: -25px;
+    margin-left: 30px;
+    color: gray;
+}
 
-/* Media Control screen larger than 320px */ 
+
+/* Media Control screen larger than 320px */
 @media (min-width: 375px)
 {
 
 }
 
-/* Media Control screen larger than 480px */ 
-@media (min-width: 768px) 
+/* Media Control screen larger than 480px */
+@media (min-width: 768px)
 {
     .starLarge {
         display: flex;
@@ -128,7 +135,7 @@
 
 }
 
-/* Media Control screen larger than 768px */ 
+/* Media Control screen larger than 768px */
 @media (min-width: 1024px)
 {
     .info {

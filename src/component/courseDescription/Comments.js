@@ -26,7 +26,7 @@ export default class Comments extends Component{
         let len = comments.length;
         for (let i = 0; i < len; i++) {
             let element = comments[i];
-            const response = await fetch(ServerConfig.SERVER_URL 
+            const response = await fetch(ServerConfig.SERVER_URL
                 + ServerConfig.GETLIKE + "?commentId= " + element.commentId);
 
             if (response.status == 200){
@@ -63,13 +63,13 @@ export default class Comments extends Component{
 
     render() {
         return (<div className='comments'>
-            
+
                 {this.state.comments.map(comment => {
                     return (<Comment content={comment}/>)
                 })}
-            
+
         </div>);
-        
-        
+
+
     }
 }

@@ -107,7 +107,7 @@ hr .rounded {
 .paragraph {
     font-size: 19px;
     margin-right: -60px;
-    text-align: left;
+    text-align: justify;
 }
 
 .commentdetail {
@@ -154,7 +154,6 @@ hr .rounded {
     text-align: center;
 }
 
-/* Media Control screen larger than 320px */ 
 @media (min-width: 480px)
 {
     #workload {
@@ -162,8 +161,7 @@ hr .rounded {
     }
 }
 
-/* Media Control screen larger than 480px */ 
-@media (min-width: 768px) 
+@media (min-width: 768px)
 {
     .difficulty {
         font-size: 15px;
@@ -178,7 +176,7 @@ hr .rounded {
         padding-left: 0%;
         margin-right: -50px;
     }
-    
+
     .name {
         font-size: 20px;
         padding-left: 0;
@@ -198,7 +196,7 @@ hr .rounded {
 
 }
 
-/* Media Control screen larger than 768px */ 
+/* Media Control screen larger than 768px */
 @media (min-width: 1024px)
 {
     .RatingContainer{
