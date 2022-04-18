@@ -91,12 +91,18 @@ export default function SearchResultPage(props) {
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
-    // favorite course state
     const [favCourses, setFavCourses] = useState([]);
+    const [favLoaded, setFavLoaded] = useState(false);
+    const [redirectToLogin, setRedirectToLogin] = useState(true);
 
-    function getFavorite() {
+    // console.log(favCourses);
+    // favorite course state
+    // const [favCourses, setFavCourses] = useState([]);
+
+    async function getFavorite() {
         fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
             body: JSON.stringify({
+
                 // courseName: name.toLowerCase()
             }),
             credentials: "include",
@@ -112,11 +118,32 @@ export default function SearchResultPage(props) {
             if (data && data["state"] === 1) {
                 let favoriteCourseName = [];
                 data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])});
+                // return favoriteCourseName;
                 setFavCourses(favoriteCourseName);
-                console.log(favCourses);
+                // console.log(favCourses);
             }
+            setFavLoaded(true);
         })
-}
+    }
+
+    async function getUserInfo() {
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status == 403) {
+                throw new Error("unauthorized")
+            }
+        }).then(data => {
+            if (data) {
+                setRedirectToLogin(false);
+            }
+        }).catch(() => {
+            setRedirectToLogin(true);
+        })
+    }
+
 
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
@@ -216,9 +243,28 @@ export default function SearchResultPage(props) {
     }
 
     useEffect(() => {
-        // getFavorite();
-        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
+        getFavorite();
     }, [courseName, courseLevel, creditNumber, courseType]);
+
+    useEffect(() => {
+        getUserInfo();
+    })
+
+    useEffect(() => {
+        // const getFavCourses = new Promise(async (resolve, reject) => {
+        //     console.log(222);
+        //     setTimeout(() => {
+        //         let favCourses = getFavorite();
+        //         resolve(["cse142"]);
+        //     }, 250);
+
+        //     reject(console.log(111));
+        // })
+        // let favCourses = getFavorite();
+        // getFavCourses.then((favCourses) => {
+        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, favCourses, redirectToLogin, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
+        // })
+    }, [courseName, courseLevel, creditNumber, courseType, favCourses, redirectToLogin]);
 
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 
@@ -350,6 +396,7 @@ function ErrorScreen(props) {
 
 
 function SearchResult(props) {
+    console.log(props);
     return (
         <div className="course-list2">
             {props.courseCards.map(element => (
@@ -359,14 +406,16 @@ function SearchResult(props) {
                     courseDescription={element.courseDescription}
                     tags={element.tags}
                     credit={element.credit}
-                    isFavorite={false}/>
+                    loginStatus={!element.redirectToLogin}
+                    isFavorite={element.isFavorite}/>
             ))}
         </div>
         )
 }
 
-async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, favCourses, redirectToLogin, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
     // Only show loading screen if the course list is previously empty
+    console.log(favCourses);
     if(courseCards === undefined || courseCards.length === 0) {
         setLoadedCallBackFn(false);
     }
@@ -408,17 +457,20 @@ async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumbe
                 if (curCreditType !== null) {
                     curTag = curCreditType.split("/");
                 }
+                console.log(favCourses.includes(course.courseName));
                 courseTemp.push({
                     courseName: course.courseName,
                     courseDescription: course.courseFullName,
                     tags: curTag,
-                    credit: course.credit[0]
+                    credit: course.credit[0],
+                    redirectToLogin: redirectToLogin,
+                    isFavorite: favCourses.includes(course.courseName)
                 });
             }
             setIsCourseDNECallBackFn(false);
             setErrorMessageCallBackFn(false);
-            setLoadedCallBackFn(true);
             setCourseCardsCallBackFn(courseTemp);
+            setLoadedCallBackFn(true);
         }
     } catch (err) {
         setLoadedCallBackFn(true);

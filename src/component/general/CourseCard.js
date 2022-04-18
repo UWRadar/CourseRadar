@@ -42,13 +42,12 @@ const CourseCard = (props) => {
     }
 
     // isFavorite(props.loginStatus, props.courseName)
-    const [favorite, setFavorite] = useState(props.isFavorite); // TODO
+    const [favorite, setFavorite] = useState(props.isFavorite);
 
     const toggleLike = (e, name, loginStatus, setLogin) => {
         // TODO
         setFavorite(!favorite);
         e.preventDefault();
-        console.log(name);
         // if user do not login, redirect to login page TODO
         if(!loginStatus) {
             setLogin(true);
@@ -70,7 +69,6 @@ const CourseCard = (props) => {
                 }
             })
             .then(data => {
-                console.log(data);
                 if(data.state === 0){
                     alert("已取消收藏");
                     //window.location.reload(true);
