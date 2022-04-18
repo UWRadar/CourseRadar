@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import like from '../../img/like.svg';
 import unlike from '../../img/unlike.svg';
 import ServerConfig from "../config/ServerConfig";
-import {withRouter, Redirect} from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 
 const CourseCard = (props) => {
@@ -15,9 +15,9 @@ const CourseCard = (props) => {
     const [login, setLogin] = useState(false); // TODO
 
     const isFavorite = (loginStatus, name) => {
-        if(!loginStatus) {
+        if (!loginStatus) {
             return false;
-        }   else {
+        } else {
             fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
                 body: JSON.stringify({
                     courseName: name.toLowerCase()
@@ -25,14 +25,14 @@ const CourseCard = (props) => {
                 credentials: "include",
                 method: "POST"
             }).then(res => {
-                if(res.ok) {
+                if (res.ok) {
                     return res.json();
                 } else {
                     console.log(res);
                 }
             }).then(data => {
                 console.log(data);
-                if(data.state === 0) {
+                if (data.state === 0) {
                     return false;
                 } else {
                     return true;
@@ -49,7 +49,7 @@ const CourseCard = (props) => {
         setFavorite(!favorite);
         e.preventDefault();
         // if user do not login, redirect to login page TODO
-        if(!loginStatus) {
+        if (!loginStatus) {
             setLogin(true);
             alert("Please login first!");
             return
@@ -62,18 +62,22 @@ const CourseCard = (props) => {
             method: "POST"
         })
             .then(res => {
-                if(res.ok) {
+                if (res.ok) {
                     return res.json();
                 } else {
                     console.log(res);
                 }
             })
             .then(data => {
-                if(data.state === 0){
+                if (data.state === 0) {
                     alert("已取消收藏");
                     //window.location.reload(true);
                 } else {
-                    alert("已收藏");
+                    if (data.success !== false) { // because there is no success key when succeed
+                        alert("已收藏");
+                    } else {
+                        alert("收藏失败");
+                    }
                     //window.location.reload(true);
                 }
             })
@@ -120,7 +124,7 @@ const CourseCard = (props) => {
                         </div>
 
                         <div class="describtion-tags">
-                            { (props.tags === null) ? null : props.tags.map(element => {
+                            {(props.tags === null) ? null : props.tags.map(element => {
                                 return (<div class={"tag " + element} npnp>
                                     <div class="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>
