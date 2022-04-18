@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component ,useState} from "react"
 import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import "./Description.css"
@@ -10,6 +10,8 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { NavLink } from 'react-router-dom'
 import background from "../../img/guthrie.jpeg";
 import SideHoverButtons from "../general/SideHoveringButtons"
+import ServerConfig from "../config/ServerConfig"
+import {Redirect} from 'react-router-dom';
 
 
 const Description = (props) => {
@@ -17,8 +19,13 @@ const Description = (props) => {
     const difficulty = Math.round(props.courseItems.difficulty * 10) / 10
     const grading = Math.round(props.courseItems.grading * 10) / 10
     const workload = Math.round(props.courseItems.workload * 10) / 10
+    const [redirectToLogin, setRedirectToLogin] = useState(false)
     const handleClick = () => {
         window.location.href = "/"
+    }
+    let needsLogin = false;
+    if (redirectToLogin) {
+        return (<Redirect to="/login" />)
     }
 
     return (
@@ -66,7 +73,23 @@ const Description = (props) => {
                 <div className="topHalf">
                     <div className="row" id="overlay">
                         <div className="col-12 col-lg-9 ">
-                            <p className="courseCode">{props.courseName.toUpperCase()}</p>
+                            <p className="courseCode">{props.courseName.toUpperCase()}
+                                <button type="button" class="btn btn-primary QRcodebtn" id="commentButton" onClick={() => {
+                                    document.getElementById("QRcode").style.display = "inline";
+                                    if (needsLogin) {
+                                        if (window.confirm("登录后才能查看课群二维码哦！\n点击OK跳转登录页面~")) {
+                                            setRedirectToLogin(true);
+                                        } else {
+                                            document.getElementById("QRcode").style.display = "none";
+                                        }
+                                    }
+                                }}>课群二维码</button>
+                                <img src={ServerConfig.SERVER_URL + ServerConfig.GETQRCODE + "?name="
+                                + props.courseName.toUpperCase()} alt="QRcode" id="QRcode" onError={()=>{
+                                    needsLogin = true;
+                                }}>
+                                </img>
+                            </p>
                             <p className="courseName">{props.courseItems.courseFullName}</p>
                             <p className="courseCredit">{props.courseItems.credit + " credits"}</p>
                             {props.courseItems.creditType.split("/").map(element => {
@@ -86,19 +109,19 @@ const Description = (props) => {
                 <div className="row" style={{marginTop: "3%", marginLeft: "0.5%"}}>
                     <div className="col-5" id="largeScreenDescription">
                         <p className="courseDesription">{props.courseItems.description}</p>
-                    </div>             
+                    </div>
                     <div className="col-12 col-lg-4">
-                        <LinearProgressBar 
-                            completed={props.courseItems.difficulty / 5 * 100} 
-                            content={difficulty} 
+                        <LinearProgressBar
+                            completed={props.courseItems.difficulty / 5 * 100}
+                            content={difficulty}
                             text="课程难度" />
-                        <LinearProgressBar 
-                            completed={props.courseItems.grading / 5 * 100} 
-                            content={grading} 
+                        <LinearProgressBar
+                            completed={props.courseItems.grading / 5 * 100}
+                            content={grading}
                             text="评分难度"/>
-                        <LinearProgressBar 
+                        <LinearProgressBar
                             completed={props.courseItems.workload / 5 * 100}
-                            content={workload} 
+                            content={workload}
                             text="作业量"/>
                     </div>
 
@@ -109,18 +132,18 @@ const Description = (props) => {
                                 <p className="gpaLabel">平均成绩</p>
                             </div>
                         </CircularProgressbarWithChildren>
-                        
+
                     </div>
 
-                    
-                    
+
+
                     <div className="col-12" id="smallScreenDescription">
-                            <p className="courseDesription">{props.courseItems.description}</p>   
+                            <p className="courseDesription">{props.courseItems.description}</p>
                     </div>
             </div>
 
-            
-            
+
+
         </div>
 
     </div>

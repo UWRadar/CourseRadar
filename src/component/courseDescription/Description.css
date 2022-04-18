@@ -19,7 +19,7 @@
     overflow-x: hidden;
 }
 
-#description { 
+#description {
     margin-top: 20%;
     padding: 0;
 }
@@ -130,7 +130,7 @@
     margin-bottom: 1px;
     text-align: left;
     text-transform: capitalize;
-    
+
 }
 
 .courseName {
@@ -195,6 +195,17 @@
     margin-left: 3rem;
 }
 
+.QRcodebtn {
+    margin-left: 10px;
+    margin-top: -5px;
+    margin-right: 10px;
+}
+
+#QRcode {
+    display: none;
+    height: 5rem;
+}
+
 #commentButton {
     background-color: #63469D;
     font-family: 'PingFang SC', sans-serif;
@@ -210,7 +221,7 @@
     margin-right: 3rem;
 }
 
-/* Media Control screen larger than 320px */ 
+/* Media Control screen larger than 320px */
 @media (min-width: 460px)
 {
     #description {
@@ -218,10 +229,10 @@
     }
 }
 
-/* Media Control screen larger than 480px */ 
-@media (min-width: 768px) 
+/* Media Control screen larger than 480px */
+@media (min-width: 768px)
 {
-    
+
     .CircularProgressbar {
         width: 25%;
     }
@@ -233,7 +244,7 @@
         font-size: 35px;
         margin: 0%;
     }
-    
+
     .gpaLabel {
         font-size: 20px;
     }
@@ -262,7 +273,7 @@
 
 
 
-/* Media Control screen larger than 768px */ 
+/* Media Control screen larger than 768px */
 @media (min-width: 1000px)
 {
     #fillComment{
@@ -284,7 +295,7 @@
         font-size: 30px;
         margin: 0%;
     }
-    
+
     .gpaLabel {
         font-size: 15px;
     }
@@ -302,7 +313,7 @@
 }
 
 @media (min-width: 1200px) {
-    
+
     #description {
         margin-top:5%
     }
