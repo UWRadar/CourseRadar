@@ -123,24 +123,24 @@ const CourseCard = (props) => {
                             <h1>{props.courseDescription}</h1>
                         </div>
 
-                        <div class="describtion-tags">
+                        <div className="describtion-tags">
                             {(props.tags === null) ? null : props.tags.map(element => {
-                                return (<div class={"tag " + element} npnp>
-                                    <div class="tooltips" id={element.toUpperCase()}>
+                                return (<div className={"tag " + element}>
+                                    <div className="tooltips" id={element.toUpperCase()}>
                                         <p>{element.toUpperCase()}</p>
                                     </div>
                                 </div>);
                             })}
 
-                            <div class="tag credit">
-                                <div class="tooltips" id="5cre">
+                            <div className="tag credit">
+                                <div className="tooltips" id="5cre">
                                     <p>{props.credit}</p>
                                 </div>
                             </div>
 
                             {/* toggleLike(e, props.courseName, props.loginStatus, setLogin)*/}
-                            <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
-                                <div class="tooltips" id="add">
+                            <div className="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
+                                <div className="tooltips" id="add">
                                     {favorite ? <img src={like} alt="like" /> : <img src={unlike} alt="unlike" />}
                                 </div>
                             </div>
