@@ -10,6 +10,9 @@ import { CircularProgress } from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
+import { connect } from 'react-redux'
+import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from './controller/SearchQuerySlice'
+
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
 
@@ -19,7 +22,7 @@ const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
-export default class SearchResultPage extends Component {
+class SearchResultPage extends Component {
     constructor(props) {
         super(props);
 
@@ -56,9 +59,7 @@ export default class SearchResultPage extends Component {
             LEVELS
         );
         if (!this.arrayEquals(levelArr, this.state.courseLevel)) {
-            this.setState({
-                courseLevel: levelArr
-            });
+            setCourseLevel(levelArr);
         }
         const creditArr = this.extractParam(
             params,
@@ -66,9 +67,7 @@ export default class SearchResultPage extends Component {
             CREDITS
         );
         if (!this.arrayEquals(creditArr, this.state.creditNumber)) {
-            this.setState({
-                creditNumber: creditArr
-            });
+            setCreditNumber(creditArr);
         }
         const courseTypeArr = this.extractParam(
             params,
@@ -77,9 +76,7 @@ export default class SearchResultPage extends Component {
             ["IS", "None"]
         );
         if (!this.arrayEquals(courseTypeArr, this.state.courseType)) {
-            this.setState({
-                courseType: courseTypeArr
-            });
+            setCourseType(courseTypeArr);
         }
     }
 
@@ -160,109 +157,6 @@ export default class SearchResultPage extends Component {
                 redirectToLogin: true
             });
         })
-    }
-
-    // Custom data cleaning function to account for mutually exclusive selection
-    handleFilterChange(destination, newValue) {
-        const { courseLevel, creditNumber, courseType } = this.state;
-        let url = new URL(document.URL);
-        let params = new URLSearchParams(url.search);
-        if (destination === "courseLevel") {
-            // ES6 way to copy/clone an array
-            let newCourseLevel = [...courseLevel];
-
-            // Toggling between all and not all
-            if (newValue === "all" && courseLevel.indexOf("all") < 0) {
-                newCourseLevel = ["all"];
-            } else if (courseLevel[0] === "all" && newValue !== "all") {
-                newCourseLevel = [newValue];
-            }
-            // When it's not all, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
-                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedLevel = newCourseLevel.filter(e => e !== newValue);
-                if (updatedLevel[0] === "" || updatedLevel.length === 0) {
-                    newCourseLevel = ["all"];
-                } else {
-                    newCourseLevel = updatedLevel;
-                }
-            } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
-                // Non Mutative way to concat an array
-                newCourseLevel = courseLevel.concat(newValue);
-            }
-
-            params.set('course_level', newCourseLevel.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
-            this.setState({
-                courseLevel: newCourseLevel
-            });
-        } else if (destination === "creditNumber") {
-            // ES6 way to copy/clone an array
-            let newCreditNumber = [...creditNumber];
-
-            // Toggling between all and not all
-            if (newValue === "all" && creditNumber.indexOf("all") < 0) {
-                newCreditNumber = ["all"];
-            } else if (creditNumber[0] === "all" && newValue !== "all") {
-                newCreditNumber = [newValue];
-            }
-            // When it's not all, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && creditNumber.indexOf(newValue) >= 0) {
-                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedCreditNumber = newCreditNumber.filter(e => e !== newValue);
-                if (updatedCreditNumber[0] === "" || updatedCreditNumber.length === 0) {
-                    newCreditNumber = ["all"];
-                } else {
-                    newCreditNumber = updatedCreditNumber;
-                }
-            } else if (newValue !== "all" && creditNumber.indexOf(newValue) < 0) {
-                // Non Mutative way to concat an array
-                newCreditNumber = creditNumber.concat(newValue);
-            }
-
-            params.set('credit_number', newCreditNumber.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
-            this.setState({
-                creditNumber: newCreditNumber
-            });
-        } else if (destination === "courseType") {
-            // ES6 way to copy/clone an array
-            let newCourseType = [...courseType];
-
-            // Toggling between all and not all
-            if (newValue === "all" && courseType.indexOf("all") < 0) {
-                newCourseType = ["all"];
-            } else if (courseType[0] === "all" && newValue !== "all" && newValue !== "None") {
-                newCourseType = [newValue];
-            }
-            // Toggle between None and not None
-            else if (newValue === "None" && courseType.indexOf("None") < 0) {
-                newCourseType = ["None"];
-            } else if (courseType[0] === "None" && newValue !== "all" && newValue !== "None") {
-                newCourseType = [newValue];
-            }
-            // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
-            else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
-                // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
-                const updatedCourseType = newCourseType.filter(e => e !== newValue);
-                if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
-                    newCourseType = ["all"];
-                } else {
-                    newCourseType = updatedCourseType;
-                }
-            } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
-                // Non-Mutative way to concat an array
-                newCourseType = courseType.concat(newValue);
-            }
-            params.set('course_type', newCourseType.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
-
-            this.setState({
-                courseType: newCourseType
-            });
-        }
     }
 
     async fetchCourse() {
@@ -359,9 +253,9 @@ export default class SearchResultPage extends Component {
 
     resetFilter(event) {
         event.preventDefault();
-        this.handleFilterChange("courseLevel", "all");
-        this.handleFilterChange("creditNumber", "all");
-        this.handleFilterChange("courseType", "all");
+        handleFilterChange(this.state, "courseLevel", "all");
+        handleFilterChange(this.state, "creditNumber", "all");
+        handleFilterChange(this.state, "courseType", "all");
     }
 
     componentDidMount() {
@@ -388,8 +282,7 @@ export default class SearchResultPage extends Component {
                     creditNumber={creditNumber}
                     courseType={courseType}
                     handleFilterChange={(destination, newValue) => {
-                        // make this.state and this.setState accessible
-                        this.handleFilterChange.call(this, destination, newValue)
+                        handleFilterChange(this.state, destination, newValue)
                     }} />
                 <div className="course-list2">
                     <LoadingScreen />
@@ -402,8 +295,7 @@ export default class SearchResultPage extends Component {
                     creditNumber={creditNumber}
                     courseType={courseType}
                     handleFilterChange={(destination, newValue) => {
-                        // make this.state and this.setState accessible
-                        this.handleFilterChange.call(this, destination, newValue)
+                        handleFilterChange(this.state, destination, newValue)
                     }} />
                 <div className="course-list2">
                     <ErrorScreen
@@ -423,7 +315,7 @@ export default class SearchResultPage extends Component {
                     courseType={courseType}
                     handleFilterChange={(destination, newValue) => {
                         // make this.state and this.setState accessible
-                        this.handleFilterChange.call(this, destination, newValue)
+                        handleFilterChange(this.state, destination, newValue)
                     }} />
                 <div className="course-list2">
                     <SearchResult courseCards={courseCards} />
@@ -434,58 +326,56 @@ export default class SearchResultPage extends Component {
 }
 
 function SearchFilter(props) {
-    return (
-        <div className="filter">
-            <h1>二次筛选</h1>
-            {/*<h2>课程级别</h2>*/}
-            <FormLabel component="legend">课程级数</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("courseLevel", "all")
-            }} />} label="全部" />
-            {LEVELS.map((input) => {
-                return (<div key={input}>
-                    <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
-                        onChange={() => {
-                            props.handleFilterChange("courseLevel", input)
-                        }} />}
+    return <div className="filter">
+        <h1>二次筛选</h1>
+        {/*<h2>课程级别</h2>*/}
+        <FormLabel component="legend">课程级数</FormLabel>
+        <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("courseLevel", "all")
+        }} />} label="全部" />
+        {LEVELS.map((input) => {
+            return (<div key={input}>
+                <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
+                    onChange={() => {
+                        props.handleFilterChange("courseLevel", input)
+                    }} />}
+                    label={input} />
+            </div>);
+        })}
+        <FormLabel component="legend">学分数量</FormLabel>
+        <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("creditNumber", "all")
+        }} />} label="全部" />
+        {CREDITS.map((input) => {
+            return (<div key={input}>
+                <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
+                    onChange={() => {
+                        props.handleFilterChange("creditNumber", input)
+                    }} />}
+                    label={input} />
+            </div>);
+        })}
+        <FormLabel component="legend">通识类别</FormLabel>
+        <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("courseType", "all")
+        }} />} label="全部" />
+        {CREDIT_TYPES.map((input) => {
+            if (input !== "None") {
+                return <div key={input}>
+                    <FormControlLabel
+                        control={<Checkbox
+                            checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
+                            onChange={() => {
+                                props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
+                            }} />}
                         label={input} />
-                </div>);
-            })}
-            <FormLabel component="legend">学分数量</FormLabel>
-            <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("creditNumber", "all")
-            }} />} label="全部" />
-            {CREDITS.map((input) => {
-                return (<div key={input}>
-                    <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
-                        onChange={() => {
-                            props.handleFilterChange("creditNumber", input)
-                        }} />}
-                        label={input} />
-                </div>);
-            })}
-            <FormLabel component="legend">通识类别</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("courseType", "all")
-            }} />} label="全部" />
-            {CREDIT_TYPES.map((input) => {
-                if (input !== "None") {
-                    return <div key={input}>
-                        <FormControlLabel
-                            control={<Checkbox
-                                checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
-                                onChange={() => {
-                                    props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
-                                }} />}
-                            label={input} />
-                    </div>
-                }
-            })}
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
-                props.handleFilterChange("courseType", "None")
-            }} />} label="无通识学分" />
-        </div>
-    )
+                </div>
+            }
+        })}
+        <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
+            props.handleFilterChange("courseType", "None")
+        }} />} label="无通识学分" />
+    </div>
 }
 
 function LoadingScreen(props) {
@@ -543,3 +433,112 @@ function SearchResult(props) {
         ))}
     </div>
 }
+
+// Custom data cleaning function to account for mutually exclusive selection
+function handleFilterChange(state, destination, newValue) {
+    const { courseLevel, creditNumber, courseType } = state;
+    let url = new URL(document.URL);
+    let params = new URLSearchParams(url.search);
+    if (destination === "courseLevel") {
+        // ES6 way to copy/clone an array
+        let newCourseLevel = [...courseLevel];
+
+        // Toggling between all and not all
+        if (newValue === "all" && courseLevel.indexOf("all") < 0) {
+            newCourseLevel = ["all"];
+        } else if (courseLevel[0] === "all" && newValue !== "all") {
+            newCourseLevel = [newValue];
+        }
+        // When it's not all, remove value if it's exist, except we do all if we have nothing left
+        else if (newValue !== "all" && courseLevel.indexOf(newValue) >= 0) {
+            // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+            const updatedLevel = newCourseLevel.filter(e => e !== newValue);
+            if (updatedLevel[0] === "" || updatedLevel.length === 0) {
+                newCourseLevel = ["all"];
+            } else {
+                newCourseLevel = updatedLevel;
+            }
+        } else if (newValue !== "all" && courseLevel.indexOf(newValue) < 0) {
+            // Non Mutative way to concat an array
+            newCourseLevel = courseLevel.concat(newValue);
+        }
+
+        params.set('course_level', newCourseLevel.join("."));
+        window.history.pushState(null, null, '?' + params.toString());
+
+        setCourseLevel(newCourseLevel);
+    } else if (destination === "creditNumber") {
+        // ES6 way to copy/clone an array
+        let newCreditNumber = [...creditNumber];
+
+        // Toggling between all and not all
+        if (newValue === "all" && creditNumber.indexOf("all") < 0) {
+            newCreditNumber = ["all"];
+        } else if (creditNumber[0] === "all" && newValue !== "all") {
+            newCreditNumber = [newValue];
+        }
+        // When it's not all, remove value if it's exist, except we do all if we have nothing left
+        else if (newValue !== "all" && creditNumber.indexOf(newValue) >= 0) {
+            // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+            const updatedCreditNumber = newCreditNumber.filter(e => e !== newValue);
+            if (updatedCreditNumber[0] === "" || updatedCreditNumber.length === 0) {
+                newCreditNumber = ["all"];
+            } else {
+                newCreditNumber = updatedCreditNumber;
+            }
+        } else if (newValue !== "all" && creditNumber.indexOf(newValue) < 0) {
+            // Non Mutative way to concat an array
+            newCreditNumber = creditNumber.concat(newValue);
+        }
+
+        params.set('credit_number', newCreditNumber.join("."));
+        window.history.pushState(null, null, '?' + params.toString());
+
+        setCreditNumber(newCreditNumber);
+    } else if (destination === "courseType") {
+        // ES6 way to copy/clone an array
+        let newCourseType = [...courseType];
+
+        // Toggling between all and not all
+        if (newValue === "all" && courseType.indexOf("all") < 0) {
+            newCourseType = ["all"];
+        } else if (courseType[0] === "all" && newValue !== "all" && newValue !== "None") {
+            newCourseType = [newValue];
+        }
+        // Toggle between None and not None
+        else if (newValue === "None" && courseType.indexOf("None") < 0) {
+            newCourseType = ["None"];
+        } else if (courseType[0] === "None" && newValue !== "all" && newValue !== "None") {
+            newCourseType = [newValue];
+        }
+        // When it's not all and not none, remove value if it's exist, except we do all if we have nothing left
+        else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) >= 0) {
+            // ECMA6 method to remove by value (all occurrences) in an array (it makes a copy without modifying original array)
+            const updatedCourseType = newCourseType.filter(e => e !== newValue);
+            if (updatedCourseType[0] === "" || updatedCourseType.length === 0) {
+                newCourseType = ["all"];
+            } else {
+                newCourseType = updatedCourseType;
+            }
+        } else if (newValue !== "all" && newValue !== "None" && courseType.indexOf(newValue) < 0) {
+            // Non-Mutative way to concat an array
+            newCourseType = courseType.concat(newValue);
+        }
+        params.set('course_type', newCourseType.join("."));
+        window.history.pushState(null, null, '?' + params.toString());
+
+        setCourseType(newCourseType);
+    }
+}
+
+function mapStateToProps(state) {
+    const { search } = state;
+    return {
+        courseName: search.courseName,
+        courseLevel: search.courseLevel,
+        creditNumber: search.creditNumber,
+        courseType: search.courseType
+    };
+}
+
+export default connect(mapStateToProps, { handleFilterChange })(SearchResultPage)
