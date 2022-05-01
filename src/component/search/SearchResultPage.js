@@ -11,8 +11,8 @@ import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux'
-import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from './controller/SearchQuerySlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from './controller/SearchQuerySlice';
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
