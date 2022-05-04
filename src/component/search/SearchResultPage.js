@@ -93,7 +93,7 @@ export default function SearchResultPage(props) {
     }
 
     const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
-    const [loaded, setLoaded] = useState(true);
+    const [loaded, setLoaded] = useState(false);
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
@@ -285,7 +285,7 @@ export default function SearchResultPage(props) {
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 
     const sort = {prefix: "课程前缀", number: "课程序号", title: "课程名称", credit: "学分数量"}; // English to Chinese dictionary
-    if(!loaded) {
+    if(!loaded && courseCards.length === 0) {
         return(
             <div className="search-result">
                 <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
@@ -311,13 +311,19 @@ export default function SearchResultPage(props) {
                 <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} handleFilterChange={handleFilterChange}/>
                 <div className="course-list2">
                     <div className="sort_result_bar">
-                        <Button className="sort_button" color="secondary" disableElevation endIcon={<KeyboardArrowDownIcon />} variant="contained" onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setOrderByBtnEl(event.currentTarget)}}>按{sort[orderBy]}排序</Button>
-                        <Menu dense open={isSortMenuOpen} anchorEl={orderByBtnEl}>
-                            {Object.keys(sort).map(oneKey => {return <MenuItem key={oneKey} selected={orderBy === oneKey} onClick={()=>{setIsSortMenuOpen(false); setOrderBy(oneKey); handleURLParam("order_by", oneKey)}}>{sort[oneKey]}</MenuItem>})}
-                        </Menu>
-                        <div>
-                            <FormControlLabel className="sort_desc_toggle" onChange={()=>{handleURLParam("is_desc", !isDesc);setIsDesc(!isDesc)}} control={<Checkbox checked={isDesc} />} label="降序排序" />
-                        </div>
+                        <span className={"sort_result_inner_flex_container " + (loaded ? "zero_opacity" : "")}>
+                            <CircularProgress color="secondary" size="20px"/>
+                            <span className='loading_text_small'>正在查询，请稍候...</span>
+                        </span>
+                        <span>
+                            <Button className="sort_button" color="secondary" disableElevation endIcon={<KeyboardArrowDownIcon />} variant="contained" onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setOrderByBtnEl(event.currentTarget)}}>按{sort[orderBy]}排序</Button>
+                            <Menu dense open={isSortMenuOpen} anchorEl={orderByBtnEl}>
+                                {Object.keys(sort).map(oneKey => {return <MenuItem key={oneKey} selected={orderBy === oneKey} onClick={()=>{setIsSortMenuOpen(false); setOrderBy(oneKey); handleURLParam("order_by", oneKey)}}>{sort[oneKey]}</MenuItem>})}
+                            </Menu>
+                            <span>
+                                <FormControlLabel className="sort_desc_toggle" onChange={()=>{handleURLParam("is_desc", !isDesc);setIsDesc(!isDesc)}} control={<Checkbox checked={isDesc} />} label="降序排序" />
+                            </span>
+                        </span>
                     </div>
                     <SearchResult courseCards={courseCards}/>
                 </div>
@@ -441,11 +447,7 @@ function SearchResult(props) {
 }
 
 async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], orderBy = "title", isDesc = false, courseCards, favCourses, redirectToLogin, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
-    // Only show loading screen if the course list is previously empty
-    console.log(favCourses);
-    if(courseCards === undefined || courseCards.length === 0) {
-        setLoadedCallBackFn(false);
-    }
+    setLoadedCallBackFn(false);
 
     // Example backend search query:
     // You may assume that courseName, courseLevel, creditNumber, courseType are not null
