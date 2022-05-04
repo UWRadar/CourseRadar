@@ -97,5 +97,15 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 10%;
-    align-content: baseline;
+    align-items: baseline;
+    margin-top: 15px;
+}
+
+.sort_button {
+    height: 32px;
+    margin-right: 30px !important;
+}
+
+.sort_desc_toggle {
+    margin: 0;
 }
