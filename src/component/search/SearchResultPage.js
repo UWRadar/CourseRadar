@@ -153,6 +153,12 @@ export default function SearchResultPage(props) {
         })
     }
 
+    function handleDescOrderURL(param, newVal) {
+        let url = new URL(document.URL);
+        let params = new URLSearchParams(url.search);
+        params.set(param, newVal);
+        window.history.pushState(null, null, '?' + params.toString());
+    }
 
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
@@ -306,9 +312,9 @@ export default function SearchResultPage(props) {
                     <div className="sort_result_bar">
                         <Button onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setSortButtonEl(event.currentTarget)}}>按{sort[sortBy]}排序</Button>
                         <Menu dense open={isSortMenuOpen} anchorEl={sortButtonEl}>
-                            {Object.keys(sort).map(oneObj => {return <MenuItem key={oneObj} selected={sortBy === oneObj} onClick={()=>{setIsSortMenuOpen(false); setSortBy(oneObj)}}>{sort[oneObj]}</MenuItem>})}
+                            {Object.keys(sort).map(oneKey => {return <MenuItem key={oneKey} selected={sortBy === oneKey} onClick={()=>{setIsSortMenuOpen(false); setSortBy(oneKey); handleDescOrderURL("sort_by", oneKey)}}>{sort[oneKey]}</MenuItem>})}
                         </Menu>
-                        <FormControlLabel onClick={()=>{setIsDescOrder(!isDescOrder)}} control={<Checkbox checked={isDescOrder} />} label="降序排序" />
+                        <FormControlLabel onClick={()=>{handleDescOrderURL("desc", !isDescOrder);setIsDescOrder(!isDescOrder)}} control={<Checkbox checked={isDescOrder} />} label="降序排序" />
                     </div>
                     <SearchResult courseCards={courseCards}/>
                 </div>
