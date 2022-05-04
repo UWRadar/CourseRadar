@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
@@ -6,13 +6,14 @@ import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import {Link, useLocation} from "react-router-dom";
-import {CircularProgress} from "@material-ui/core";
+import {Button, CircularProgress, MenuItem} from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
 // Redux
 import {useDispatch, useSelector} from 'react-redux'
 import {setCourseLevel, setCourseName, setCourseType, setCreditNumber} from './controller/SearchQuerySlice'
+import Menu from "@material-ui/core/Menu";
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -23,6 +24,7 @@ const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
+const SORT_BY = ["prefix", "number", "title", "credit"];
 
 function useQuery() {
     const {search} = useLocation();
@@ -60,6 +62,9 @@ export default function SearchResultPage(props) {
         dispatch(setCourseType(courseTypeArr));
     }
 
+    let sortByVal = params.get("sort_by");
+    if(sortByVal === undefined && !SORT_BY.includes(sortByVal)) {sortByVal = "prefix";}
+
     // This function will extract course level, credit number, and credit type parameter's value (as function's return)
     // Default to all if it does not exist or contains unacceptable values
     function extractParam(queryObj, queryName, referenceConst, extraAllowedValue = []) {
@@ -94,6 +99,10 @@ export default function SearchResultPage(props) {
     const [favCourses, setFavCourses] = useState([]);
     const [favLoaded, setFavLoaded] = useState(false);
     const [redirectToLogin, setRedirectToLogin] = useState(true);
+    const [sortBy, setSortBy] = useState(sortByVal);
+    const [isDescOrder, setIsDescOrder] = useState(params.get("desc") === "true"); // All values will be casted to false
+    const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
+    const [sortButtonEl, setSortButtonEl] = useState(null);
 
     // console.log(favCourses);
     // favorite course state
@@ -268,6 +277,7 @@ export default function SearchResultPage(props) {
 
     function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
 
+    const sort = {prefix: "课程前缀", number: "课程序号", title: "课程名称", credit: "学分数量"}; // English to Chinese dictionary
     if(!loaded) {
         return(
             <div className="search-result">
@@ -278,7 +288,8 @@ export default function SearchResultPage(props) {
                 </div>
             </div>
         )
-    } else if (isCourseDNE || errorMessage) {
+    }
+    else if (isCourseDNE || errorMessage) {
         return(<div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                           handleFilterChange={handleFilterChange}/>
@@ -286,12 +297,19 @@ export default function SearchResultPage(props) {
                 <ErrorScreen courseName = {courseName} courseLevel = {courseLevel} creditNumber = {creditNumber} courseType = {courseType} resetFilter={resetFilter} errorMessage = {isCourseDNE ? "Course Not Exist" : errorMessage}/>
             </div>
         </div>)
-    } else {
+    }
+    else {
         return (
             <div className="search-result">
-                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                              handleFilterChange={handleFilterChange}/>
+                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} handleFilterChange={handleFilterChange}/>
                 <div className="course-list2">
+                    <div className="sort_result_bar">
+                        <Button onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setSortButtonEl(event.currentTarget)}}>按{sort[sortBy]}排序</Button>
+                        <Menu dense open={isSortMenuOpen} anchorEl={sortButtonEl}>
+                            {Object.keys(sort).map(oneObj => {return <MenuItem key={oneObj} selected={sortBy === oneObj} onClick={()=>{setIsSortMenuOpen(false); setSortBy(oneObj)}}>{sort[oneObj]}</MenuItem>})}
+                        </Menu>
+                        <FormControlLabel onClick={()=>{setIsDescOrder(!isDescOrder)}} control={<Checkbox checked={isDescOrder} />} label="降序排序" />
+                    </div>
                     <SearchResult courseCards={courseCards}/>
                 </div>
             </div>

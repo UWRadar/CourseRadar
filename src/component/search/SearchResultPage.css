@@ -91,3 +91,11 @@
     margin-right: auto;
     display: block;
 }
+
+/* Sort result by ... */
+.sort_result_bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10%;
+    align-content: baseline;
+}
