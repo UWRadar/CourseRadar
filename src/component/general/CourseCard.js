@@ -42,11 +42,17 @@ const CourseCard = (props) => {
     }
 
     // isFavorite(props.loginStatus, props.courseName)
-    const [favorite, setFavorite] = useState(props.isFavorite);
+    // When it is null, use the value of props.isFavorite instead.
+    // useState(props.isFavorite) will cause the initial value to always be false.
+    const [favorite, setFavorite] = useState(null);
 
     const toggleLike = (e, name, loginStatus, setLogin) => {
         // TODO
-        setFavorite(!favorite);
+        if (favorite === null) {
+            setFavorite(!props.isFavorite);
+        } else {
+            setFavorite(!favorite);
+        }
         e.preventDefault();
         // if user do not login, redirect to login page TODO
         if (!loginStatus) {
@@ -141,7 +147,7 @@ const CourseCard = (props) => {
                             {/* toggleLike(e, props.courseName, props.loginStatus, setLogin)*/}
                             <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
                                 <div class="tooltips" id="add">
-                                    {favorite ? <img src={like} alt="like" /> : <img src={unlike} alt="unlike" />}
+                                    {(favorite === null ? props.isFavorite : favorite) ? <img src={like} alt="like" /> : <img src={unlike} alt="unlike" />}
                                 </div>
                             </div>
                         </div>

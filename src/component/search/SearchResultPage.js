@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import {Link, useLocation} from "react-router-dom";
-import {CircularProgress} from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { CircularProgress } from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 
 // Redux
-import {useDispatch, useSelector} from 'react-redux'
-import {setCourseLevel, setCourseName, setCourseType, setCreditNumber} from './controller/SearchQuerySlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from './controller/SearchQuerySlice';
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -23,11 +23,6 @@ const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
-
-function useQuery() {
-    const {search} = useLocation();
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-}
 
 export default function SearchResultPage(props) {
     // Read Redux States
@@ -41,22 +36,22 @@ export default function SearchResultPage(props) {
     const pathName = window.location.pathname; // anything right before ? mark
     const pathNameArr = pathName.split('/');
     // alert(pathNameArr.at(-1));
-    if(pathNameArr.at(-1) !== "search") { // Otherwise, default "all" state is used if nothing comes after search
-        dispatch(setCourseName(pathNameArr.at(-1)));
+    if (pathNameArr.at(-1) !== "search") { // Otherwise, default "all" state is used if nothing comes after search
+        dispatch(setCourseName(decodeURIComponent(pathNameArr.at(-1))));
     }
 
     // Extract course searched from url parameter
     const params = (new URL(window.location)).searchParams;
     const levelArr = extractParam(params, "course_level", LEVELS);
-    if(!arrayEquals(levelArr, courseLevel)) {
+    if (!arrayEquals(levelArr, courseLevel)) {
         dispatch(setCourseLevel(levelArr));
     }
     const creditArr = extractParam(params, "credit_number", CREDITS);
-    if(!arrayEquals(creditArr, creditNumber)) {
+    if (!arrayEquals(creditArr, creditNumber)) {
         dispatch(setCreditNumber(creditArr));
     }
     const courseTypeArr = extractParam(params, "course_type", CREDIT_TYPES, ["IS", "None"]);
-    if(!arrayEquals(courseTypeArr, courseType)) {
+    if (!arrayEquals(courseTypeArr, courseType)) {
         dispatch(setCourseType(courseTypeArr));
     }
 
@@ -95,20 +90,12 @@ export default function SearchResultPage(props) {
     const [favLoaded, setFavLoaded] = useState(false);
     const [redirectToLogin, setRedirectToLogin] = useState(true);
 
-    // console.log(favCourses);
-    // favorite course state
-    // const [favCourses, setFavCourses] = useState([]);
-
     async function getFavorite() {
         fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
-            body: JSON.stringify({
-
-                // courseName: name.toLowerCase()
-            }),
             credentials: "include",
             method: "POST"
         }).then(res => {
-            if(res.ok) {
+            if (res.ok) {
                 return res.json();
             } else {
                 console.log(res);
@@ -117,10 +104,10 @@ export default function SearchResultPage(props) {
             console.log(data);
             if (data && data["state"] === 1) {
                 let favoriteCourseName = [];
-                data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])});
-                // return favoriteCourseName;
+                data["data"].forEach(currentValue => {
+                    favoriteCourseName.push(currentValue["courseName"]);
+                });
                 setFavCourses(favoriteCourseName);
-                // console.log(favCourses);
             }
             setFavLoaded(true);
         })
@@ -251,145 +238,136 @@ export default function SearchResultPage(props) {
     })
 
     useEffect(() => {
-        // const getFavCourses = new Promise(async (resolve, reject) => {
-        //     console.log(222);
-        //     setTimeout(() => {
-        //         let favCourses = getFavorite();
-        //         resolve(["cse142"]);
-        //     }, 250);
-
-        //     reject(console.log(111));
-        // })
-        // let favCourses = getFavorite();
-        // getFavCourses.then((favCourses) => {
-        fetchCourse(courseName, courseLevel, creditNumber, courseType, courseCards, favCourses, redirectToLogin, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
-        // })
+        fetchCourse(
+            courseName,
+            courseLevel,
+            creditNumber,
+            courseType,
+            courseCards,
+            favCourses,
+            redirectToLogin,
+            setCourseCards,
+            setLoaded,
+            setIsCourseDNE,
+            setErrorMessage
+        );
     }, [courseName, courseLevel, creditNumber, courseType, favCourses, redirectToLogin]);
 
-    function resetFilter(event) {event.preventDefault(); handleFilterChange("courseLevel", "all"); handleFilterChange("creditNumber", "all"); handleFilterChange("courseType", "all");}
+    function resetFilter(event) {
+        event.preventDefault();
+        handleFilterChange("courseLevel", "all");
+        handleFilterChange("creditNumber", "all");
+        handleFilterChange("courseType", "all");
+    }
 
-    if(!loaded) {
-        return(
-            <div className="search-result">
-                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                              handleFilterChange={handleFilterChange}/>
-                <div className="course-list2">
-                    <LoadingScreen/>
-                </div>
-            </div>
-        )
-    } else if (isCourseDNE || errorMessage) {
-        return(<div className="search-result">
+    if (!loaded) {
+        return <div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                          handleFilterChange={handleFilterChange}/>
+                handleFilterChange={handleFilterChange} />
             <div className="course-list2">
-                <ErrorScreen courseName = {courseName} courseLevel = {courseLevel} creditNumber = {creditNumber} courseType = {courseType} resetFilter={resetFilter} errorMessage = {isCourseDNE ? "Course Not Exist" : errorMessage}/>
+                <LoadingScreen />
             </div>
-        </div>)
+        </div>
+    } else if (isCourseDNE || errorMessage) {
+        return <div className="search-result">
+            <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                handleFilterChange={handleFilterChange} />
+            <div className="course-list2">
+                <ErrorScreen courseName={courseName} courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} resetFilter={resetFilter} errorMessage={isCourseDNE ? "Course Not Exist" : errorMessage} />
+            </div>
+        </div>
     } else {
-        return (
-            <div className="search-result">
-                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                              handleFilterChange={handleFilterChange}/>
-                <div className="course-list2">
-                    <SearchResult courseCards={courseCards}/>
-                </div>
+        return <div className="search-result">
+            <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                handleFilterChange={handleFilterChange} />
+            <div className="course-list2">
+                <SearchResult courseCards={courseCards} />
             </div>
-        );
+        </div>
     }
 }
 
 function SearchFilter(props) {
-    return (
-        <div className="filter">
-            <h1>二次筛选</h1>
-            {/*<h2>课程级别</h2>*/}
-            <FormLabel component="legend">课程级数</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("courseLevel", "all")
-            }}/>} label="全部"/>
-            {LEVELS.map((input) => {
-                return (<div key={input}>
-                    <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
-                                                         onChange={() => {
-                                                             props.handleFilterChange("courseLevel", input)
-                                                         }}/>}
-                                      label={input}/>
-                </div>);
-            })}
-            <FormLabel component="legend">学分数量</FormLabel>
-            <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("creditNumber", "all")
-            }}/>} label="全部"/>
-            {CREDITS.map((input) => {
-                return (<div key={input}>
-                    <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
-                                                         onChange={() => {
-                                                             props.handleFilterChange("creditNumber", input)
-                                                         }}/>}
-                                      label={input}/>
-                </div>);
-            })}
-            <FormLabel component="legend">通识类别</FormLabel>
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
-                props.handleFilterChange("courseType", "all")
-            }}/>} label="全部"/>
-            {CREDIT_TYPES.map((input) => {
-                if (input !== "None") {
-                    return (
-                        <div key={input}>
-                            <FormControlLabel
-                                control={<Checkbox
-                                    checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
-                                    onChange={() => {
-                                        props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
-                                    }}/>}
-                                label={input}/>
-                        </div>);
-                }
-            })}
-            <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
-                props.handleFilterChange("courseType", "None")
-            }}/>} label="无通识学分"/>
-        </div>
-    )
+    return <div className="filter">
+        <h1>二次筛选</h1>
+        {/*<h2>课程级别</h2>*/}
+        <FormLabel component="legend">课程级数</FormLabel>
+        <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("courseLevel", "all")
+        }} />} label="全部" />
+        {LEVELS.map((input) => {
+            return (<div key={input}>
+                <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
+                    onChange={() => {
+                        props.handleFilterChange("courseLevel", input)
+                    }} />}
+                    label={input} />
+            </div>);
+        })}
+        <FormLabel component="legend">学分数量</FormLabel>
+        <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("creditNumber", "all")
+        }} />} label="全部" />
+        {CREDITS.map((input) => {
+            return (<div key={input}>
+                <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
+                    onChange={() => {
+                        props.handleFilterChange("creditNumber", input)
+                    }} />}
+                    label={input} />
+            </div>);
+        })}
+        <FormLabel component="legend">通识类别</FormLabel>
+        <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
+            props.handleFilterChange("courseType", "all")
+        }} />} label="全部" />
+        {CREDIT_TYPES.map((input) => {
+            if (input !== "None") {
+                return (
+                    <div key={input}>
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
+                                onChange={() => {
+                                    props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
+                                }} />}
+                            label={input} />
+                    </div>);
+            }
+        })}
+        <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
+            props.handleFilterChange("courseType", "None")
+        }} />} label="无通识学分" />
+    </div>
 }
 
 function LoadingScreen(props) {
-    return (
-        <div className='loading_container'>
-            {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
-            <CircularProgress color="secondary" size="75px"/>
-            <span className='loading_text'>正在查询，请稍候...</span>
-        </div>
-    )
+    return <div className='loading_container'>
+        {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
+        <CircularProgress color="secondary" size="75px" />
+        <span className='loading_text'>正在查询，请稍候...</span>
+    </div>
 }
 
 function ErrorScreen(props) {
-    if(props.errorMessage === "Course Not Exist") {
-        if(![props.courseLevel, props.creditNumber, props.courseType].every(arr => {return arr.length === 1 && arr[0] === "all"})) {
-            return (
-                <div className='loading_container'>
-                    <img className='loading' src="../img/Course-DNE.png"/>
-                    <div className='loading_text'>很抱歉，我们找不到满足这些筛选条件的课程，建议您<span style={{cursor: 'pointer', color: 'purple'}} onClick={props.resetFilter}>扩大筛选条件</span></div>
-                </div>
-            )
+    if (props.errorMessage === "Course Not Exist") {
+        if (![props.courseLevel, props.creditNumber, props.courseType].every(arr => { return arr.length === 1 && arr[0] === "all" })) {
+            return <div className='loading_container'>
+                <img className='loading' src="../img/Course-DNE.png" />
+                <div className='loading_text'>很抱歉，我们找不到满足这些筛选条件的课程，建议您<span style={{ cursor: 'pointer', color: 'purple' }} onClick={props.resetFilter}>扩大筛选条件</span></div>
+            </div>
         }
-        return (
-            <div className='loading_container'>
-                <img className='loading' src="../img/Course-DNE.png"/>
-                <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
-                <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{color: 'purple'}} activeStyle={{color: 'purple'}}>填写课评</Link></div>
-            </div>
-        )
+        return <div className='loading_container'>
+            <img className='loading' src="../img/Course-DNE.png" />
+            <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
+            <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{ color: 'purple' }} activeStyle={{ color: 'purple' }}>填写课评</Link></div>
+        </div>
     }
-    return (
-            <div className='loading_container'>
-                <img className='loading' src="../img/Course-DNE.png"/>
-                <div className='loading_text'>出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
-                <div className='loading_text'><div className='error_stack_trace'>{props.errorMessage}</div></div>
-            </div>
-    )
+    return <div className='loading_container'>
+        <img className='loading' src="../img/Course-DNE.png" />
+        <div className='loading_text'>出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
+        <div className='loading_text'><div className='error_stack_trace'>{props.errorMessage}</div></div>
+    </div>
 }
 
 // function for add favorite courses
@@ -397,26 +375,35 @@ function ErrorScreen(props) {
 
 function SearchResult(props) {
     console.log(props);
-    return (
-        <div className="course-list2">
-            {props.courseCards.map(element => (
-                <CourseCard
-                    key={element.courseName}
-                    courseName={element.courseName}
-                    courseDescription={element.courseDescription}
-                    tags={element.tags}
-                    credit={element.credit}
-                    loginStatus={!element.redirectToLogin}
-                    isFavorite={element.isFavorite}/>
-            ))}
-        </div>
-        )
+    return <div className="course-list2">
+        {props.courseCards.map(element => (
+            <CourseCard
+                key={element.courseName}
+                courseName={element.courseName}
+                courseDescription={element.courseDescription}
+                tags={element.tags}
+                credit={element.credit}
+                loginStatus={!element.redirectToLogin}
+                isFavorite={element.isFavorite} />
+        ))}
+    </div>
 }
 
-async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], courseCards, favCourses, redirectToLogin, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+async function fetchCourse(
+    courseName = "all",
+    courseLevel = ['all'],
+    creditNumber = ['all'],
+    courseType = ['all'],
+    courseCards,
+    favCourses,
+    redirectToLogin,
+    setCourseCardsCallBackFn,
+    setLoadedCallBackFn,
+    setIsCourseDNECallBackFn,
+    setErrorMessageCallBackFn
+) {
     // Only show loading screen if the course list is previously empty
-    console.log(favCourses);
-    if(courseCards === undefined || courseCards.length === 0) {
+    if (courseCards === undefined || courseCards.length === 0) {
         setLoadedCallBackFn(false);
     }
 
@@ -425,7 +412,12 @@ async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumbe
     // You may assume that no value will be repeated in a query, but (for query that can have multiple values) you may NOT assume that values are in sorted order. Hence, courseLevel=400.100.200.300 is a valid back-end query.
     // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
 
-    let paramsObj = {courseName: courseName, level: courseLevel.join('.'), credit: creditNumber.join('.'), creditType: courseType.join('.')};
+    let paramsObj = {
+        courseName: courseName,
+        level: courseLevel.join('.'),
+        credit: creditNumber.join('.'),
+        creditType: courseType.join('.')
+    };
     let searchParams = new URLSearchParams(paramsObj);
 
     searchParams.toString();
@@ -434,18 +426,18 @@ async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumbe
     // Re-write this fetch code using async await
     try {
         // Display loading screen only if we don't have any course card displays previously
-        if(courseCards.length === 0) {
+        if (courseCards.length === 0) {
             setLoadedCallBackFn(false);
         }
         setIsCourseDNECallBackFn(false);
         setErrorMessageCallBackFn(false);
         const results = await fetch(currentUrl);
         // console.log(currentUrl);
-        if(results.status === 204) {
+        if (results.status === 204) {
             setLoadedCallBackFn(true);
             setCourseCardsCallBackFn([]);
             setIsCourseDNECallBackFn(true);
-        } else if(results.status === 200) {
+        } else if (results.status === 200) {
             // const resultJSON = await results.json();
             let jsonParsing = await results.json();
             let courses = jsonParsing.result;
@@ -457,7 +449,6 @@ async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumbe
                 if (curCreditType !== null) {
                     curTag = curCreditType.split("/");
                 }
-                console.log(favCourses.includes(course.courseName));
                 courseTemp.push({
                     courseName: course.courseName,
                     courseDescription: course.courseFullName,
