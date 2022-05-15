@@ -91,3 +91,37 @@
     margin-right: auto;
     display: block;
 }
+
+/* Sort result by ... */
+.sort_result_bar {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10%;
+    margin-left: 20px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.sort_button {
+    height: 32px;
+    margin-right: 30px !important;
+}
+
+.loading_text_small {
+    font-weight: bold;
+    font-size: 15px;
+
+    margin-left: 20px;
+}
+.sort_desc_toggle {
+    margin: 0;
+}
+
+.sort_result_inner_flex_container {
+    display: flex;
+    align-items: center;
+}
+
+.zero_opacity {
+    opacity: 0;
+}

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, {useEffect, useRef, useState} from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import { Link } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
+import {Link, useLocation} from "react-router-dom";
+import {Button, CircularProgress, MenuItem} from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
+import Menu from "@material-ui/core/Menu";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +25,7 @@ const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
+const SORT_BY = ["prefix", "number", "title", "credit"];
 
 export default function SearchResultPage(props) {
     // Read Redux States
@@ -55,6 +58,9 @@ export default function SearchResultPage(props) {
         dispatch(setCourseType(courseTypeArr));
     }
 
+    let orderByValue = params.get("order_by");
+    if(orderByValue === undefined || !SORT_BY.includes(orderByValue)) {orderByValue = "prefix";}
+
     // This function will extract course level, credit number, and credit type parameter's value (as function's return)
     // Default to all if it does not exist or contains unacceptable values
     function extractParam(queryObj, queryName, referenceConst, extraAllowedValue = []) {
@@ -82,13 +88,17 @@ export default function SearchResultPage(props) {
     }
 
     const [isParamValid, setIsParamValid] = useState(false); // TODO: Add a non-critical warning banner/pop-up in search result stating that which parameter has invalid value and hence being ignored (instead of throw out an error screen)
-    const [loaded, setLoaded] = useState(true);
+    const [loaded, setLoaded] = useState(false);
     const [isCourseDNE, setIsCourseDNE] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [courseCards, setCourseCards] = useState([]);
     const [favCourses, setFavCourses] = useState([]);
     const [favLoaded, setFavLoaded] = useState(false);
     const [redirectToLogin, setRedirectToLogin] = useState(true);
+    const [orderBy, setOrderBy] = useState(orderByValue);
+    const [isDesc, setIsDesc] = useState(params.get("is_desc") === "true"); // All other values will be cast to false
+    const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
+    const [orderByBtnEl, setOrderByBtnEl] = useState(null);
 
     async function getFavorite() {
         fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
@@ -131,6 +141,12 @@ export default function SearchResultPage(props) {
         })
     }
 
+    function handleURLParam(param, newVal) {
+        let url = new URL(document.URL);
+        let params = new URLSearchParams(url.search);
+        params.set(param, newVal);
+        window.history.pushState(null, null, '?' + params.toString());
+    }
 
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
@@ -238,20 +254,20 @@ export default function SearchResultPage(props) {
     })
 
     useEffect(() => {
-        fetchCourse(
-            courseName,
-            courseLevel,
-            creditNumber,
-            courseType,
-            courseCards,
-            favCourses,
-            redirectToLogin,
-            setCourseCards,
-            setLoaded,
-            setIsCourseDNE,
-            setErrorMessage
-        );
-    }, [courseName, courseLevel, creditNumber, courseType, favCourses, redirectToLogin]);
+        // const getFavCourses = new Promise(async (resolve, reject) => {
+        //     console.log(222);
+        //     setTimeout(() => {
+        //         let favCourses = getFavorite();
+        //         resolve(["cse142"]);
+        //     }, 250);
+
+        //     reject(console.log(111));
+        // })
+        // let favCourses = getFavorite();
+        // getFavCourses.then((favCourses) => {
+        fetchCourse(courseName, courseLevel, creditNumber, courseType, orderBy, isDesc,  courseCards, favCourses, redirectToLogin, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
+        // })
+    }, [courseName, courseLevel, creditNumber, courseType, favCourses, redirectToLogin, orderBy, isDesc]);
 
     function resetFilter(event) {
         event.preventDefault();
@@ -260,30 +276,51 @@ export default function SearchResultPage(props) {
         handleFilterChange("courseType", "all");
     }
 
-    if (!loaded) {
-        return <div className="search-result">
-            <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                handleFilterChange={handleFilterChange} />
-            <div className="course-list2">
-                <LoadingScreen />
+    const sort = {prefix: "课程前缀", number: "课程序号", title: "课程名称", credit: "学分数量"}; // English to Chinese dictionary
+    if(!loaded && courseCards.length === 0) {
+        return(
+            <div className="search-result">
+                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
+                              handleFilterChange={handleFilterChange}/>
+                <div className="course-list2">
+                    <LoadingScreen/>
+                </div>
             </div>
-        </div>
-    } else if (isCourseDNE || errorMessage) {
-        return <div className="search-result">
+        )
+    }
+    else if (isCourseDNE || errorMessage) {
+        return(<div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                 handleFilterChange={handleFilterChange} />
             <div className="course-list2">
                 <ErrorScreen courseName={courseName} courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} resetFilter={resetFilter} errorMessage={isCourseDNE ? "Course Not Exist" : errorMessage} />
             </div>
-        </div>
-    } else {
-        return <div className="search-result">
-            <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                handleFilterChange={handleFilterChange} />
-            <div className="course-list2">
-                <SearchResult courseCards={courseCards} />
-            </div>
-        </div>
+        </div>)
+    }
+    else {
+        return (
+            <div className="search-result">
+                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} handleFilterChange={handleFilterChange}/>
+                <div className="course-list2">
+                    <div className="sort_result_bar">
+                        <span className={"sort_result_inner_flex_container " + (loaded ? "zero_opacity" : "")}>
+                            <CircularProgress color="secondary" size="20px"/>
+                            <span className='loading_text_small'>正在查询，请稍候...</span>
+                        </span>
+                        <span>
+                            <Button className="sort_button" color="secondary" disableElevation endIcon={<KeyboardArrowDownIcon />} variant="contained" onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setOrderByBtnEl(event.currentTarget)}}>按{sort[orderBy]}排序</Button>
+                            <Menu dense open={isSortMenuOpen} anchorEl={orderByBtnEl}>
+                                {Object.keys(sort).map(oneKey => {return <MenuItem key={oneKey} selected={orderBy === oneKey} onClick={()=>{setIsSortMenuOpen(false); setOrderBy(oneKey); handleURLParam("order_by", oneKey)}}>{sort[oneKey]}</MenuItem>})}
+                            </Menu>
+                            <span>
+                                <FormControlLabel className="sort_desc_toggle" onChange={()=>{handleURLParam("is_desc", !isDesc);setIsDesc(!isDesc)}} control={<Checkbox checked={isDesc} />} label="降序排序" />
+                            </span>
+                        </span>
+                    </div>
+                    <SearchResult courseCards={courseCards}/>
+                </div>
+            </div> )
+        // </div>
     }
 }
 
@@ -374,50 +411,32 @@ function ErrorScreen(props) {
 
 
 function SearchResult(props) {
-    console.log(props);
-    return <div className="course-list2">
-        {props.courseCards.map(element => (
-            <CourseCard
-                key={element.courseName}
-                courseName={element.courseName}
-                courseDescription={element.courseDescription}
-                tags={element.tags}
-                credit={element.credit}
-                loginStatus={!element.redirectToLogin}
-                isFavorite={element.isFavorite} />
-        ))}
-    </div>
+    // console.log(props);
+    return (
+        <div className="course-list2">
+            {props.courseCards.map(element => (
+                <CourseCard
+                    key={element.courseName}
+                    courseName={element.courseName}
+                    courseDescription={element.courseDescription}
+                    tags={element.tags}
+                    credit={element.credit}
+                    loginStatus={!element.redirectToLogin}
+                    isFavorite={element.isFavorite}/>
+            ))}
+        </div>
+        )
 }
 
-async function fetchCourse(
-    courseName = "all",
-    courseLevel = ['all'],
-    creditNumber = ['all'],
-    courseType = ['all'],
-    courseCards,
-    favCourses,
-    redirectToLogin,
-    setCourseCardsCallBackFn,
-    setLoadedCallBackFn,
-    setIsCourseDNECallBackFn,
-    setErrorMessageCallBackFn
-) {
-    // Only show loading screen if the course list is previously empty
-    if (courseCards === undefined || courseCards.length === 0) {
-        setLoadedCallBackFn(false);
-    }
+async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], orderBy = "title", isDesc = false, courseCards, favCourses, redirectToLogin, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+    setLoadedCallBackFn(false);
 
     // Example backend search query:
     // You may assume that courseName, courseLevel, creditNumber, courseType are not null
     // You may assume that no value will be repeated in a query, but (for query that can have multiple values) you may NOT assume that values are in sorted order. Hence, courseLevel=400.100.200.300 is a valid back-end query.
     // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
 
-    let paramsObj = {
-        courseName: courseName,
-        level: courseLevel.join('.'),
-        credit: creditNumber.join('.'),
-        creditType: courseType.join('.')
-    };
+    let paramsObj = {courseName: courseName, level: courseLevel.join('.'), credit: creditNumber.join('.'), creditType: courseType.join('.'), orderBy: orderBy, isDesc: isDesc.toString()};
     let searchParams = new URLSearchParams(paramsObj);
 
     searchParams.toString();
