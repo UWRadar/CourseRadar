@@ -1,0 +1,24 @@
+.topHalf {
+    background-image: url("../../img/guthrie.jpeg");
+    color: white;
+    padding: 0;
+}
+
+.min_height{
+    min-height: 150px;
+    position: relative;
+}
+
+.courseCode {
+    position: absolute;
+    top: 50%;
+    margin-top: -20px; /* Half this element's height */
+    left: 50%;
+    margin-left: -80px;
+    width: fit-content;
+    border: 1px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    text-align: left;
+}

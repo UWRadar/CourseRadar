@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {setCourseLevel} from "../search/controller/SearchQuerySlice";
+import SideHoverButtons from "../general/SideHoveringButtons";
+import {NavLink} from "react-router-dom";
+import "./WriteEval.css";
 
 function WriteEval(props) {
     // Extract course name from url parameter
@@ -22,7 +24,14 @@ function WriteEval(props) {
     return(
         <div className="container-fluid" id="outerCotainer">
             <div className="col" id="description">
-
+                <div className="container-fluid" style={{padding: 0}}>
+                    <SideHoverButtons/>
+                    <div className="topHalf">
+                        <div className="row min_height" id="overlay">
+                            <p className="courseCode">填写课评</p>
+                        </div>
+                    </div>
+                </div>
              </div>
         </div>);
 }
