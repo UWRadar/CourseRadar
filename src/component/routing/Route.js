@@ -9,6 +9,7 @@ import SurveyPage from "../survey/SurveyPage"
 import LargeHeader from "../general/LargeHeader"
 import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
+import WriteEval from "../survey/WriteEval";
 export default class Routing extends Component {
 
     constructor() {
@@ -54,6 +55,7 @@ export default class Routing extends Component {
                         <Route path="/" exact component={HomePage} />
                         <Route path="/profile" component={ProfilePage} />
                         <Route path="/survey" component={SurveyPage} />
+                        <Route path="/survey2" component={WriteEval} />
                         {/* David Xie: re-do router for better search result display, so we will use /search/cse142?course_level=100,200&credit_number=1,2&course_type=c,div*/}
                         {/* Reason: easier to implement no course was found, easier to trigger search action from another component, ability to better handle users go back to search page via back button, ability to bookmark search result page*/}
                         <Route path="/search/:courseName" component={SearchResultPage} />
