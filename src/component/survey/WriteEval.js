@@ -28,19 +28,19 @@ function WriteEval(props) {
 }
 
 async function fetchCourseName(setCourseName) {
-    const response = await fetch("localhost:10240/courses");
+    const response = await fetch("http://localhost:10240/courses");
     const json = await response.json();
     setCourseName(json);
 }
 
 async function fetchProfessor(setProfessor) {
-    const response = await fetch("localhost:10240/professors");
+    const response = await fetch("http://localhost:10240/professors");
     const json = await response.json();
     setProfessor(json);
 }
 
 async function fetchClubList(setAllClub) {
-    const response = await fetch("localhost:10240/clubs");
+    const response = await fetch("http://localhost:10240/clubs");
     const json = await response.json();
     setAllClub(json);
 }
