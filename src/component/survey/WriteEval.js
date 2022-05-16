@@ -28,11 +28,19 @@ function WriteEval(props) {
                     <SideHoverButtons/>
                     <div className="topHalf">
                         <div className="row min_height" id="overlay">
-                            <p className="courseCode">填写课评</p>
+                            <p className="eval_title">填写课评</p>
                         </div>
                     </div>
                 </div>
              </div>
+            <div className="eval_form_container">
+                <div id="method-selection-q" className="form_title required-field">
+                    课程名称
+                </div>
+                <div className="method-selection-radio-buttons">
+
+                </div>
+            </div>
         </div>);
 }
 
