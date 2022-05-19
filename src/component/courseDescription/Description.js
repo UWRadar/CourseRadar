@@ -20,7 +20,9 @@ export default class Description extends React.Component {
         this.state = {
             isLoggedIn: false,
             pop: false,
-            redirect: false
+            redirect: false,
+            mustList: [],
+            oneList: []
         }
     }
 
@@ -30,6 +32,158 @@ export default class Description extends React.Component {
     // const handleClick = () => {
     //     window.location.href = "/"
     // }
+
+    
+    extractClass(str_list) {
+        let res_list = []
+        for (var i = 0; i < str_list.length; i++) {
+            let res = ""
+            let foundUpperCase = false
+            let str = str_list[i]
+            for (var j = 0; j < str.length; j++) {
+                if (str.charAt(j) >= 'A' && str.charAt(j) <= 'Z') {
+                    foundUpperCase = true
+                    res += str.charAt(j)
+                }
+                if (foundUpperCase && str.charAt(j) >= '0' && str.charAt(j) <= '9') {
+                    res += str.charAt(j)
+                }
+            }
+            res_list.push(res)
+        }
+        return res_list
+    }
+
+    mustTakeList = []
+    selectOneList = []
+
+    parseDescription() {
+        if (this.props.courseItems.description.indexOf("may not be taken") !== -1) {
+            return
+        }
+        let start = this.props.courseItems.description.indexOf("Prerequisite") === -1 ? -1 : this.props.courseItems.description.indexOf("Prerequisite") + 14
+        if (start === -1) {
+            return
+        }
+        let end = this.props.courseItems.description.indexOf("Offered") === -1 ? this.props.courseItems.description.lastIndexOf(".") : this.props.courseItems.description.indexOf("Offered") - 1
+        
+        let prereq = this.props.courseItems.description.substring(start, end)
+        if (prereq.indexOf("recommended") !== -1) {
+            prereq = prereq.substring(0, prereq.indexOf("recommended"))
+        }
+        prereq.trim()
+        
+        let breakPoint = prereq.indexOf("Either") === -1 ? prereq.indexOf("either") : prereq.indexOf("Either")
+        let mustTake = ""
+        let selectOne = ""
+        if (breakPoint !== -1) {
+            mustTake = prereq.substring(0, breakPoint - 2)
+            selectOne = prereq.substring(breakPoint + 7)
+        } else {
+            mustTake = prereq
+        }
+        
+        this.mustTakeList = mustTake.split(", ")
+        let selectOneList_before = selectOne.split("either")
+        for (var k = 0; k < selectOneList_before.length; k++) {
+            let curr_classes = selectOneList_before[k].split(", ")
+            this.selectOneList = this.selectOneList.concat(curr_classes)
+        }
+        
+
+        if (this.mustTakeList.length !== 0) {
+            for (var i = 0; i < this.mustTakeList.length; i++) {
+                if (this.mustTakeList[i].indexOf(" or ") !== -1) {
+                    let two_classes = this.mustTakeList[i].split(" or ")
+                    let class_list = this.extractClass(two_classes)
+                    this.mustTakeList.splice(i, 1)
+                    i--
+                    this.mustTakeList = this.mustTakeList.concat(class_list)
+                } else if (this.mustTakeList[i].indexOf("/") !== -1) {
+                    let many_classes = this.mustTakeList[i].split("/")
+                    this.mustTakeList.splice(i, 1)
+                    i--
+                    this.mustTakeList = this.mustTakeList.concat(many_classes)
+                } else if (this.mustTakeList[i].indexOf("&") !== -1) {
+                    let two_classes = this.mustTakeList[i].split("&")
+                    let class_list = this.extractClass(two_classes)
+                    let class_num = ""
+                    for (var j = 0; j < class_list[1].length; j++) {
+                        if (class_list[1].charAt(j) >= '0' && class_list[1].charAt(j) <= '9') {
+                            class_num += class_list[1].charAt(j)
+                        }
+                    }
+                    class_list[0] += class_num
+                    this.mustTakeList.splice(i, 1)
+                    i--
+                    this.mustTakeList = this.mustTakeList.concat(class_list)
+                } else if (this.mustTakeList[i].indexOf("and") !== -1) {
+                    let two_classes = this.mustTakeList[i].split("and")
+                    let class_list = this.extractClass(two_classes)
+                    this.mustTakeList.splice(i, 1)
+                    i--
+                    this.mustTakeList = this.mustTakeList.concat(class_list)
+                } else {
+                    let class_list = this.extractClass([this.mustTakeList[i]])
+                    this.mustTakeList[i] = class_list[0]
+                }
+            }
+        }
+
+        if (this.selectOneList.length !== 0) {
+            for (i = 0; i < this.selectOneList.length; i++) {
+                if (this.selectOneList[i].indexOf(" or ") !== -1) {
+                    let two_classes = this.selectOneList[i].split(" or ")
+                    let class_list = this.extractClass(two_classes)
+                    this.selectOneList.splice(i, 1)
+                    i--
+                    this.selectOneList = this.selectOneList.concat(class_list)
+                } else if (this.selectOneList[i].indexOf("/") !== -1) {
+                    let many_classes = this.selectOneList[i].split("/")
+                    this.selectOneList.splice(i, 1)
+                    i--
+                    this.selectOneList = this.selectOneList.concat(many_classes)
+                } else if (this.selectOneList[i].indexOf("&") !== -1) {
+                    let two_classes = this.selectOneList[i].split("&")
+                    let class_list = this.extractClass(two_classes)
+                    let class_num = ""
+                    for (var j = 0; j < class_list[1].length; j++) {
+                        if (class_list[1].charAt(j) >= '0' && class_list[1].charAt(j) <= '9') {
+                            class_num += class_list[1].charAt(j)
+                        }
+                    }
+                    class_list[0] += class_num
+                    this.selectOneList.splice(i, 1)
+                    i--
+                    this.selectOneList = this.selectOneList.concat(class_list)
+                } else if (this.selectOneList[i].indexOf("and") !== -1) {
+                    let two_classes = this.selectOneList[i].split("and")
+                    let class_list = this.extractClass(two_classes)
+                    this.selectOneList.splice(i, 1)
+                    i--
+                    this.selectOneList = this.selectOneList.concat(class_list)
+                } else {
+                    let class_list = this.extractClass([this.selectOneList[i]])
+                    this.selectOneList[i] = class_list[0]
+                }
+            }
+        }
+
+        if (this.mustTakeList[0] === "") {
+            this.mustTakeList.pop()
+        }
+        if (this.selectOneList[0] === "") {
+            this.selectOneList.pop()
+        }
+
+        this.setState({
+            mustList: this.mustTakeList,
+            oneList: this.selectOneList
+        })
+
+        console.log(this.mustTakeList.sort((a, b) => a.localeCompare(b)))
+        console.log(this.selectOneList.sort((a, b) => a.localeCompare(b)))
+    }
 
     getUserInfo() {
         fetch(ServerConfig.SERVER_URL + ServerConfig.GETUSERINFO)
@@ -44,6 +198,7 @@ export default class Description extends React.Component {
 
     componentDidMount() {
         this.getUserInfo()
+        this.parseDescription()
     }
 
     togglePop = () => {
@@ -54,6 +209,9 @@ export default class Description extends React.Component {
 
     handleCommentClick = () => {
         if (!this.state.isLoggedIn) {
+            this.setState({
+                redirect: false
+            })
             this.togglePop()
         } else {
             this.setState({
@@ -113,6 +271,10 @@ export default class Description extends React.Component {
                                 <p className="courseCredit">{this.props.courseItems.credit + " credits"}</p>
                                 {this.props.courseItems.creditType.split("/").map(element => {
                                             return (<div ><div className="button type">{element}</div>{' '}</div>);})}
+                                {this.state.mustList.map(element => {
+                                            return (<div ><div className="button type">{element}</div>{' '}</div>);})}
+                                {this.state.oneList.map(element => {
+                                            return (<div ><div className="button type">{element}*</div>{' '}</div>);})}
                             </div>
                             <div className="col-12 col-lg-3" id="fillComment">
                                 <div className="row">
