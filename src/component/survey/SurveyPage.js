@@ -36,11 +36,11 @@ export default class SurveyPage extends Component {
     setCourseName = (e) => this.setState({ courseName: e.target.value });
 
     setInstructor = (e) => this.setState({ instructor: e.target.value });
-    
+
     setCourseContent = (e) => this.setState({ courseContent: e.target.value });
 
     setComment = (e) => this.setState({ comment: e.target.value });
-    
+
     setRemark = (e) => this.setState({ remark: e.target.value });
 
     setGPA = (e) => this.setState({gpa: e.target.value});
@@ -95,7 +95,7 @@ export default class SurveyPage extends Component {
     }
 
     render() {
-        
+
         return (
             <div className="container-xxl" id="survey">
                 <Container id='form-header'>
@@ -121,11 +121,11 @@ export default class SurveyPage extends Component {
                                 </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} controlID='formQuarter'>                                                
+                        <Form.Group as={Row} controlID='formQuarter'>
                             <Form.Label column sm={2} className="text-md-left">
                                 Quarters:
                             </Form.Label>
-                            <Col sm={2}>     
+                            <Col sm={2}>
                                 <Form.Control required="true" as="select" value={this.state.quarter} onChange={this.setQuarter}>
                                         <option value='spring'>Spring</option>
                                         <option value='summer'>Summer</option>
@@ -135,7 +135,7 @@ export default class SurveyPage extends Component {
                                 <Form.Control.Feedback type="invalid">
                                         Quarter is a required field.
                                 </Form.Control.Feedback>
-                            </Col>        
+                            </Col>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formCourseName'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -171,7 +171,7 @@ export default class SurveyPage extends Component {
                                 </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
-                        
+
                         <Form.Group as={Row} style={{margin: "auto"}} controlId='formCourseContent'>
                             <Form.Label column sm={4} className="text-md-left">
                                 Course Content
@@ -185,7 +185,7 @@ export default class SurveyPage extends Component {
                             />
                             <Form.Control.Feedback type="invalid">
                                 courseContent is a required field.
-                            </Form.Control.Feedback>   
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Row} controlId='formWorkload' className="top-margin">
                             <Form.Label column sm={2} className="text-md-left">
@@ -203,7 +203,7 @@ export default class SurveyPage extends Component {
                                     workload is a required field.
                             </Form.Control.Feedback>
                             </Col>
-                            
+
                         </Form.Group>
                         <Form.Group as={Row} controlId='formGrading'>
                             <Form.Label column sm={2} className="text-md-left">
@@ -244,7 +244,7 @@ export default class SurveyPage extends Component {
                             <Form.Label column sm={4} className="text-md-left">
                                 Comments and Additional Thought:
                             </Form.Label>
-                            <Form.Control 
+                            <Form.Control
                                 as="textarea"
                                 rows={3}
                                 value={this.state.comment}
@@ -283,7 +283,7 @@ export default class SurveyPage extends Component {
                                 Submit
                             </Button>
                         </Container>
-                    </Form>            
+                    </Form>
                 </Container>
             </div>
         )

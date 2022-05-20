@@ -1,0 +1,50 @@
+#feedback {
+    background-color: #c6b4d9;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 9vh;
+    margin-top: 5vh;
+}
+
+.top-margin{
+    margin-top: 20px;
+}
+
+#feedback-header {
+    color: white;
+    margin-top: 8%;
+    margin-bottom: 3%;
+}
+
+#feedback-header h1 {
+  font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+}
+
+text-md-left {
+  width: 3300px;
+}
+
+#form-box {
+    border: 2pt;
+    border-color: gray;
+    border-radius: 14pt;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    padding: 5%;
+    font-size: 25px;
+}
+
+#btn-box {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+#submit-btn {
+    background-color: #5f247d;
+}

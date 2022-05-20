@@ -52,10 +52,10 @@ class LargeHeader extends Component {
                 <img src={ImageStorage.logo} id="course-radar" alt="logo for course radar" onClick={() => {goHome()}}></img>
                 <img src={ImageStorage.logoSmall} id="course-radar2" alt="logo for course radar mobile" onClick={() => {goHome()}}></img>
 
-                <SearchFilter 
-                    updateFilter={this.props.updateFilter} 
-                    className="search-bar" 
-                    className="search_bar" 
+                <SearchFilter
+                    updateFilter={this.props.updateFilter}
+                    className="search-bar"
+                    className="search_bar"
                     filters={this.props.filter}/>
 
                 <div id="right-upper-icons">
@@ -68,9 +68,17 @@ class LargeHeader extends Component {
                     </NavLink>
 
                     <NavLink
+                        className="logo-with-characters"
+                        to="/feedback"
+                    >
+                        <img src={ImageStorage.edit} id="pen" class="header-logo" alt="logo for filling forms" />
+                        <p>feedback</p>
+                    </NavLink>
+
+                    <NavLink
                         to={this.state.pathOfPersonIcon}
                         className="logo-with-characters"
-                        
+
                     >
                         <img src={ImageStorage.login} id="log-in" class="header-logo" alt="logo for logging in" />
                         <p>{this.state.pathOfPersonIcon === "/login" ? "登录" : "个人"}</p>
@@ -103,7 +111,16 @@ class LargeHeader extends Component {
                         <NavLink
                             className="logo-with-characters"
                             to="/survey">
-                            填写课评
+
+                        </NavLink>
+                    </MenuItem>
+
+                    <MenuItem
+                        onClick={handleClose}>
+                        <NavLink
+                            className="logo-with-characters"
+                            to="/feedback">
+                            feedback
                         </NavLink>
                     </MenuItem>
                 </Menu>
