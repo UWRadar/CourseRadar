@@ -11,6 +11,11 @@ footer{
     margin-top: 5rem;
 }
 
+#privacy-policy-nav-link{
+    color: black;
+    /*text-decoration: none;*/
+}
+
 #logos {
     display: none;
     width: 50%;
