@@ -160,12 +160,10 @@ function WriteEval(props) {
                         <span>学期</span>
                     </div>
                     <div>
-                        <span onChange={event => {setSelQuarter(event.target.value)}}>
-                            <div><input type={"radio"} value="Au"/><label htmlFor="Au">秋季学期 (Autumn)</label></div>
-                            <div><input type={"radio"} value="Wi"/><label htmlFor="Wi">冬季学期 (Winter)</label></div>
-                            <div><input type={"radio"} value="Sp"/><label htmlFor="Sp">春季学期 (Spring)</label></div>
-                            <div><input type={"radio"} value="Su"/><label htmlFor="Su">夏季学期 (Summer)</label></div>
-                        </span>
+                        <RadioButton value={"Au"} checked={selQuarter === "Au"} onChange={()=>setSelQuarter("Au")} displayValue="秋季学期 (Autumn)"/>
+                        <RadioButton value={"Wi"} checked={selQuarter === "Wi"} onChange={()=>setSelQuarter("Wi")} displayValue="冬季学期 (Winter)"/>
+                        <RadioButton value={"Sp"} checked={selQuarter === "Sp"} onChange={()=>setSelQuarter("Sp")} displayValue="春季学期 (Spring)"/>
+                        <RadioButton value={"Su"} checked={selQuarter === "Su"} onChange={()=>setSelQuarter("Su")} displayValue="夏季学期 (Summer)"/>
                     </div>
                     <div>
                         <span>课程名称</span>
@@ -196,6 +194,23 @@ function WriteEval(props) {
                 </div>
             </div>
         </div>);
+}
+
+function RadioButton({ value, checked, onChange, displayValue}){
+    return (
+        <div>
+            <label>
+                <input
+                    value={value}
+                    type="radio"
+                    checked={checked}
+                    onChange={onChange}
+                    className="radio-btn"
+                ></input>
+                {displayValue}
+            </label>
+        </div>
+    );
 }
 
 async function fetchCourseName(setCourseName) {
