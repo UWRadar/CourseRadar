@@ -48,14 +48,12 @@
     width: 50%;
     grid-template-columns: 2fr 5fr;
     align-items: center;
+    row-gap: 20px;
 }
 
 /* Autocomplete container */
 
 .autocomplete_container {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #7E7E7E;
     width: 350px;
     min-height: 30px;
     color: #8A71EF;
@@ -91,8 +89,9 @@
 }
 
 .text_input {
-    border: 1px none #7E7E7E;
-    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #7E7E7E;
+    border-style: solid;
     padding-left: 10px;
     padding-right: 10px;
 }

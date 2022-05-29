@@ -17,13 +17,12 @@ function AutoCompleteWithKeySingleSelect(props) {
             setMatched(props.dataObj);
         } else {
             refreshSuggestion(event.target.value);
-        }
-    }
-    function clickTextbox(event) {
-        if(input.length > 0) {
             setShouldShowSuggestion(true);
         }
     }
+    function onFocus(event) {if(input.length > 0) {setShouldShowSuggestion(true);}}
+
+    function onBlur(event) {}
 
     function refreshSuggestion(value) {
         const inputValue = value.trim();
@@ -51,6 +50,11 @@ function AutoCompleteWithKeySingleSelect(props) {
                 }
             }
         }
+
+        // Control whether user can select its own input value (it's useful if we allow user add new item)
+        if(props.useUserProvidedValue) {
+            pushedKey.push(value);
+        }
         setMatched(pushedKey);
     }
 
@@ -71,7 +75,7 @@ function AutoCompleteWithKeySingleSelect(props) {
 
     return (
         <div className="autocomplete_container">
-            <input className="text_input" type="text" placeholder={props.placeholder} value={input} onChange={handleACInput} onFocus={clickTextbox}/>
+            <input className="text_input" type="text" placeholder={props.placeholder} value={input} onChange={handleACInput} onFocus={onFocus} onBlur={onBlur}/>
             {shouldShowSuggestion ?
                 <div className={"autocomplete_result_container"}>
                     {matched.map((oneKey) => (
@@ -167,19 +171,19 @@ function WriteEval(props) {
                         <span>课程名称</span>
                     </div>
                     <div>
-                        <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName} placeholder={"请输入课程..."}/>
+                        <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName} placeholder={"请输入课程..."} useUserProvidedValue={false}/>
                     </div>
                     <div>
                         <span>授课讲师</span>
                     </div>
                     <div>
-                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
+                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."} useUserProvidedValue={true}/>
                     </div>
                     <div>
                         <span>课程助教 (TA)</span>
                     </div>
                     <div>
-                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
+                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."} useUserProvidedValue={true}/>
                     </div>
                 </div>
                 <div id="method-selection-q" className="form_title required-field">介绍一下自己</div>
@@ -187,7 +191,7 @@ function WriteEval(props) {
                     <span>所属社团（可选项）</span>
                     <label><input type="radio" checked={selClub.length === 0} onChange={()=>setSelClub("")} readOnly={true}/>无</label>
                     <div>
-                        <AutoCompleteWithKeySingleSelect dataObj={allClub} selectedKey={selClub} setSelKey={setSelClub} placeholder={"请输入所属社团..."}/>
+                        <AutoCompleteWithKeySingleSelect dataObj={allClub} selectedKey={selClub} setSelKey={setSelClub} placeholder={"请输入所属社团..."} useUserProvidedValue={true}/>
                     </div>
                 </div>
             </div>
