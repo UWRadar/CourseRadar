@@ -25,29 +25,20 @@ function AutoCompleteWithKeySingleSelect(props) {
         const pushedKey = [];
         // Limit the suggestion number on mobile phones
         let numSuggestion = window.innerWidth >= 576 ? 50 : 25;
-        let counter = 0;
         if (inputLength !== 0) {
-            // If user types alphanumeric character (cse143), check for start with result
-            if (isNaN(parseInt(inputValue))) {
-                for (const oneKey of props.dataObj) {
-                    if (counter >= numSuggestion) {
-                        break; // Terminate for-loop early if we reach maximum number of suggestion
-                    } else if (oneKey.toLowerCase().startsWith(inputValue.toLowerCase())) {
-                        counter = counter + 1;
-                        pushedKey.push(oneKey);
-                    }
+            // First check start with, then check partial matching
+            for (const oneKey of props.dataObj) {
+                if (pushedKey.length >= numSuggestion) {
+                    break; // Terminate for-loop early if we reach maximum number of suggestion
+                } else if (oneKey.toLowerCase().startsWith(inputValue.toLowerCase())) {
+                    pushedKey.push(oneKey);
                 }
             }
-            // If user types just numeric character (142), check for partial matching
-            else {
-                // then, check whether user's input contains the actual language/region value
-                for (const oneKey of props.dataObj) {
-                    if (counter >= numSuggestion) {
-                        break;
-                    } else if (pushedKey.includes(oneKey)) {
+            if(pushedKey.length < numSuggestion) {
+                for(const oneKey of props.dataObj) {
+                    if (pushedKey.includes(oneKey)) {
                         continue;
                     } else if (oneKey.toLowerCase().includes(inputValue.toLowerCase())) {
-                        counter = counter + 1;
                         pushedKey.push(oneKey);
                     }
                 }
@@ -151,14 +142,15 @@ function WriteEval(props) {
                     <div>
                         <span>课程名称</span>
                         <div>
-                            <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName}/>
+                            <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName} placeholder={"请输入课程..."}/>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <span>授课讲师</span>
-                </div>
-                <div>
+                    <div>
+                        <span>授课讲师</span>
+                        <div>
+                            <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
+                        </div>
+                    </div>
                     <span>课程助教 (TA)</span>
                     <label><input value={"无"} type="radio" checked={false}/>无</label>
                 </div>
