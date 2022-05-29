@@ -151,8 +151,19 @@ function WriteEval(props) {
                             <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
                         </div>
                     </div>
-                    <span>课程助教 (TA)</span>
-                    <label><input value={"无"} type="radio" checked={false}/>无</label>
+                    <div>
+                        <span>课程助教 (TA)</span>
+                        <div>
+                            <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
+                        </div>
+                    </div>
+                    <div>
+                        <span>所属社团（可选项）</span>
+                        <label><input type="radio" checked={selClub.length === 0} onChange={()=>setSelClub("")} readOnly={true}/>无</label>
+                        <div>
+                            <AutoCompleteWithKeySingleSelect dataObj={allClub} selectedKey={selClub} setSelKey={setSelClub} placeholder={"请输入所属社团..."}/>
+                        </div>
+                    </div>
                 </div>
                 <div className="method-selection-radio-buttons">
 
