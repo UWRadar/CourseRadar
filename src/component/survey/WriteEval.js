@@ -8,6 +8,7 @@ import {Input, Spinner} from "reactstrap";
 function AutoCompleteWithKeySingleSelect(props) {
     const [input, setInput] = useState("");
     const [matched, setMatched] = useState(props.dataObj);
+    const [shouldShowSuggestion, setShouldShowSuggestion] = useState(false);
 
     function handleACInput(event) {
         event.preventDefault();
@@ -18,6 +19,12 @@ function AutoCompleteWithKeySingleSelect(props) {
             refreshSuggestion(event.target.value);
         }
     }
+    function clickTextbox(event) {
+        if(input.length > 0) {
+            setShouldShowSuggestion(true);
+        }
+    }
+
     function refreshSuggestion(value) {
         const inputValue = value.trim();
         const inputLength = inputValue.length;
@@ -56,18 +63,25 @@ function AutoCompleteWithKeySingleSelect(props) {
         }
     }, [props.dataObj]);
 
+    function handleClick(key) {
+        props.setSelKey(key);
+        setInput(key);
+        setShouldShowSuggestion(false);
+    }
+
     return (
         <div className="autocomplete_container">
-            <input className="text_input" type="text" placeholder={props.placeholder} value={input} onChange={handleACInput}/>
-            <div className="autocomplete_result_container">
-                {matched.map((key) => (
-                    <div key={key} className="autocomplete_item" onClick={() => props.setSelKey(key)}>
-                        <Input className={"autocomplete_item_input"} type="radio" id={key} checked={props.selectedKey === key} readOnly={true}/>
-                        <span>&nbsp;</span>
-                        <span>{key}</span>
-                    </div>
-                ))}
-            </div>
+            <input className="text_input" type="text" placeholder={props.placeholder} value={input} onChange={handleACInput} onFocus={clickTextbox}/>
+            {shouldShowSuggestion ?
+                <div className={"autocomplete_result_container"}>
+                    {matched.map((oneKey) => (
+                        <div key={oneKey} className="autocomplete_item" onClick={() => handleClick(oneKey)}>
+                            <Input className={"autocomplete_item_input"} type="radio" id={oneKey} checked={props.selectedKey === oneKey} readOnly={true}/>
+                            <span>&nbsp;</span>
+                            <span>{oneKey}</span>
+                        </div>
+                    ))}
+                </div> : ""}
         </div>
     );
 }

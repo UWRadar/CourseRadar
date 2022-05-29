@@ -62,12 +62,22 @@
 
     display: inline-flex;
     flex-direction: column;
+
+    position: relative;
 }
 
 .autocomplete_result_container {
     padding: 5px;
     height: 300px;
     overflow: scroll;
+    position: absolute;
+    z-index: 5;
+    background-color: white;
+    width: 100%;
+    top: 25px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #7E7E7E;
 }
 
 .autocomplete_item {
