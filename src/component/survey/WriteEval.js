@@ -84,6 +84,8 @@ function WriteEval(props) {
     const [selClub, setSelClub] = useState("");
     const [allClub, setAllClub] = useState([]);
 
+    const [selQuarter, setSelQuarter] = useState("");
+
     useEffect(()=>{
         fetchCourseName(setAllCourseName);
         fetchProfessor(setAllProfessor);
@@ -129,14 +131,24 @@ function WriteEval(props) {
                 <div id="method-selection-q" className="form_title required-field">
                     课程基本信息
                 </div>
-                <div>
-                    <span>所上的学期：</span><input type="number" min="2000" max={today.getFullYear()} value={today.getFullYear()}/><span>年的</span>
-                    <select>
-                        <option value="Au">秋季学期 (Autumn)</option>
-                        <option value="Wi">冬季学期 (Winter)</option>
-                        <option value="Sp">春季学期 (Spring)</option>
-                        <option value="Su">夏季学期 (Summer)</option>
-                    </select>
+                <div className={"course_basic_information_grid"}>
+                    <div>
+                        <span>年份</span>
+                    </div>
+                    <div>
+                        <input type="number" min="2000" max={today.getFullYear()} value={today.getFullYear()}/>
+                    </div>
+                    <div>
+                        <span>学期</span>
+                    </div>
+                    <div>
+                        <span onChange={event => {setSelQuarter(event.target.value)}}>
+                            <div><input type={"radio"} value="Au"/><label htmlFor="Au">秋季学期 (Autumn)</label></div>
+                            <div><input type={"radio"} value="Wi"/><label htmlFor="Wi">冬季学期 (Winter)</label></div>
+                            <div><input type={"radio"} value="Sp"/><label htmlFor="Sp">春季学期 (Spring)</label></div>
+                            <div><input type={"radio"} value="Su"/><label htmlFor="Su">夏季学期 (Summer)</label></div>
+                        </span>
+                    </div>
                 </div>
                 <div>
                     <div>
@@ -157,16 +169,14 @@ function WriteEval(props) {
                             <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
                         </div>
                     </div>
-                    <div>
-                        <span>所属社团（可选项）</span>
-                        <label><input type="radio" checked={selClub.length === 0} onChange={()=>setSelClub("")} readOnly={true}/>无</label>
-                        <div>
-                            <AutoCompleteWithKeySingleSelect dataObj={allClub} selectedKey={selClub} setSelKey={setSelClub} placeholder={"请输入所属社团..."}/>
-                        </div>
-                    </div>
                 </div>
-                <div className="method-selection-radio-buttons">
-
+                <div id="method-selection-q" className="form_title required-field">介绍一下自己</div>
+                <div>
+                    <span>所属社团（可选项）</span>
+                    <label><input type="radio" checked={selClub.length === 0} onChange={()=>setSelClub("")} readOnly={true}/>无</label>
+                    <div>
+                        <AutoCompleteWithKeySingleSelect dataObj={allClub} selectedKey={selClub} setSelKey={setSelClub} placeholder={"请输入所属社团..."}/>
+                    </div>
                 </div>
             </div>
         </div>);

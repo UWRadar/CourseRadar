@@ -43,6 +43,13 @@
     margin-bottom: 40px;
 }
 
+.course_basic_information_grid {
+    display: grid;
+    width: 50%;
+    grid-template-columns: 2fr 5fr;
+    align-items: center;
+}
+
 /* Autocomplete container */
 
 .autocomplete_container {
