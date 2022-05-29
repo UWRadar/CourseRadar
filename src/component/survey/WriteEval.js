@@ -149,25 +149,23 @@ function WriteEval(props) {
                             <div><input type={"radio"} value="Su"/><label htmlFor="Su">夏季学期 (Summer)</label></div>
                         </span>
                     </div>
-                </div>
-                <div>
                     <div>
                         <span>课程名称</span>
-                        <div>
-                            <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName} placeholder={"请输入课程..."}/>
-                        </div>
+                    </div>
+                    <div>
+                        <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName} placeholder={"请输入课程..."}/>
                     </div>
                     <div>
                         <span>授课讲师</span>
-                        <div>
-                            <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
-                        </div>
+                    </div>
+                    <div>
+                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
                     </div>
                     <div>
                         <span>课程助教 (TA)</span>
-                        <div>
-                            <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
-                        </div>
+                    </div>
+                    <div>
+                        <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."}/>
                     </div>
                 </div>
                 <div id="method-selection-q" className="form_title required-field">介绍一下自己</div>
