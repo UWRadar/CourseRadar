@@ -42,3 +42,45 @@
 .form-section{
     margin-bottom: 40px;
 }
+
+/* Autocomplete container */
+
+.autocomplete_container {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #7E7E7E;
+    width: 350px;
+    min-height: 30px;
+    color: #8A71EF;
+
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.autocomplete_result_container {
+    padding: 5px;
+    height: 300px;
+    overflow: scroll;
+}
+
+.autocomplete_item {
+    color: black;
+    padding: 3px;
+}
+
+.autocomplete_item:hover {
+    background-color: #8A71EF;
+    color: white;
+}
+
+.text_input {
+    border: 1px none #7E7E7E;
+    border-bottom-style: solid;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Bold ICAO name while keep the airport's full name as regular form*/
+.suggestionICAO {
+    font-weight: 650;
+}
