@@ -24,11 +24,11 @@ function AutoCompleteWithKeySingleSelect(props) {
 
         const pushedKey = [];
         // Limit the suggestion number on mobile phones
-        let numSuggestion = window.innerWidth >= 576 ? 10 : 5;
+        let numSuggestion = window.innerWidth >= 576 ? 50 : 25;
         let counter = 0;
         if (inputLength !== 0) {
             // If user types alphanumeric character (cse143), check for start with result
-            if (!isNaN(parseInt(inputValue))) {
+            if (isNaN(parseInt(inputValue))) {
                 for (const oneKey of props.dataObj) {
                     if (counter >= numSuggestion) {
                         break; // Terminate for-loop early if we reach maximum number of suggestion
@@ -46,9 +46,7 @@ function AutoCompleteWithKeySingleSelect(props) {
                         break;
                     } else if (pushedKey.includes(oneKey)) {
                         continue;
-                    } else if (
-                        props.dataObj.toLowerCase().includes(inputValue.toLowerCase())
-                    ) {
+                    } else if (oneKey.toLowerCase().includes(inputValue.toLowerCase())) {
                         counter = counter + 1;
                         pushedKey.push(oneKey);
                     }
@@ -73,7 +71,7 @@ function AutoCompleteWithKeySingleSelect(props) {
             <div className="autocomplete_result_container">
                 {matched.map((key) => (
                     <div key={key} className="autocomplete_item" onClick={() => props.setSelKey(key)}>
-                        <Input type="radio" id={key} checked={props.selectedKey === key} readOnly/>
+                        <Input className={"autocomplete_item_input"} type="radio" id={key} checked={props.selectedKey === key} readOnly={true}/>
                         <span>&nbsp;</span>
                         <span>{key}</span>
                     </div>
@@ -150,8 +148,12 @@ function WriteEval(props) {
                     </select>
                 </div>
                 <div>
-                    <span>课程名称</span>
-                    <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName}/>
+                    <div>
+                        <span>课程名称</span>
+                        <div>
+                            <AutoCompleteWithKeySingleSelect dataObj={allCourseName} selectedKey={selCourseName} setSelKey={setSelCourseName}/>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <span>授课讲师</span>

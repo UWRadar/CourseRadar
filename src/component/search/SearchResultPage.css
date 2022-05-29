@@ -125,3 +125,10 @@
 .zero_opacity {
     opacity: 0;
 }
+
+/* Override css framework .form-check-input styling*/
+.autocomplete_item_input {
+    position: static;
+    margin-top: 0;
+    margin-left: 0;
+}
