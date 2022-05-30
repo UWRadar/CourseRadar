@@ -22,7 +22,7 @@ function AutoCompleteWithKeySingleSelect(props) {
     }
     function onFocus(event) {if(input.length > 0) {setShouldShowSuggestion(true);}}
 
-    function onBlur(event) {}
+    function onBlur(event) {setShouldShowSuggestion(false);}
 
     function refreshSuggestion(value) {
         const inputValue = value.trim();
