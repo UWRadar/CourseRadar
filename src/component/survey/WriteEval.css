@@ -96,6 +96,12 @@
     padding-right: 10px;
 }
 
+.horizontal_radio_button_container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
 /* Bold ICAO name while keep the airport's full name as regular form*/
 .suggestionICAO {
     font-weight: 650;

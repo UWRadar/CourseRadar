@@ -94,6 +94,7 @@ function WriteEval(props) {
     // Extract course name from url parameter
     const params = (new URL(window.location)).searchParams;
     const courseNameParam = params.get("course_name") === null ? "" : params.get("course_name");
+    const today = new Date();
 
     const [selCourseName, setSelCourseName] = useState(courseNameParam);
     const [allCourseName, setAllCourseName] = useState([]);
@@ -102,7 +103,12 @@ function WriteEval(props) {
     const [selClub, setSelClub] = useState("");
     const [allClub, setAllClub] = useState([]);
 
+    const [selYear, setSelYear] = useState(today.getFullYear());
     const [selQuarter, setSelQuarter] = useState("");
+
+    const [courseLoad, setCourseLoad] = useState("");
+    const [grading, setGrading] = useState("");
+    const [gpa, setGpa] = useState("");
 
     useEffect(()=>{
         fetchCourseName(setAllCourseName);
@@ -131,7 +137,7 @@ function WriteEval(props) {
         );
     }
 
-    const today = new Date();
+
 
     return(
         <div className="container-fluid" id="outerCotainer">
@@ -154,7 +160,7 @@ function WriteEval(props) {
                         <span>年份</span>
                     </div>
                     <div>
-                        <input type="number" min="2000" max={today.getFullYear()} value={today.getFullYear()}/>
+                        <input type="number" min={2000} max={today.getFullYear()} value={selYear} onChange={(event)=>setSelYear(event.target.value)}/>
                     </div>
                     <div>
                         <span>学期</span>
@@ -184,6 +190,36 @@ function WriteEval(props) {
                         <AutoCompleteWithKeySingleSelect dataObj={allProfessor} selectedKey={selProfessor} setSelKey={setSelProfessor} placeholder={"请输入授课讲师..."} useUserProvidedValue={true}/>
                     </div>
                 </div>
+                <div id="method-selection-q" className="form_title required-field">评价此课程</div>
+                <div className={"course_basic_information_grid"}>
+                    <div>
+                        <span>课程任务量</span>
+                    </div>
+                    <div>
+                        <div className={"horizontal_radio_button_container"}>
+                            <RadioButton value={"1"} checked={courseLoad === "1"} onChange={()=>setCourseLoad("1")} displayValue="1（极少）"/>
+                            <RadioButton value={"2"} checked={courseLoad === "2"} onChange={()=>setCourseLoad("2")} displayValue="2"/>
+                            <RadioButton value={"3"} checked={courseLoad === "3"} onChange={()=>setCourseLoad("3")} displayValue="3（适中）"/>
+                            <RadioButton value={"4"} checked={courseLoad === "4"} onChange={()=>setCourseLoad("4")} displayValue="4"/>
+                            <RadioButton value={"5"} checked={courseLoad === "5"} onChange={()=>setCourseLoad("5")} displayValue="5（超多）"/>
+                        </div>
+                    </div>
+                    <div>
+                        <span>得分难易度</span>
+                    </div>
+                    <div>
+                        <div className={"horizontal_radio_button_container"}>
+                            <RadioButton value={"1"} checked={grading === "1"} onChange={()=>setGrading("1")} displayValue="1（容易）"/>
+                            <RadioButton value={"2"} checked={grading === "2"} onChange={()=>setGrading("2")} displayValue="2"/>
+                            <RadioButton value={"3"} checked={grading === "3"} onChange={()=>setGrading("3")} displayValue="3（适中）"/>
+                            <RadioButton value={"4"} checked={grading === "4"} onChange={()=>setGrading("4")} displayValue="4"/>
+                            <RadioButton value={"5"} checked={grading === "5"} onChange={()=>setGrading("5")} displayValue="5（困难）"/>
+                        </div>
+                    </div>
+                </div>
+
+                <span>你喜欢或者不喜欢此课程的哪些方面</span>
+
                 <div id="method-selection-q" className="form_title required-field">介绍一下自己</div>
                 <div>
                     <span>所属社团（可选项）</span>
