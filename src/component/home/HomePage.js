@@ -1,22 +1,14 @@
-import { RemoveShoppingCartSharp } from "@material-ui/icons"
-import React, { Component } from "react"
-
-import Banner from "./Banner"
-import CourseCard from "../general/CourseCard"
-import Tabs from "./Tabs"
-import "./HomePage.css"
-import { Footer, BigFooter } from "../general/Footer"
-import ImageStorage from "../general/ImageStorage.js"
-import LoginPage from "../general/LoginPage"
-import LargeHeader from "../general/LargeHeader"
-import { NavLink } from "react-router-dom"
-import SearchBar from "../search/SearchFilter"
-import ServerConfig from "../config/ServerConfig"
+import React, { Component } from "react";
+import Banner from "./Banner";
+import CourseCard from "../general/CourseCard";
+import Tabs from "./Tabs";
+import "./HomePage.css";
+import ServerConfig from "../config/ServerConfig";
 
 export default class HomePage extends Component {
     constructor(props) {
-        super(props)
-        this.intervalId = null
+        super(props);
+        this.intervalId = null;
         this.state = {
             activeBanner: 0,
             bannerItems: [{
@@ -44,7 +36,7 @@ export default class HomePage extends Component {
             favorite: [],
             activeTab: "trendy",
             redirectToLogin: true
-        }
+        };
     }
 
     componentDidMount() {
@@ -58,38 +50,37 @@ export default class HomePage extends Component {
 
     getFavorite() {
         // if (!this.state.redirectToLogin) {
-            console.log(333);
-            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
-                body: JSON.stringify({
-                    // courseName: name.toLowerCase()
-                }),
-                credentials: "include",
-                method: "POST"
-            }).then(res => {
-                if(res.ok) {
-                    return res.json();
-                } else {
-                    console.log(res);
-                }
-            }).then(data => {
-                console.log(data);
-                if (data && data["state"] === 1) {
-                    let favoriteCourseName = [];
-                    data["data"].forEach(function (currentValue) {favoriteCourseName.push(currentValue["courseName"])})
-                    this.setState({
-                        favorite: favoriteCourseName
-                    });
-                }
+        fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+            body: JSON.stringify({
+                // courseName: name.toLowerCase()
+            }),
+            credentials: "include",
+            method: "POST"
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        }).then(data => {
+            console.log(data);
+            if (data && data["state"] === 1) {
+                let favoriteCourseName = [];
+                data["data"].forEach(function (currentValue) { favoriteCourseName.push(currentValue["courseName"]) })
                 this.setState({
-                    favLoaded: true
-                })
-                console.log(this.state.favorite);
-                // if(data.state === 0) {
-                //     return false;
-                // } else {
-                //     return true;
-                // }
+                    favorite: favoriteCourseName
+                });
+            }
+            this.setState({
+                favLoaded: true
             })
+            console.log(this.state.favorite);
+            // if(data.state === 0) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
+        })
         // }
     }
 
@@ -98,9 +89,9 @@ export default class HomePage extends Component {
             credentials: "include"
         }).then(response => {
             if (response.ok) {
-                return response.json()
-            } else if (response.status == 403) {
-                throw new Error("unauthorized")
+                return response.json();
+            } else if (response.status === 403) {
+                throw new Error("unauthorized");
             }
         }).then(data => {
             if (data) {
@@ -109,20 +100,20 @@ export default class HomePage extends Component {
                     favorite: data.favCourses,
                     username: data.username,
                     redirectToLogin: false
-                })
+                });
             }
         }).catch(() => {
             this.setState({
                 redirectToLogin: true
-            })
-        })
+            });
+        });
     }
 
     getAds() {
 
         fetch(ServerConfig.SERVER_URL + "/api/ad")
             .then(response => {
-                if (response.status == 200) {
+                if (response.status === 200) {
                     return response.json();
                 }
             })
@@ -149,7 +140,7 @@ export default class HomePage extends Component {
     changeActiveTab(tabName) {
         this.setState({
             activeTab: tabName
-        })
+        });
     }
 
     getPopular() {
@@ -165,7 +156,7 @@ export default class HomePage extends Component {
                 this.setState({
                     popular: data.result
                 });
-            })
+            });
     }
 
     getRecommended() {
@@ -182,7 +173,7 @@ export default class HomePage extends Component {
                     loaded: true,
                     recommened: data.result
                 });
-            })
+            });
     }
 
     resetInterval() {
@@ -193,33 +184,6 @@ export default class HomePage extends Component {
     }
 
     render() {
-        const CourseTemp = [{
-            courseName: "Info 340",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "CSE 142",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "CSE 142",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "CSE 142",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }, {
-            courseName: "Info 340",
-            courseDescription: "Introduction to web design",
-            tags: ["qsr", "vlpa", "idc"],
-            credit: "5 credits"
-        }]
-
         const tabItems = [{
             icon: "hotClass",
             id: "trendy",
@@ -228,11 +192,10 @@ export default class HomePage extends Component {
             icon: "waterClass",
             id: "recommendation",
             text: "“水课” 推荐"
-        }]
+        }];
 
         return (
             <div className="home">
-
                 <Banner className="banner"
                     items={this.state.bannerItems}
                     active={this.state.activeBanner}
@@ -255,8 +218,8 @@ export default class HomePage extends Component {
                 />
                 <div className="course-list">
                     {!this.state.loaded &&
-                        <div class="loading-small">
-                            <img class='loading' src="../img/loading.gif" alt="Logo for loading" />
+                        <div className="loading-small">
+                            <img className='loading' src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
                     {this.state.favLoaded && this.state.loaded && this.state.activeTab === "recommendation" &&
@@ -286,34 +249,34 @@ export default class HomePage extends Component {
                         ))
                     }
                 </div>
-            </div >
-        )
+            </div>
+        );
     }
 
     switchBanner(delta) {
         if (this.state.bannerNoAnimation) {
-            return
+            return;
         }
-        const bannerItems = this.state.bannerItems
-        const newActive = this.state.activeBanner + delta
+        const bannerItems = this.state.bannerItems;
+        const newActive = this.state.activeBanner + delta;
         const setActive = (newValue) => {
             this.setState({
                 activeBanner: newValue
-            })
-        }
-        setActive(newActive)
+            });
+        };
+        setActive(newActive);
         if (newActive < 0 || newActive > bannerItems.length - 1) {
             setTimeout(() => {
                 this.setState({
                     activeBanner: newActive < 0 ? bannerItems.length - 1 : 0,
                     bannerNoAnimation: true
-                })
-            }, 500)
+                });
+            }, 500);
             setTimeout(() => {
                 this.setState({
                     bannerNoAnimation: false
-                })
-            }, 1000)
+                });
+            }, 1000);
         }
     }
 }

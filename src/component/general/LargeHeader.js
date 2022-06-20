@@ -10,7 +10,7 @@ import ServerConfig from "../config/ServerConfig"
 import { NavLink } from 'react-router-dom'
 import "./LargeHeader.css"
 import MenuIcon from '@material-ui/icons/Menu';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 class LargeHeader extends Component {
     constructor() {
         super();
@@ -26,7 +26,7 @@ class LargeHeader extends Component {
         }).then(response => {
             if (response.ok) {
 
-            } else if (response.status == 403) {
+            } else if (response.status === 403) {
                 this.setState({
                     pathOfPersonIcon: "/login"
                 })
@@ -37,11 +37,11 @@ class LargeHeader extends Component {
 
     render() {
         const handleClick = (event) => {
-            this.setState({anchorEl: event.currentTarget})
+            this.setState({ anchorEl: event.currentTarget })
         }
 
         const handleClose = () => {
-            this.setState({anchorEl: null})
+            this.setState({ anchorEl: null })
         }
 
         const goHome = () => {
@@ -49,30 +49,29 @@ class LargeHeader extends Component {
         }
         return (<div>
             <AppBar id='large-header'>
-                <img src={ImageStorage.logo} id="course-radar" alt="logo for course radar" onClick={() => {goHome()}}></img>
-                <img src={ImageStorage.logoSmall} id="course-radar2" alt="logo for course radar mobile" onClick={() => {goHome()}}></img>
+                <img src={ImageStorage.logo} id="course-radar" alt="logo for course radar" onClick={() => { goHome() }}></img>
+                <img src={ImageStorage.logoSmall} id="course-radar2" alt="logo for course radar mobile" onClick={() => { goHome() }}></img>
 
-                <SearchFilter 
-                    updateFilter={this.props.updateFilter} 
-                    className="search-bar" 
-                    className="search_bar" 
-                    filters={this.props.filter}/>
+                <SearchFilter
+                    updateFilter={this.props.updateFilter}
+                    className="search-bar"
+                    filters={this.props.filter} />
 
                 <div id="right-upper-icons">
                     <NavLink
                         className="logo-with-characters"
                         to="/survey"
                     >
-                        <img src={ImageStorage.edit} id="pen" class="header-logo" alt="logo for filling forms" />
+                        <img src={ImageStorage.edit} id="pen" className="header-logo" alt="logo for filling forms" />
                         <p>填写课评</p>
                     </NavLink>
 
                     <NavLink
                         to={this.state.pathOfPersonIcon}
                         className="logo-with-characters"
-                        
+
                     >
-                        <img src={ImageStorage.login} id="log-in" class="header-logo" alt="logo for logging in" />
+                        <img src={ImageStorage.login} id="log-in" className="header-logo" alt="logo for logging in" />
                         <p>{this.state.pathOfPersonIcon === "/login" ? "登录" : "个人"}</p>
                     </NavLink>
 

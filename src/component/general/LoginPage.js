@@ -1,6 +1,6 @@
-import React, {Component} from "react"
-import {Dialog, DialogTitle, Button} from '@material-ui/core'
-import {motion} from 'framer-motion';
+import React from "react"
+import { Dialog, Button } from '@material-ui/core'
+import { motion } from 'framer-motion';
 import TextField from '@material-ui/core/TextField';
 import Header from "../general/Header"
 import "./LoginPage.css"
@@ -14,7 +14,7 @@ function LoginPage(props) {
     const handleClickOpen = () => {
         setOpen(true);
     }
-    
+
     const handleLoginClick = () => {
 
     }
@@ -26,22 +26,22 @@ function LoginPage(props) {
     const handleUsernameChange = () => {
 
     }
-    
+
     const handleSignUpClick = () => {
 
     }
     return (
         <Dialog
             onClose={handleClose}
-            aria-labelledby="simple-dialog-title" 
+            aria-labelledby="simple-dialog-title"
             open={open}
             fullWidth={true}
-        > 
-            <Header/>
+        >
+            <Header />
             <motion.div id="mainPage">
-                
+
                 <img src="./img/logo.png" id="logo" alt="Logo for Club" />
-                <div class="input">
+                <div className="input">
                     <TextField
                         autoFocus
                         margin="normal"
@@ -49,11 +49,10 @@ function LoginPage(props) {
                         label="Email Address"
                         type="email"
                         variant="filled"
-                        
                         onChange={handleUsernameChange}
                     />
                 </div>
-                <div class="input">
+                <div className="input">
                     <TextField
                         autoFocus
                         margin="normal"
@@ -68,7 +67,7 @@ function LoginPage(props) {
                 <div id="signUpDiv">
                     <Button size="small" variant="default" id="signUpButton" onClick={handleSignUpClick}> Sign up </Button>
                 </div>
-                
+
             </motion.div>
 
 

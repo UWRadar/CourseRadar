@@ -1,32 +1,30 @@
-import React, { useState } from "react"
-import { Button, TextField, Checkbox, MenuItem, ListItemIcon } from '@material-ui/core'
-import {useHistory} from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import Menu from '@material-ui/core/Menu';
-import "./SearchFilter.css"
-import ImageStorage from "../general/ImageStorage"
+import React, { useState } from "react";
+import { Button, TextField, Checkbox, MenuItem } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import Menu from "@material-ui/core/Menu";
+import "./SearchFilter.css";
+import ImageStorage from "../general/ImageStorage";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 
 // Redux
-import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from './controller/SearchQuerySlice'
-import {useDispatch} from "react-redux";
+import { setCourseName, setCourseLevel, setCreditNumber, setCourseType } from "./controller/SearchQuerySlice";
+import { useDispatch } from "react-redux";
 
 const LEVELS = ["100", "200", "300", "400", "500"];
 const CREDITS = ["1", "2", "3", "4", "5", "5+"];
 // Took out None, since it's also a utility value (should be mutually exclusive selection)
 const CREDIT_TYPES = ["C", "DIV", "I&S", "NW", "QSR", "VLPA", "W"];
 
-export default function SearchFilter(props) {
+function SearchFilter() {
     const dispatch = useDispatch();
 
-    const [openMenu, setOpenMenu] = useState(false);
-
     const selectionIcon = (
-        <div id="selection-icon" style={{marginBottom: "10px"}}>
-            <img src={ImageStorage.selection}  alt="logo for selection"/>
+        <div id="selection-icon" style={{ marginBottom: "10px" }}>
+            <img src={ImageStorage.selection} alt="logo for selection" />
         </div>
     )
 
@@ -36,14 +34,9 @@ export default function SearchFilter(props) {
     const [creditNumberLocal, setCreditNumberLocal] = useState(["all"]);
     const [courseTypeLocal, setCourseTypeLocal] = useState(["all"]);
 
-    // Apply Filters Btn: first click or else
-    const [isFirstClick, toggleIsFirstClick] = useState(true);
-
     // Custom data cleaning function to account for mutually exclusive selection
     function handleFilterChange(destination, newValue) {
         //console.log("handleFilterChange(" + destination + ", " + newValue);
-        let url = new URL(document.URL);
-        let params = new URLSearchParams(url.search);
         if (destination === "courseLevel") {
             // ES6 way to copy/clone an array
             let newCourseLevel = [...courseLevelLocal];
@@ -127,8 +120,12 @@ export default function SearchFilter(props) {
     }
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const handleClick = (event) => {setAnchorEl(event.currentTarget);};
-    const handleClose = () => {setAnchorEl(null);};
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     const history = useHistory();
 
     // https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -139,9 +136,21 @@ export default function SearchFilter(props) {
         dispatch(setCreditNumber(creditNumberLocal));
         dispatch(setCourseType(courseTypeLocal));
 
-        const paramsObj = {course_level: courseLevelLocal.join("."), credit_number: creditNumberLocal.join("."), course_type: courseTypeLocal.join(".")}
+        const paramsObj = {
+            course_level: courseLevelLocal.join("."),
+            credit_number: creditNumberLocal.join("."),
+            course_type: courseTypeLocal.join(".")
+        };
         const searchParams = new URLSearchParams(paramsObj);
-        history.push({pathname:"/search/" + courseNameLocal + "?" + searchParams.toString(), state: [courseNameLocal, courseLevelLocal, creditNumberLocal, courseTypeLocal]});
+        history.push({
+            pathname: "/search/" + courseNameLocal + "?" + searchParams.toString(),
+            state: [
+                courseNameLocal,
+                courseLevelLocal,
+                creditNumberLocal,
+                courseTypeLocal
+            ]
+        });
     }
 
     return (
@@ -160,23 +169,27 @@ export default function SearchFilter(props) {
                     {selectionIcon}
                 </MenuItem>
 
-                <DropdownFilter courseLevel={courseLevelLocal} creditNumber={creditNumberLocal} courseType={courseTypeLocal}
-                              handleFilterChange={handleFilterChange}/>
-        </Menu>
+                <DropdownFilter
+                    courseLevel={courseLevelLocal}
+                    creditNumber={creditNumberLocal}
+                    courseType={courseTypeLocal}
+                    handleFilterChange={handleFilterChange}
+                />
+            </Menu>
             <TextField
                 className="large-header-input"
                 id="outlined-basic"
                 label="搜索"
                 placeholder="想要找什么课～.. 例如：CSE 142, Engl"
-                onKeyDown={(e) => {if (e.keyCode === 13) submitSearch(e);}}
+                onKeyDown={(e) => { if (e.keyCode === 13) submitSearch(e); }}
                 value={courseNameLocal}
-                onChange={(event)=>setCourseNameLocal(event.target.value)}/>
+                onChange={(event) => setCourseNameLocal(event.target.value)} />
             <button
                 className="btn searchButton"
                 id="apply-filter-btn"
                 onClick={submitSearch}
             >
-            Search</button>
+                Search</button>
         </div>
 
     )
@@ -189,14 +202,14 @@ function DropdownFilter(props) {
                 <FormLabel component="legend">课程级数</FormLabel>
                 <FormControlLabel control={<Radio checked={props.courseLevel.indexOf("all") >= 0} onChange={() => {
                     props.handleFilterChange("courseLevel", "all")
-                }}/>} label="全部"/>
+                }} />} label="全部" />
                 {LEVELS.map((input) => {
                     return (<div key={input}>
                         <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
-                                                             onChange={() => {
-                                                                 props.handleFilterChange("courseLevel", input)
-                                                             }}/>}
-                                          label={input}/>
+                            onChange={() => {
+                                props.handleFilterChange("courseLevel", input)
+                            }} />}
+                            label={input} />
                     </div>);
                 })}
             </div>
@@ -204,14 +217,14 @@ function DropdownFilter(props) {
                 <FormLabel component="legend">学分数量</FormLabel>
                 <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
                     props.handleFilterChange("creditNumber", "all")
-                }}/>} label="全部"/>
+                }} />} label="全部" />
                 {CREDITS.map((input) => {
                     return (<div key={input}>
                         <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
-                                                             onChange={() => {
-                                                                 props.handleFilterChange("creditNumber", input)
-                                                             }}/>}
-                                          label={input}/>
+                            onChange={() => {
+                                props.handleFilterChange("creditNumber", input)
+                            }} />}
+                            label={input} />
                     </div>);
                 })}
             </div>
@@ -219,7 +232,7 @@ function DropdownFilter(props) {
                 <FormLabel component="legend">通识类别</FormLabel>
                 <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
                     props.handleFilterChange("courseType", "all")
-                }}/>} label="全部"/>
+                }} />} label="全部" />
                 {CREDIT_TYPES.map((input) => {
                     if (input !== "None") {
                         return (
@@ -229,15 +242,25 @@ function DropdownFilter(props) {
                                         checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
                                         onChange={() => {
                                             props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
-                                        }}/>}
-                                    label={input}/>
+                                        }} />}
+                                    label={input} />
                             </div>);
                     }
+                    return <></>
                 })}
-                <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
-                    props.handleFilterChange("courseType", "None")
-                }}/>} label="无通识学分"/>
+                <FormControlLabel
+                    control={
+                        <Radio
+                            checked={props.courseType.indexOf("None") >= 0}
+                            onChange={() => {
+                                props.handleFilterChange("courseType", "None")
+                            }}
+                        />
+                    }
+                    label="无通识学分" />
             </div>
         </div>
-    )
+    );
 }
+
+export default SearchFilter;

@@ -1,24 +1,24 @@
 import React, { Component } from "react"
 import CourseCard from "../general/CourseCard"
 import "./SearchResultPage.css"
-import {Checkbox} from '@material-ui/core'
+import { Checkbox } from '@material-ui/core'
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ServerConfig from "../config/ServerConfig";
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import SideHoverButtons from "../general/SideHoveringButtons"
 class SearchResultPage extends Component {
     constructor(props) {
         super(props);
         this.FILTER_ITEMS = [
-            {type: "creditType", value: "C"},
-            {type: "creditType", value: "DIV"},
-            {type: "creditType", value: "I&S"},
-            {type: "creditType", value: "N/A"},
-            {type: "creditType", value: "NW"},
-            {type: "creditType", value: "QSR"},
-            {type: "creditType", value: "VLPA"},
+            { type: "creditType", value: "C" },
+            { type: "creditType", value: "DIV" },
+            { type: "creditType", value: "I&S" },
+            { type: "creditType", value: "N/A" },
+            { type: "creditType", value: "NW" },
+            { type: "creditType", value: "QSR" },
+            { type: "creditType", value: "VLPA" },
         ];
         this.state = {
             courseCards: [],
@@ -36,7 +36,7 @@ class SearchResultPage extends Component {
         }
     }
 
-    
+
 
     componentDidMount() {
         let curFilters = this.props.history.location.state;
@@ -44,13 +44,13 @@ class SearchResultPage extends Component {
         let curLevel = curFilters[1];
         let curCredit = curFilters[2];
         let curCreditType = curFilters[3];
-        if ((curCourseName !== "") 
+        if ((curCourseName !== "")
             || (curLevel !== "")
             || (curCredit !== "")
             || (curCreditType !== "")) {
             this.processSearchResult(curCourseName, curLevel, curCredit, curCreditType);
         } else {
-            this.setState({loaded: true});
+            this.setState({ loaded: true });
         }
     }
 
@@ -155,17 +155,17 @@ class SearchResultPage extends Component {
             }).then(() => {
                 this.props.updateFilter({
                     courseName: this.state.courseName,
-                    creditType:[],
+                    creditType: [],
                     credit: -1,
                     level: -1
                 })
             })
-            .catch(this.setState({courseCards: []}));
+            .catch(this.setState({ courseCards: [] }));
     }
 
     handleOnChangeClick(position) {
-        const updatedChecked = this.state.checkedState.map((item, index) =>{            
-            return index === position ? !item : item;       
+        const updatedChecked = this.state.checkedState.map((item, index) => {
+            return index === position ? !item : item;
         });
 
         this.setState({
@@ -280,7 +280,7 @@ class SearchResultPage extends Component {
             // this.setState({subCourseCards: tempSubCourseCards});
 
             if (tempSubCourseCards.length === 0) {
-                return<img className="no-result" src="../img/no-result.png" alt="no results"/>
+                return <img className="no-result" src="../img/no-result.png" alt="no results" />
 
             } else {
                 return tempSubCourseCards.map(element => (
@@ -331,8 +331,8 @@ class SearchResultPage extends Component {
                 </div>
                 <div className="course-list2">
                     {!this.state.loaded &&
-                        <div class="loading-small">
-                                <img class = 'loading' src="../img/loading.gif" alt="Logo for loading" />
+                        <div className="loading-small">
+                            <img className="loading" src="../img/loading.gif" alt="Logo for loading" />
                         </div>
                     }
                     {this.state.loaded && setSubCourseCards()}
@@ -350,10 +350,10 @@ export default withRouter(SearchResultPage);
 
 function checkStatus(response) {
     if (response.ok) {
-        if (response.status == 200) {
+        if (response.status === 200) {
             return response.json()
         } else {
-            return {result: []};
+            return { result: [] };
         }
 
     } else {

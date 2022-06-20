@@ -18,10 +18,8 @@
 
 .link-bar > * {
     background-color: transparent;
-    color: white;
     margin-top: 0;
     font-size: 0.9rem;
-    text-decoration: underline;
     cursor: pointer;
     font-weight: 400;
 }

@@ -1,11 +1,11 @@
-import React, { Component, useState, useEffect } from "react"
-import "./CourseCard.css"
-import Img from "./Mapping"
-import { NavLink } from 'react-router-dom'
+import React, { useState } from "react";
+import "./CourseCard.css";
+import Img from "./Mapping";
+import { NavLink } from 'react-router-dom';
 import like from '../../img/like.svg';
 import unlike from '../../img/unlike.svg';
 import ServerConfig from "../config/ServerConfig";
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 
 const CourseCard = (props) => {
@@ -91,7 +91,6 @@ const CourseCard = (props) => {
 
     // setFavorite(isFavorite(login, props.name));
     // const favorite = () => {isFavorite(props.loginStatus, props.courseName)}; // TODO
-    console.log(favorite);
     //setFavorite(isFavorite(props.loginStatus, props.courseName));
     // useEffect (() => {
     //     setFavorite(isFavorite(props.loginStatus, props.courseName));
@@ -114,7 +113,7 @@ const CourseCard = (props) => {
 
     return (
         <NavLink
-            to={"/CourseDetail/" + props.courseName.replace("/\s/g", "")}
+            to={"/CourseDetail/" + props.courseName.replace(/\s/g, "")}
             id="courseCardLink"
         >
             <div className="course-card">
@@ -129,24 +128,26 @@ const CourseCard = (props) => {
                             <h1>{props.courseDescription}</h1>
                         </div>
 
-                        <div class="describtion-tags">
-                            {(props.tags === null) ? null : props.tags.map(element => {
-                                return (<div class={"tag " + element} npnp>
-                                    <div class="tooltips" id={element.toUpperCase()}>
-                                        <p>{element.toUpperCase()}</p>
+                        <div className="describtion-tags">
+                            {(props.tags === null) ? null : props.tags.map((element, index) => {
+                                return (
+                                    <div className={"tag " + element} key={index}>
+                                        <div className="tooltips" id={element.toUpperCase()}>
+                                            <p>{element.toUpperCase()}</p>
+                                        </div>
                                     </div>
-                                </div>);
+                                );
                             })}
 
-                            <div class="tag credit">
-                                <div class="tooltips" id="5cre">
+                            <div className="tag credit">
+                                <div className="tooltips" id="5cre">
                                     <p>{props.credit}</p>
                                 </div>
                             </div>
 
                             {/* toggleLike(e, props.courseName, props.loginStatus, setLogin)*/}
-                            <div class="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
-                                <div class="tooltips" id="add">
+                            <div className="add favorite" onClick={(e) => toggleLike(e, props.courseName, props.loginStatus, setLogin)}>
+                                <div className="tooltips" id="add">
                                     {(favorite === null ? props.isFavorite : favorite) ? <img src={like} alt="like" /> : <img src={unlike} alt="unlike" />}
                                 </div>
                             </div>

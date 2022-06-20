@@ -4,8 +4,8 @@ import "./Header.css"
 export default function Header() {
     return (
         <header>
-            <div class='small-header'>
-                <img src="./img/original6.png" class="web-logo" alt="Logo for Course Radar" />
+            <div className="small-header">
+                <img src="./img/original6.png" className="web-logo" alt="Logo for Course Radar" />
             </div>
         </header>
     )

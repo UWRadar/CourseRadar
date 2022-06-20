@@ -1,27 +1,27 @@
 import "./Comment.css"
 
-import {ReactComponent as DifficultyLogo} from "../../img/flag.svg"
-import {ReactComponent as WorkLoadLogo} from "../../img/clock.svg"
-import {ReactComponent as GPALogo} from "../../img/award.svg"
+import { ReactComponent as DifficultyLogo } from "../../img/flag.svg"
+import { ReactComponent as WorkLoadLogo } from "../../img/clock.svg"
+import { ReactComponent as GPALogo } from "../../img/award.svg"
 const CommentRating = (props) => {
     return (
         <div className="RatingContainer">
             <div className="difficulty">
-                <DifficultyLogo style={{fill: "#63469D"}}/>
+                <DifficultyLogo style={{ fill: "#63469D" }} />
                 <p>课程难度</p>
                 <p className="ratingLabels"> {props.difficulty} / 5</p>
             </div>
 
             <div className="difficulty" >
-                <WorkLoadLogo/>
+                <WorkLoadLogo />
                 <p>任务量</p>
                 <p className="ratingLabels">{props.workload} / 5 </p>
             </div>
 
             <div className="difficulty" id="workload">
-                <GPALogo/>
+                <GPALogo />
                 <p>成绩</p>
-                <p className="ratingLabels"> {props.gpa == undefined ? "暂无" : props.gpa + " / 5"}</p>
+                <p className="ratingLabels"> {props.gpa ? (props.gpa + " / 5") : "暂无"}</p>
             </div>
         </div>
     )

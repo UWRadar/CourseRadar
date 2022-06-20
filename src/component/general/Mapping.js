@@ -1,4 +1,4 @@
-export default {
+const mapping = {
     CSE: require("../../img/Buildings/Bill_and_Melinda.jpg"),
     ART: require("../../img/Buildings/Art.jpg"),
     CHEM: require("../../img/Buildings/Chemistry_Building.jpg"),
@@ -60,4 +60,6 @@ export default {
     JSIS: require("../../img/Buildings/Thompson.jpg"),
     ENVIR: require("../../img/Buildings/Wallace.jpeg"),
     DEFAULT: require("../../img/Buildings/UW.jpeg")
-}
+};
+
+export default mapping;

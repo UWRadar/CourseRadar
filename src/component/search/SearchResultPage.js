@@ -1,20 +1,20 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, { useEffect, useState } from "react"
 import "./SearchResultPage.css"
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import {Link, useLocation} from "react-router-dom";
-import {Button, CircularProgress, MenuItem} from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { Button, CircularProgress, MenuItem } from "@material-ui/core";
 import ServerConfig from "../config/ServerConfig";
 import CourseCard from "../general/CourseCard";
 import Menu from "@material-ui/core/Menu";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux';
-import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from './controller/SearchQuerySlice';
+import { useDispatch, useSelector } from "react-redux";
+import { setCourseLevel, setCourseName, setCourseType, setCreditNumber } from "./controller/SearchQuerySlice";
 
 // Original search URL: https://uwclassmate.com/search (this URL will not change regardless users' state, and users will see blank page just opening the URL)
 // Proposed router URL: https://uwclassmate.com/search/cse142?course_level=all&credit_number=1.4&course_type=DIV.IS
@@ -37,7 +37,7 @@ export default function SearchResultPage(props) {
 
     // Extract course name from URL
     const pathName = window.location.pathname; // anything right before ? mark
-    const pathNameArr = pathName.split('/');
+    const pathNameArr = pathName.split("/");
     // alert(pathNameArr.at(-1));
     if (pathNameArr.at(-1) !== "search") { // Otherwise, default "all" state is used if nothing comes after search
         dispatch(setCourseName(decodeURIComponent(pathNameArr.at(-1))));
@@ -59,7 +59,7 @@ export default function SearchResultPage(props) {
     }
 
     let orderByValue = params.get("order_by");
-    if(orderByValue === undefined || !SORT_BY.includes(orderByValue)) {orderByValue = "prefix";}
+    if (orderByValue === undefined || !SORT_BY.includes(orderByValue)) { orderByValue = "prefix"; }
 
     // This function will extract course level, credit number, and credit type parameter's value (as function's return)
     // Default to all if it does not exist or contains unacceptable values
@@ -129,7 +129,7 @@ export default function SearchResultPage(props) {
         }).then(response => {
             if (response.ok) {
                 return response.json()
-            } else if (response.status == 403) {
+            } else if (response.status === 403) {
                 throw new Error("unauthorized")
             }
         }).then(data => {
@@ -145,7 +145,7 @@ export default function SearchResultPage(props) {
         let url = new URL(document.URL);
         let params = new URLSearchParams(url.search);
         params.set(param, newVal);
-        window.history.pushState(null, null, '?' + params.toString());
+        window.history.pushState(null, null, "?" + params.toString());
     }
 
     // Custom data cleaning function to account for mutually exclusive selection
@@ -177,8 +177,8 @@ export default function SearchResultPage(props) {
                 newCourseLevel = courseLevel.concat(newValue);
             }
 
-            params.set('course_level', newCourseLevel.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
+            params.set("course_level", newCourseLevel.join("."));
+            window.history.pushState(null, null, "?" + params.toString());
 
             dispatch(setCourseLevel(newCourseLevel));
         } else if (destination === "creditNumber") {
@@ -205,8 +205,8 @@ export default function SearchResultPage(props) {
                 newCreditNumber = creditNumber.concat(newValue);
             }
 
-            params.set('credit_number', newCreditNumber.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
+            params.set("credit_number", newCreditNumber.join("."));
+            window.history.pushState(null, null, "?" + params.toString());
 
             dispatch(setCreditNumber(newCreditNumber));
         } else if (destination === "courseType") {
@@ -238,8 +238,8 @@ export default function SearchResultPage(props) {
                 // Non-Mutative way to concat an array
                 newCourseType = courseType.concat(newValue);
             }
-            params.set('course_type', newCourseType.join("."));
-            window.history.pushState(null, null, '?' + params.toString());
+            params.set("course_type", newCourseType.join("."));
+            window.history.pushState(null, null, "?" + params.toString());
 
             dispatch(setCourseType(newCourseType));
         }
@@ -265,7 +265,21 @@ export default function SearchResultPage(props) {
         // })
         // let favCourses = getFavorite();
         // getFavCourses.then((favCourses) => {
-        fetchCourse(courseName, courseLevel, creditNumber, courseType, orderBy, isDesc,  courseCards, favCourses, redirectToLogin, setCourseCards, setLoaded, setIsCourseDNE, setErrorMessage);
+        fetchCourse(
+            courseName,
+            courseLevel,
+            creditNumber,
+            courseType,
+            orderBy,
+            isDesc,
+            courseCards,
+            favCourses,
+            redirectToLogin,
+            setCourseCards,
+            setLoaded,
+            setIsCourseDNE,
+            setErrorMessage
+        );
         // })
     }, [courseName, courseLevel, creditNumber, courseType, favCourses, redirectToLogin, orderBy, isDesc]);
 
@@ -276,50 +290,90 @@ export default function SearchResultPage(props) {
         handleFilterChange("courseType", "all");
     }
 
-    const sort = {prefix: "课程前缀", number: "课程序号", title: "课程名称", credit: "学分数量"}; // English to Chinese dictionary
-    if(!loaded && courseCards.length === 0) {
-        return(
+    const sort = { prefix: "课程前缀", number: "课程序号", title: "课程名称", credit: "学分数量" }; // English to Chinese dictionary
+    if (!loaded && courseCards.length === 0) {
+        return (
             <div className="search-result">
                 <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
-                              handleFilterChange={handleFilterChange}/>
+                    handleFilterChange={handleFilterChange} />
                 <div className="course-list2">
-                    <LoadingScreen/>
+                    <LoadingScreen />
                 </div>
             </div>
         )
     }
     else if (isCourseDNE || errorMessage) {
-        return(<div className="search-result">
+        return (<div className="search-result">
             <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType}
                 handleFilterChange={handleFilterChange} />
             <div className="course-list2">
-                <ErrorScreen courseName={courseName} courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} resetFilter={resetFilter} errorMessage={isCourseDNE ? "Course Not Exist" : errorMessage} />
+                <ErrorScreen
+                    courseName={courseName}
+                    courseLevel={courseLevel}
+                    creditNumber={creditNumber}
+                    courseType={courseType}
+                    resetFilter={resetFilter}
+                    errorMessage={isCourseDNE ? "Course Not Exist" : errorMessage}
+                />
             </div>
         </div>)
     }
     else {
         return (
             <div className="search-result">
-                <SearchFilter courseLevel={courseLevel} creditNumber={creditNumber} courseType={courseType} handleFilterChange={handleFilterChange}/>
+                <SearchFilter
+                    courseLevel={courseLevel}
+                    creditNumber={creditNumber}
+                    courseType={courseType}
+                    handleFilterChange={handleFilterChange}
+                />
                 <div className="course-list2">
                     <div className="sort_result_bar">
                         <span className={"sort_result_inner_flex_container " + (loaded ? "zero_opacity" : "")}>
-                            <CircularProgress color="secondary" size="20px"/>
-                            <span className='loading_text_small'>正在查询，请稍候...</span>
+                            <CircularProgress color="secondary" size="20px" />
+                            <span className="loading_text_small">正在查询，请稍候...</span>
                         </span>
                         <span>
-                            <Button className="sort_button" color="secondary" disableElevation endIcon={<KeyboardArrowDownIcon />} variant="contained" onClick={(event)=>{setIsSortMenuOpen(!isSortMenuOpen); setOrderByBtnEl(event.currentTarget)}}>按{sort[orderBy]}排序</Button>
+                            <Button
+                                className="sort_button"
+                                color="secondary"
+                                disableElevation
+                                endIcon={<KeyboardArrowDownIcon />}
+                                variant="contained"
+                                onClick={(event) => {
+                                    setIsSortMenuOpen(!isSortMenuOpen);
+                                    setOrderByBtnEl(event.currentTarget);
+                                }}
+                            >按{sort[orderBy]}排序</Button>
                             <Menu dense open={isSortMenuOpen} anchorEl={orderByBtnEl}>
-                                {Object.keys(sort).map(oneKey => {return <MenuItem key={oneKey} selected={orderBy === oneKey} onClick={()=>{setIsSortMenuOpen(false); setOrderBy(oneKey); handleURLParam("order_by", oneKey)}}>{sort[oneKey]}</MenuItem>})}
+                                {Object.keys(sort).map(oneKey => {
+                                    return <MenuItem
+                                        key={oneKey}
+                                        selected={orderBy === oneKey}
+                                        onClick={() => {
+                                            setIsSortMenuOpen(false);
+                                            setOrderBy(oneKey);
+                                            handleURLParam("order_by", oneKey)
+                                        }}
+                                    >{sort[oneKey]}</MenuItem>
+                                })}
                             </Menu>
                             <span>
-                                <FormControlLabel className="sort_desc_toggle" onChange={()=>{handleURLParam("is_desc", !isDesc);setIsDesc(!isDesc)}} control={<Checkbox checked={isDesc} />} label="降序排序" />
+                                <FormControlLabel
+                                    className="sort_desc_toggle"
+                                    onChange={() => {
+                                        handleURLParam("is_desc", !isDesc);
+                                        setIsDesc(!isDesc);
+                                    }}
+                                    control={<Checkbox checked={isDesc} />}
+                                    label="降序排序"
+                                />
                             </span>
                         </span>
                     </div>
-                    <SearchResult courseCards={courseCards}/>
+                    <SearchResult courseCards={courseCards} />
                 </div>
-            </div> )
+            </div>)
         // </div>
     }
 }
@@ -371,6 +425,7 @@ function SearchFilter(props) {
                             label={input} />
                     </div>);
             }
+            return <></>
         })}
         <FormControlLabel control={<Radio checked={props.courseType.indexOf("None") >= 0} onChange={() => {
             props.handleFilterChange("courseType", "None")
@@ -379,31 +434,40 @@ function SearchFilter(props) {
 }
 
 function LoadingScreen(props) {
-    return <div className='loading_container'>
-        {/*<img className='loading' src="../img/loading.gif" alt="Logo for loading"/>*/}
+    return <div className="loading_container">
+        {/*<img className="loading" src="../img/loading.gif" alt="Logo for loading"/>*/}
         <CircularProgress color="secondary" size="75px" />
-        <span className='loading_text'>正在查询，请稍候...</span>
+        <span className="loading_text">正在查询，请稍候...</span>
     </div>
 }
 
 function ErrorScreen(props) {
     if (props.errorMessage === "Course Not Exist") {
-        if (![props.courseLevel, props.creditNumber, props.courseType].every(arr => { return arr.length === 1 && arr[0] === "all" })) {
-            return <div className='loading_container'>
-                <img className='loading' src="../img/Course-DNE.png" />
-                <div className='loading_text'>很抱歉，我们找不到满足这些筛选条件的课程，建议您<span style={{ cursor: 'pointer', color: 'purple' }} onClick={props.resetFilter}>扩大筛选条件</span></div>
+        if (![props.courseLevel, props.creditNumber, props.courseType].every(arr => {
+            return arr.length === 1 && arr[0] === "all"
+        })) {
+            return <div className="loading_container">
+                <img className="loading" src="../img/Course-DNE.png" alt="Course Does Not Exist" />
+                <div className="loading_text">很抱歉，我们找不到满足这些筛选条件的课程，建议您<span style={{
+                    cursor: "pointer",
+                    color: "purple"
+                }} onClick={props.resetFilter}>扩大筛选条件</span></div>
             </div>
         }
-        return <div className='loading_container'>
-            <img className='loading' src="../img/Course-DNE.png" />
-            <div className='loading_text'>很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
-            <div className='loading_text'>如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{ color: 'purple' }} activeStyle={{ color: 'purple' }}>填写课评</Link></div>
+        return <div className="loading_container">
+            <img className="loading" src="../img/Course-DNE.png" alt="Course Does Not Exist" />
+            <div className="loading_text">很抱歉，我们找不到课程：{props.courseName}，可能我们网站并没有此课程的课评</div>
+            <div className="loading_text">如果你上过这节课，欢迎<Link to={"/survey/?course=" + props.courseName} style={{
+                color: "purple"
+            }} activeStyle={{
+                color: "purple"
+            }}>填写课评</Link></div>
         </div>
     }
-    return <div className='loading_container'>
-        <img className='loading' src="../img/Course-DNE.png" />
-        <div className='loading_text'>出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
-        <div className='loading_text'><div className='error_stack_trace'>{props.errorMessage}</div></div>
+    return <div className="loading_container">
+        <img className="loading" src="../img/Course-DNE.png" alt="Course Does Not Exist" />
+        <div className="loading_text">出错啦，请稍候重试。以下是为我们社团成员准备的调试信息</div>
+        <div className="loading_text"><div className="error_stack_trace">{props.errorMessage}</div></div>
     </div>
 }
 
@@ -422,13 +486,27 @@ function SearchResult(props) {
                     tags={element.tags}
                     credit={element.credit}
                     loginStatus={!element.redirectToLogin}
-                    isFavorite={element.isFavorite}/>
+                    isFavorite={element.isFavorite} />
             ))}
         </div>
-        )
+    )
 }
 
-async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumber = ['all'], courseType = ['all'], orderBy = "title", isDesc = false, courseCards, favCourses, redirectToLogin, setCourseCardsCallBackFn, setLoadedCallBackFn, setIsCourseDNECallBackFn, setErrorMessageCallBackFn) {
+async function fetchCourse(
+    courseName = "all",
+    courseLevel = ["all"],
+    creditNumber = ["all"],
+    courseType = ["all"],
+    orderBy = "title",
+    isDesc = false,
+    courseCards,
+    favCourses,
+    redirectToLogin,
+    setCourseCardsCallBackFn,
+    setLoadedCallBackFn,
+    setIsCourseDNECallBackFn,
+    setErrorMessageCallBackFn
+) {
     setLoadedCallBackFn(false);
 
     // Example backend search query:
@@ -436,7 +514,14 @@ async function fetchCourse(courseName= "all", courseLevel = ['all'], creditNumbe
     // You may assume that no value will be repeated in a query, but (for query that can have multiple values) you may NOT assume that values are in sorted order. Hence, courseLevel=400.100.200.300 is a valid back-end query.
     // https://uwclassmate.com/api/search?courseName=cse142&courseLevel=all&creditNumber=1.4&courseType=DIV.IS
 
-    let paramsObj = {courseName: courseName, level: courseLevel.join('.'), credit: creditNumber.join('.'), creditType: courseType.join('.'), orderBy: orderBy, isDesc: isDesc.toString()};
+    let paramsObj = {
+        courseName: courseName,
+        level: courseLevel.join("."),
+        credit: creditNumber.join("."),
+        creditType: courseType.join("."),
+        orderBy: orderBy,
+        isDesc: isDesc.toString()
+    };
     let searchParams = new URLSearchParams(paramsObj);
 
     searchParams.toString();
