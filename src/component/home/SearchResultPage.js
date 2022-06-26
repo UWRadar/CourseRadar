@@ -1,13 +1,14 @@
-import React, { Component } from "react"
-import CourseCard from "../general/CourseCard"
-import "./SearchResultPage.css"
-import { Checkbox } from '@material-ui/core'
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import React, { Component } from "react";
+import CourseCard from "../general/CourseCard";
+import "./SearchResultPage.css";
+import { Checkbox } from "@material-ui/core";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ServerConfig from "../config/ServerConfig";
-import { withRouter } from 'react-router-dom'
-import SideHoverButtons from "../general/SideHoveringButtons"
+import { withRouter } from "react-router-dom";
+import SideHoverButtons from "../general/SideHoveringButtons";
+
 class SearchResultPage extends Component {
     constructor(props) {
         super(props);
@@ -26,17 +27,13 @@ class SearchResultPage extends Component {
             courseLevel: "",
             courseCredit: "",
             courseCreditType: "",
-            // subCourseCards: [],
             selectLevel: "",
             selectCredit: "",
             selectCreditType: "",
             loaded: false,
             checkedState: new Array(this.FILTER_ITEMS.length).fill(false)
-
-        }
+        };
     }
-
-
 
     componentDidMount() {
         let curFilters = this.props.history.location.state;
@@ -55,11 +52,6 @@ class SearchResultPage extends Component {
     }
 
     componentDidUpdate(props) {
-        // let curFilters = this.props.history.location.state;
-        // let curCourseName = curFilters[0];
-        // let curLevel = curFilters[1];
-        // let curCredit = curFilters[2];
-        // let curCreditType = curFilters[3];
         let curFilters = props.filter;
         let curCourseName = curFilters.courseName;
         let curLevel = curFilters.level === -1 ? "" : curFilters.level.toString();
@@ -92,7 +84,7 @@ class SearchResultPage extends Component {
             courseCredit: curCredit,
             courseCreditType: curCreditType,
             loaded: false,
-        })
+        });
 
         const url = ServerConfig.SERVER_URL + "/api/search";
         let currentUrl = url;
@@ -146,12 +138,12 @@ class SearchResultPage extends Component {
                         courseDescription: course.courseFullName,
                         tags: curTag,
                         credit: course.credit[0]
-                    })
+                    });
                 }
                 this.setState({
                     courseCards: courseTemp,
                     loaded: true
-                })
+                });
             }).then(() => {
                 this.props.updateFilter({
                     courseName: this.state.courseName,
@@ -170,7 +162,7 @@ class SearchResultPage extends Component {
 
         this.setState({
             checkedState: updatedChecked
-        })
+        });
 
         let tempFilter = this.props.filter;
         tempFilter.creditType = [];
@@ -195,13 +187,12 @@ class SearchResultPage extends Component {
                     />
                     <label> {this.FILTER_ITEMS[i].value} </label>
                 </div>
-            )
+            );
         }
         return result;
     }
 
     render() {
-
         const LEVELS = ["100", "200", "300", "400"];
         const CREDITS = ["1", "2", "3", "4", "5"];
         const CREDIT_TYPES = ["C", "DIV", "I&S", "None", "NW", "QSR", "VLPA"];
@@ -277,14 +268,13 @@ class SearchResultPage extends Component {
                     tempSubCourseCards.push(courseCards[i]);
                 }
             }
-            // this.setState({subCourseCards: tempSubCourseCards});
 
             if (tempSubCourseCards.length === 0) {
                 return <img className="no-result" src="../img/no-result.png" alt="no results" />
-
             } else {
-                return tempSubCourseCards.map(element => (
+                return tempSubCourseCards.map((element, index) => (
                     <CourseCard
+                        key={index}
                         courseName={element.courseName}
                         courseDescription={element.courseDescription}
                         tags={element.tags}
@@ -293,19 +283,14 @@ class SearchResultPage extends Component {
                 ));
             }
         }
-        return (
 
+        return (
             <div className="search-result">
                 <SideHoverButtons />
                 <div className="filter">
                     <h1>二次筛选</h1>
                     <h2>课程级别</h2>
                     <RadioGroup value={this.state.courseLevel} onChange={onChangeLevel}>
-                        {/* { (this.state.courseLevel === "") ? LEVELS.map((input) => {
-                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
-                        }) : this.state.courseLevel.split("/").map((input) => {
-                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
-                        })} */}
                         <FormControlLabel value="100" control={<Radio />} label="100" />
                         <FormControlLabel value="200" control={<Radio />} label="200" />
                         <FormControlLabel value="300" control={<Radio />} label="300" />
@@ -314,11 +299,6 @@ class SearchResultPage extends Component {
                     </RadioGroup>
                     <h2>学分</h2>
                     <RadioGroup value={this.state.courseCredit} onChange={onChangeCredit}>
-                        {/* { (this.state.courseCredit === "") ? CREDITS.map((input) => {
-                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
-                        }) : this.state.courseCredit.split("/").map((input) => {
-                            return (<FormControlLabel value={input} control={<Radio />} label={input} />);
-                        })} */}
                         <FormControlLabel value="1" control={<Radio />} label="1" />
                         <FormControlLabel value="2" control={<Radio />} label="2" />
                         <FormControlLabel value="3" control={<Radio />} label="3" />
@@ -336,10 +316,6 @@ class SearchResultPage extends Component {
                         </div>
                     }
                     {this.state.loaded && setSubCourseCards()}
-                    {/* <i aria-hidden="true"></i>
-                    <i aria-hidden="true"></i>
-                    <i aria-hidden="true"></i>
-                    <i aria-hidden="true"></i> */}
                 </div>
             </div>
         )
@@ -351,12 +327,11 @@ export default withRouter(SearchResultPage);
 function checkStatus(response) {
     if (response.ok) {
         if (response.status === 200) {
-            return response.json()
+            return response.json();
         } else {
             return { result: [] };
         }
-
     } else {
-        return Promise.reject(new Error(response.status + ": " + response.statusText))
+        return Promise.reject(new Error(response.status + ": " + response.statusText));
     }
 }

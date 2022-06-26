@@ -108,8 +108,9 @@ class ProfilePage extends Component {
             if (favCourses.length === 0) {
                 return <img id="no-result" src="./img/no-result.png" alt="No Results" />
             } else {
-                return favCourses.map(element => (
+                return favCourses.map((element, index) => (
                     <CourseCard
+                        key={index}
                         courseName={element.courseName}
                         courseDescription={element.courseDescription}
                         tags={element.tags}

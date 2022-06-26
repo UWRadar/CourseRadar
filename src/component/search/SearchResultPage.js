@@ -387,26 +387,28 @@ function SearchFilter(props) {
             props.handleFilterChange("courseLevel", "all")
         }} />} label="全部" />
         {LEVELS.map((input) => {
-            return (<div key={input}>
+            return <div key={input}>
                 <FormControlLabel control={<Checkbox checked={props.courseLevel.indexOf(input) >= 0}
                     onChange={() => {
                         props.handleFilterChange("courseLevel", input)
                     }} />}
-                    label={input} />
-            </div>);
+                    label={input}
+                />
+            </div>
         })}
         <FormLabel component="legend">学分数量</FormLabel>
         <FormControlLabel control={<Radio checked={props.creditNumber.indexOf("all") >= 0} onChange={() => {
             props.handleFilterChange("creditNumber", "all")
         }} />} label="全部" />
         {CREDITS.map((input) => {
-            return (<div key={input}>
+            return <div key={input}>
                 <FormControlLabel control={<Checkbox checked={props.creditNumber.indexOf(input) >= 0}
                     onChange={() => {
                         props.handleFilterChange("creditNumber", input)
                     }} />}
-                    label={input} />
-            </div>);
+                    label={input}
+                />
+            </div>
         })}
         <FormLabel component="legend">通识类别</FormLabel>
         <FormControlLabel control={<Radio checked={props.courseType.indexOf("all") >= 0} onChange={() => {
@@ -414,16 +416,16 @@ function SearchFilter(props) {
         }} />} label="全部" />
         {CREDIT_TYPES.map((input) => {
             if (input !== "None") {
-                return (
-                    <div key={input}>
-                        <FormControlLabel
-                            control={<Checkbox
-                                checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
-                                onChange={() => {
-                                    props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
-                                }} />}
-                            label={input} />
-                    </div>);
+                return <div key={input}>
+                    <FormControlLabel
+                        control={<Checkbox
+                            checked={props.courseType.indexOf(input === "I&S" ? "IS" : input) >= 0}
+                            onChange={() => {
+                                props.handleFilterChange("courseType", input === "I&S" ? "IS" : input)
+                            }} />}
+                        label={input}
+                    />
+                </div>
             }
             return <></>
         })}

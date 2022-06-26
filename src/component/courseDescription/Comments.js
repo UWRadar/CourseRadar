@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import "./Comments.css"
+import React, { Component } from "react";
+import "./Comments.css";
 import Comment from "./Comment";
-import ServerConfig from "../config/ServerConfig"
+import ServerConfig from "../config/ServerConfig";
 
 export default class Comments extends Component {
     constructor() {
@@ -11,7 +11,6 @@ export default class Comments extends Component {
             prevLen: 0
         };
     }
-
 
     async updateLikeCountOnComments(comments) {
         this.setState({
@@ -58,14 +57,12 @@ export default class Comments extends Component {
     }
 
     render() {
-        return (<div className='comments'>
-
-            {this.state.comments.map(comment => {
-                return (<Comment content={comment} />)
-            })}
-
-        </div>);
-
-
+        return (
+            <div className='comments'>
+                {this.state.comments.map((comment, index) => {
+                    return <Comment content={comment} key={index} />
+                })}
+            </div>
+        );
     }
 }
