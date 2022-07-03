@@ -10,6 +10,7 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { NavLink } from 'react-router-dom'
 import background from "../../img/guthrie.jpeg";
 import SideHoverButtons from "../general/SideHoveringButtons"
+import ImageStorage from "../general/ImageStorage";
 
 
 const Description = (props) => {
@@ -65,10 +66,10 @@ const Description = (props) => {
                 <SideHoverButtons/>
                 <div className="topHalf">
                     <div className="row" id="overlay">
-                        <div className="col-12 col-lg-9 ">
-                            <p className="courseCode">{props.courseName.toUpperCase()}</p>
-                            <p className="courseName">{props.courseItems.courseFullName}</p>
-                            <p className="courseCredit">{props.courseItems.credit + " credits"}</p>
+                        <div className="col-12 col-lg-9 " >
+                                <p className="courseCode">{props.courseName.toUpperCase()}</p>
+                                <p className="courseName">{props.courseItems.courseFullName}</p>
+                                <p className="courseCredit">{props.courseItems.credit + " credits"}</p>
                             {props.courseItems.creditType.split("/").map(element => {
                                         return (<div ><div className="button type">{element}</div>{' '}</div>);})}
                         </div>
@@ -83,7 +84,7 @@ const Description = (props) => {
                     </div>
                 </div>
 
-                <div className="row" style={{marginTop: "3%", marginLeft: "0.5%"}}>
+                <div className="row" id="overlay2">
                     <div className="col-5" id="largeScreenDescription">
                         <p className="courseDesription">{props.courseItems.description}</p>
                     </div>             

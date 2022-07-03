@@ -154,8 +154,9 @@ export default function SearchFilter(props) {
 
     return (
         <div className="search-bar">
-            
+
             <Menu
+                class = "dropbtn"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}

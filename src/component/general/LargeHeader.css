@@ -99,6 +99,10 @@ a:hover {
     flex-direction: column;
 }
 
+.survey {
+    white-space: nowrap;
+}
+
 @media screen and (min-width: 900px) {
     #large-header {
         justify-content: space-between;

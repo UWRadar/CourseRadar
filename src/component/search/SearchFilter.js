@@ -147,7 +147,9 @@ export default function SearchFilter(props) {
     return (
         <div className="search-bar">
             <Button onClick={handleClick}>
-                <FontAwesomeIcon className="filterIcon" icon={faCaretDown} />
+                {selectionIcon}
+                {/*<FontAwesomeIcon className="filterIcon" icon={ faFilter} />*/}
+                {/*<FontAwesomeIcon className="filterIcon" icon={faCaretDown} />*/}
             </Button>
             <Menu
                 anchorEl={anchorEl}
