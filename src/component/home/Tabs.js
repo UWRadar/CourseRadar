@@ -1,22 +1,19 @@
-import React from "react"
-import "./Tabs.css"
-import ImageStorage from "../general/ImageStorage.js"
-const Tabs = (props) => {
-    const tabItems = []
+import React from "react";
+import "./Tabs.css";
+import ImageStorage from "../general/ImageStorage.js";
 
-    for (const key in props.items) {
-        const thisProps = props.items[key]
-        tabItems.push(
-            <button id="trendy" 
-                className={thisProps.id == props.active ? "active" : ""} 
-                onClick={() => props.setActiveTab(thisProps.id)}
-            >
-                <img src={ImageStorage[thisProps.icon]} alt />
-                <span>{thisProps.text}</span>
-            </button>
-        )
-    }
+function Tabs(props) {
+    const tabItems = props.items.map((element, index) =>
+        <button id="trendy"
+            className={element.id === props.active ? "active" : ""}
+            key={index}
+            onClick={() => props.setActiveTab(element.id)}
+        >
+            <img src={ImageStorage[element.icon]} alt="" />
+            <span>{element.text}</span>
+        </button>
+    );
     return <div className="tabs">{tabItems}</div>
 }
 
-export default Tabs
+export default Tabs;
