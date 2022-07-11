@@ -125,16 +125,26 @@ hr .rounded {
     display: inline;
 }
 
+
 .heart {
-    font-size: 20px;
+    fill: grey;
+    margin-right: 5px;
 }
 
-.icon {
+.heart:hover {
+    fill:red;
+}
+
+.heart-fill {
+    margin-right: 5px;
+}
+
+.heart-break {
     fill: gray;
 }
 
-.icon:hover {
-    fill:red;
+.heart-break:hover {
+    fill:black;
 }
 
 .studnetName {
