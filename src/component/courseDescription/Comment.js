@@ -54,7 +54,7 @@ const Comment = (props) => {
 
     let name = upperTheFirstLetterOfEachWord(props.content.professorName)
     let likeCount = props.content.likeCount;
-    if (likeCount === undefined){
+    if (likeCount === undefined) {
         likeCount = 0;
     }
     return (
@@ -91,7 +91,7 @@ const Comment = (props) => {
                     workload={props.content.workload}
                     gpa={props.content.gpa}
                 />
-                <hr class="rounded"></hr>
+                <hr className="rounded"></hr>
             </div>
         </div>
     )

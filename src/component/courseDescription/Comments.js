@@ -1,13 +1,9 @@
-import React, { Component } from "react"
-import "./Comments.css"
-import { Grid } from '@material-ui/core';
-import bookmark from '../../img/bookmark.png';
+import React, { Component } from "react";
+import "./Comments.css";
 import Comment from "./Comment";
-import StarLarge from './StarLarge';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import ServerConfig from "../config/ServerConfig"
-export default class Comments extends Component{
+import ServerConfig from "../config/ServerConfig";
+
+export default class Comments extends Component {
     constructor() {
         super();
         this.state = {
@@ -15,7 +11,6 @@ export default class Comments extends Component{
             prevLen: 0
         };
     }
-
 
     async updateLikeCountOnComments(comments) {
         this.setState({
@@ -29,7 +24,7 @@ export default class Comments extends Component{
             const response = await fetch(ServerConfig.SERVER_URL
                 + ServerConfig.GETLIKE + "?commentId= " + element.commentId);
 
-            if (response.status == 200){
+            if (response.status === 200) {
                 const jsonData = await response.json();
                 element.likeCount = jsonData.count;
                 parsedComment.push(element);
@@ -62,14 +57,12 @@ export default class Comments extends Component{
     }
 
     render() {
-        return (<div className='comments'>
-
-                {this.state.comments.map(comment => {
-                    return (<Comment content={comment}/>)
+        return (
+            <div className='comments'>
+                {this.state.comments.map((comment, index) => {
+                    return <Comment content={comment} key={index} />
                 })}
-
-        </div>);
-
-
+            </div>
+        );
     }
 }

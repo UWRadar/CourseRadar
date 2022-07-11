@@ -6,10 +6,10 @@ import ImageStorage from "../general/ImageStorage"
 import Tabs from "../home/Tabs"
 import md5 from "md5"
 import ServerConfig from "../config/ServerConfig"
-import {withRouter, Redirect} from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 class ProfilePage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             activeTab: "favCourses",
 
@@ -21,7 +21,7 @@ class ProfilePage extends Component {
             newUsername: "",
             newPassword: "",
             newRepassword: ""
-        }
+        };
     }
 
     componentDidMount() {
@@ -34,9 +34,9 @@ class ProfilePage extends Component {
             credentials: "include"
         }).then(response => {
             if (response.ok) {
-                return response.json()
-            } else if (response.status == 403) {
-                throw new Error("unauthorized")
+                return response.json();
+            } else if (response.status === 403) {
+                throw new Error("unauthorized");
             }
         }).then(data => {
             if (data) {
@@ -45,53 +45,53 @@ class ProfilePage extends Component {
                     favCourses: data.favCourses,
                     username: data.username,
                     redirectToLogin: false
-                })
+                });
             }
         }).catch(() => {
             this.setState({
                 redirectToLogin: true
-            })
-        })
+            });
+        });
     }
 
     getFavorite() {
         // if (!this.state.redirectToLogin) {
-            console.log(333);
-            fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
-                body: JSON.stringify({
-                    // courseName: name.toLowerCase()
-                }),
-                credentials: "include",
-                method: "POST"
-            }).then(res => {
-                if(res.ok) {
-                    return res.json();
-                } else {
-                    console.log(res);
-                }
-            }).then(data => {
-                console.log(data);
-                if (data && data["state"] === 1) {
-                    this.setState({
-                        favCourses: data["data"]
-                    });
-                }
+        console.log(333);
+        fetch(ServerConfig.SERVER_URL + "/api/isFavorite", {
+            body: JSON.stringify({
+                // courseName: name.toLowerCase()
+            }),
+            credentials: "include",
+            method: "POST"
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        }).then(data => {
+            console.log(data);
+            if (data && data["state"] === 1) {
                 this.setState({
-                    favLoaded: true
-                })
-                console.log(this.state.favorite);
-                // if(data.state === 0) {
-                //     return false;
-                // } else {
-                //     return true;
-                // }
+                    favCourses: data["data"]
+                });
+            }
+            this.setState({
+                favLoaded: true
             })
+            console.log(this.state.favorite);
+            // if(data.state === 0) {
+            //     return false;
+            // } else {
+            //     return true;
+            // }
+        })
         // }
     }
 
     render() {
         if (this.state.redirectToLogin) {
-            return (<Redirect to="/login" />)
+            return <Redirect to="/login" />
         }
         const tabItems = [{
             icon: "saveActive",
@@ -101,15 +101,16 @@ class ProfilePage extends Component {
             icon: "setting",
             id: "settings",
             text: "设置"
-        }]
+        }];
         const renderFavCourses = () => {
             const favCourses = this.state.favCourses;
             console.log(favCourses);
-            if (favCourses.length == 0) {
-                return <img id="no-result" src="./img/no-result.png" />
+            if (favCourses.length === 0) {
+                return <img id="no-result" src="./img/no-result.png" alt="No Results" />
             } else {
-                return favCourses.map(element => (
+                return favCourses.map((element, index) => (
                     <CourseCard
+                        key={index}
                         courseName={element.courseName}
                         courseDescription={element.courseDescription}
                         tags={element.tags}
@@ -117,7 +118,7 @@ class ProfilePage extends Component {
                         loginStatus={!this.state.redirectToLogin}
                         isFavorite={true}
                     />
-                ))
+                ));
             }
         }
         const renderInputBars = (items) => {
@@ -136,17 +137,17 @@ class ProfilePage extends Component {
                             onChange={evt => {
                                 this.setState({
                                     [id]: evt.target.value
-                                })
+                                });
                             }} />
                     </div>
                 )
             }
-            return result
+            return result;
         }
         return (
             <Container classes={{ root: "profile-page" }} maxWidth="lg">
                 <Container maxWidth="xl" id="user-info-background" />
-                <section class="user-info">
+                <section className="user-info">
                     <Container disableGutters={true}>
                         <div id="user-logo-group">
                             <div id="user-logo">
@@ -160,17 +161,17 @@ class ProfilePage extends Component {
                                     if (response.ok) {
                                         this.props.history.push("/login");
                                     } else {
-                                        alert("退出登录时出错。")
+                                        alert("退出登录时出错。");
                                     }
-                                })
+                                });
                             }}>
                                 <p>退出登录</p>
                             </button>
                         </div>
                         <div id="user-info-detail">
                             <h1>Hi, <span id="user-info-username">{this.state.username}</span></h1>
-                            <div class="user-info-container">
-                                <img src={ImageStorage.email} />
+                            <div className="user-info-container">
+                                <img src={ImageStorage.email} alt="Email" />
                                 <span id="user-email">{this.state.email}</span>
                             </div>
                         </div>
@@ -182,11 +183,11 @@ class ProfilePage extends Component {
                     setActiveTab={(newActiveTab) => {
                         this.setState({
                             activeTab: newActiveTab
-                        })
+                        });
                     }}
                 />
-                {this.state.activeTab == "favCourses" && renderFavCourses()}
-                <p className={"profile-settings" + (this.state.activeTab == "settings" ? "" : " hide")}>
+                {this.state.activeTab === "favCourses" && renderFavCourses()}
+                <p className={"profile-settings" + (this.state.activeTab === "settings" ? "" : " hide")}>
                     {renderInputBars([{
                         autoComplete: "name",
                         id: "newUsername",
@@ -204,13 +205,13 @@ class ProfilePage extends Component {
                         type: "password"
                     }])}
                     <button id="save-changes" onClick={() => {
-                        const newPassword = this.state.newPassword
-                        const newUsername = this.state.newUsername
+                        const newPassword = this.state.newPassword;
+                        const newUsername = this.state.newUsername;
                         if (!newPassword && !newUsername) {
-                            return
-                        } else if (this.state.newRepassword != newPassword) {
-                            alert("两次输入的密码不一致。")
-                            return
+                            return;
+                        } else if (this.state.newRepassword !== newPassword) {
+                            alert("两次输入的密码不一致。");
+                            return;
                         }
                         fetch(ServerConfig.SERVER_URL + "/api/changeprofile", {
                             body: JSON.stringify({
@@ -220,16 +221,16 @@ class ProfilePage extends Component {
                             method: "POST"
                         }).then(response => {
                             if (response.ok) {
-                                alert("已保存更改！")
+                                alert("已保存更改！");
                             } else {
-                                alert("保存更改时出错：" + response.status)
+                                alert("保存更改时出错：" + response.status);
                             }
                         }).catch(() => {
-                            alert("无法连接到服务器。")
-                        })
+                            alert("无法连接到服务器。");
+                        });
                     }}>保存更改</button>
                 </p>
-            </Container >
+            </Container>
         )
     }
 

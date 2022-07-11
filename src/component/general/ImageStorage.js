@@ -1,4 +1,4 @@
-export default {
+const imageStorage = {
     logo: require('../../img/original6.png').default,
     hotClass: require('../../img/hot-active.png').default,
     waterClass: require('../../img/talk-active.png').default,
@@ -12,4 +12,6 @@ export default {
     quarter: require("../../img/quarter.png").default,
     selection: require("../../img/Vector.png").default,
     backToTop: require("../../img/top.jpg").default
-}
+};
+
+export default imageStorage;
