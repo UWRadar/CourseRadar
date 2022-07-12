@@ -1,0 +1,35 @@
+.user-comments {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    margin-top: 25px;
+}
+
+.submit-user-comment {
+    width: 86px;
+    height: 36px;
+    background: #63469D;
+    color: white;
+    margin-left: 27px;
+    border-radius: 5px;
+}
+
+.user-comment-content {
+    width: 1000px;
+    height: 40px;
+}
+
+.name {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    margin-bottom: 10px;
+    color: #63469D;
+}
+
+.comment-line {
+    width: 30%;
+    margin-left:0;
+}
