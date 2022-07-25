@@ -49,6 +49,8 @@ class LoginPage extends Component {
                     <p>用户可以收藏、点赞课评</p>
                     <p>未来会根据收藏/浏览的课评进行推荐</p>
                 </div>
+                
+                {this.state.page === 1 ?
                 <div id="login-form" className={"form" + (this.state.page === 1 ? "" : " hide")}>
                     <input id="email" type="email" name="email" placeholder="邮箱" onChange={evt => this.setState({ loginEmail: evt.target.value })} />
                     <input id="password" type="password" name="password" placeholder="密码" onChange={evt => this.setState({ loginPassword: evt.target.value })} />
@@ -57,8 +59,9 @@ class LoginPage extends Component {
                         <span role="button" onClick={() => this.loginWithGoogle()}>使用 Google 账号登录</span>
                         <span id="sign-up" className="float-right" role="button" onClick={() => this.setPage(2)}>注册账号</span>
                     </p>
-                </div>
+                </div> : null}
 
+                {this.state.page === 2 ?
                 <div id="signup-form" className={"form" + (this.state.page === 2 ? "" : " hide")}>
                     <input id="uname-signup" placeholder="用户名" name="username" onChange={evt => this.setState({ signupUsername: evt.target.value })} />
                     <input id="email-signup" type="email" placeholder="邮箱" name="email" onChange={evt => this.setState({ signupEmail: evt.target.value })} />
@@ -71,15 +74,16 @@ class LoginPage extends Component {
                     <p className="link-bar">
                         <span id="sign-up-back" className="float-right" role="button" onClick={() => this.setPage(1)}>返回登录</span>
                     </p>
-                </div>
-
+                </div> : null}
+                
+                {this.state.page === 3 ?
                 <div id="verify-form" className={"form" + (this.state.page === 3 ? "" : " hide")}>
                     <input id="code" placeholder="验证码" name="code" onChange={evt => this.setState({ code: evt.target.value })} />
                     <button id="verify-submit-btn" type="button" onClick={() => { this.verify() }}>提交</button>
                     <p className="link-bar">
                         <span id="resend" className="float-right" role="button" onClick={() => this.signup()}>重新发送</span>
                     </p>
-                </div>
+                </div> : null}
             </div>
         )
     }
