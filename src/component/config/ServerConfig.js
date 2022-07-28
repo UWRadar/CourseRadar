@@ -10,8 +10,15 @@ const serverConfig = {
     GETAD: "/api/ad"
 };
 
-if (window.location.hostname === "localhost") {
-    serverConfig.SERVER_URL = "http://localhost:9000";
+switch (window.location.hostname) {
+    case "localhost":
+        serverConfig.SERVER_URL = "http://localhost:9000";
+        break;
+    case "test.uwclassmate.com":
+        serverConfig.SERVER_URL = "https://test-api.uwclassmate.com";
+        break;
+    default:
+        break;
 }
 
 export default serverConfig;
