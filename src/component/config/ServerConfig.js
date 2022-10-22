@@ -1,5 +1,5 @@
 const serverConfig = {
-    SERVER_URL: "https://uwclassmate.com",
+    SERVER_URL: "https://api.uwclassmate.com",
     GETCOMMENT: "/api/retrieveComment",
     GETCOURSERATING: "/api/retrieveRating",
     FILLCOMMENT: "/api/fillcomment",
