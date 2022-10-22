@@ -41,7 +41,7 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         this.resetInterval();
-        // this.getAds();
+        this.getAds();
         this.getFavorite();
         this.getPopular();
         this.getRecommended();
