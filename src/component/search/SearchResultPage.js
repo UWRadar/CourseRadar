@@ -327,7 +327,12 @@ export default function SearchResultPage(props) {
                     courseType={courseType}
                     handleFilterChange={handleFilterChange}
                 />
-                <div className="course-list2">
+                <div className="course-list2" onClick={(event) => {
+                                    if (isSortMenuOpen) {
+                                        setIsSortMenuOpen(!isSortMenuOpen);
+                                    }
+                                    
+                                }}>
                     <div className="sort_result_bar">
                         <span className={"sort_result_inner_flex_container " + (loaded ? "zero_opacity" : "")}>
                             <CircularProgress color="secondary" size="20px" />
