@@ -124,7 +124,7 @@ const CourseCard = (props) => {
                         </div>
                     </div>
                     <div className="recom-description">
-                        <div className="course-name">
+                        <div className="course-name" title={props.courseDescription}>
                             <h1>{props.courseDescription}</h1>
                         </div>
 
