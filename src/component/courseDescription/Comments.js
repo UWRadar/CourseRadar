@@ -40,7 +40,7 @@ export default class Comments extends Component {
 
     componentDidUpdate() {
         let len = this.props.comments;
-        if (this.state.prevLen === 0 && len != 0) {
+        if (this.state.prevLen === 0 && len !== 0) {
             this.updateLikeCountOnComments(this.props.comments);
         }
     }
