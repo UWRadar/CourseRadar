@@ -30,7 +30,6 @@
 .search-result {
     position: relative;
     top: 11vh;
-    display: grid;
     grid-template-columns: 175px auto;
     grid-template-rows: 1fr;
 }
@@ -78,6 +77,9 @@
 @media screen and (min-width: 900px) {
     .filter {
         display: block;
+    }
+    .search-result {
+        display: grid;
     }
     .search-result .course-list2 {
         /*margin-left: calc(var(--filter-width));*/
