@@ -10,7 +10,6 @@ import PrivacyPolicy from "../privacyPolicy/privacyPolicy"
 import LargeHeader from "../general/LargeHeader"
 import CourseDescription from "../courseDescription/CourseDescription"
 import Footer from "../general/Footer"
-import PopupAd from "../general/PopupAd";
 export default class Routing extends Component {
 
     constructor() {
@@ -34,15 +33,7 @@ export default class Routing extends Component {
                 creditType: [],
                 credit: -1,
                 level: -1
-            },
-            showPopupAd: (() => {
-                // temporary for Major Fair 2022
-                const date = new Date();
-                return date.getFullYear() === 2022 &&
-                    date.getMonth() === 10 &&
-                    date.getDay() <= 8 &&
-                    localStorage.getItem("popupClicked") < 1667232000;
-            })()
+            }
         };
     }
 
@@ -80,11 +71,6 @@ export default class Routing extends Component {
                         }}>
                         <HomeIcon />
                     </Fab> */}
-                    {this.state.showPopupAd && <PopupAd dismiss={() => {
-                        this.setState({
-                            showPopupAd: false
-                        })
-                    }} />}
                 </div>
             </Router>
         );
