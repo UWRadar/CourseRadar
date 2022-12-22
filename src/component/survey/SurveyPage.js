@@ -8,6 +8,9 @@ class SurveyPage extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        // temporarily redirect to Google Form because this page has bugs
+        window.location.href = "https://forms.gle/4WqqnxwrxCk3QiCaA";
     }
 
     constructor(props) {
