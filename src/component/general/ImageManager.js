@@ -1,6 +1,9 @@
+import userInfoBackground from "../../img/user-info-background.png";
+import email from "../../img/email.png";
+
 const imageManager = {
-	userInfoBackground: require("../../img/user-info-background.png"),
-	email: require("../../img/email.png"),
+	userInfoBackground: userInfoBackground,
+	email: email,
 };
 
 export default imageManager;

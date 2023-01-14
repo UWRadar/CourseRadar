@@ -1,4 +1,4 @@
-module.exports = `<!DOCTYPE html>
+export default `<!DOCTYPE html>
 
 <!DOCTYPE html>
 <html>
@@ -62,4 +62,3 @@ word-break: break-word !important;
       This privacy policy was created using Termly's <a style="color: rgb(48, 48, 241) !important;" href="https://termly.io/products/privacy-policy-generator">Privacy Policy Generator</a>.
       </div>
       </html>`;
-

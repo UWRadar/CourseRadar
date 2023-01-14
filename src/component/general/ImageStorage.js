@@ -1,17 +1,31 @@
+import logo from "../../img/original6.png";
+import hotClass from "../../img/hot-active.png";
+import waterClass from "../../img/talk-active.png";
+import email from "../../img/email.png";
+import saveActive from "../../img/save-active.png";
+import setting from "../../img/setting.png";
+import logoSmall from "../../img/original.png";
+import edit from "../../img/edit.png";
+import login from "../../img/log-in.png";
+import commentLogo from "../../img/hdlogo.png";
+import quarter from "../../img/quarter.png";
+import selection from "../../img/Vector.png";
+import backToTop from "../../img/top.jpg";
+
 const imageStorage = {
-	logo: require("../../img/original6.png").default,
-	hotClass: require("../../img/hot-active.png").default,
-	waterClass: require("../../img/talk-active.png").default,
-	email: require("../../img/email.png").default,
-	saveActive: require("../../img/save-active.png").default,
-	setting: require("../../img/setting.png").default,
-	logoSmall: require("../../img/original.png").default,
-	edit: require("../../img/edit.png").default,
-	login: require("../../img/log-in.png").default,
-	commentLogo: require("../../img/hdlogo.png").default,
-	quarter: require("../../img/quarter.png").default,
-	selection: require("../../img/Vector.png").default,
-	backToTop: require("../../img/top.jpg").default
+	logo: logo,
+	hotClass: hotClass,
+	waterClass: waterClass,
+	email: email,
+	saveActive: saveActive,
+	setting: setting,
+	logoSmall: logoSmall,
+	edit: edit,
+	login: login,
+	commentLogo: commentLogo,
+	quarter: quarter,
+	selection: selection,
+	backToTop: backToTop
 };
 
 export default imageStorage;

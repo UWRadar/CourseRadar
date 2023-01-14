@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-var __html = require('./privacyPolicy.html.js');
+import __html from "./privacyPolicy.html.js";
 var template = { __html: __html };
 
 export default class PrivacyPolicy extends Component{
