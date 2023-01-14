@@ -2,7 +2,7 @@ import React from "react"
 import { Dialog, Button } from '@material-ui/core'
 import { motion } from 'framer-motion';
 import TextField from '@material-ui/core/TextField';
-import Header from "../general/Header"
+import Header from "./Header"
 import "./LoginPage.css"
 function LoginPage(props) {
     const [open, setOpen] = React.useState(true);

@@ -8,7 +8,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import "./SearchFilter.css"
-import ImageStorage from "../general/ImageStorage"
+import ImageStorage from "./ImageStorage"
 
 export default function SearchFilter(props) {
 
@@ -62,7 +62,7 @@ export default function SearchFilter(props) {
             } else {
                 return index === position ? !item : item
             }
-            
+
         });
         setCheckedState(updatedChecked);
         let tempFilter = props.filters;
