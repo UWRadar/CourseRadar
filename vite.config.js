@@ -1,9 +1,12 @@
+import dns from "dns";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import autoprefixer from "autoprefixer";
 import eslint from "@rollup/plugin-eslint";
 import svgr from "vite-plugin-svgr";
-import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
+import commonjs from "vite-plugin-commonjs";
+
+dns.setDefaultResultOrder("verbatim");
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,7 +18,7 @@ export default defineConfig({
 	plugins: [
 		react(),
 		svgr(),
-		viteCommonjs(),
+		commonjs(),
 		{
 			...eslint({
 				include: ["src/**/*.{js,jsx}"]
