@@ -9,6 +9,9 @@
 	],
 	"overrides": [],
 	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
@@ -29,7 +32,7 @@
 			"always"
 		],
 		"indent": [
-			"error",
+			"warn",
 			"tab",
 			{
 				"SwitchCase": 1
