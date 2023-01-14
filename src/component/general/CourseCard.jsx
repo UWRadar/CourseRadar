@@ -118,7 +118,7 @@ const CourseCard = (props) => {
         >
             <div className="course-card">
                 <div className="recom-cards" aria-label="recommendation">
-                    <div className="course-title" style={{ backgroundImage: `url(${Img[name]?.default})` }}>
+                    <div className="course-title" style={{ backgroundImage: `url(${Img[name]})` }}>
                         <div className="course-title-wrap">
                             <p>{props.courseName.toUpperCase()}</p>
                         </div>
