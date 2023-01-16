@@ -27,6 +27,16 @@
 			"error",
 			"always"
 		],
+		"curly": [
+			"error",
+			"all"
+		],
+		"default-case": "error",
+		"default-case-last": "error",
+		"eol-last": [
+			"error",
+			"always"
+		],
 		"eqeqeq": [
 			"error",
 			"always"
