@@ -3,7 +3,6 @@ import "./LoginPage.css";
 import logo from "../../img/login-logo.png";
 import md5 from "md5";
 import firebase from "firebase/app";
-import "firebase/analytics";
 import "firebase/auth";
 import ServerConfig from "../config/ServerConfig";
 
@@ -49,7 +48,7 @@ class LoginPage extends Component {
                     <p>用户可以收藏、点赞课评</p>
                     <p>未来会根据收藏/浏览的课评进行推荐</p>
                 </div>
-                
+
                 {this.state.page === 1 ?
                 <div id="login-form" className={"form" + (this.state.page === 1 ? "" : " hide")}>
                     <input id="email" type="email" name="email" placeholder="邮箱" onChange={evt => this.setState({ loginEmail: evt.target.value })} />
@@ -75,7 +74,7 @@ class LoginPage extends Component {
                         <span id="sign-up-back" className="float-right" role="button" onClick={() => this.setPage(1)}>返回登录</span>
                     </p>
                 </div> : null}
-                
+
                 {this.state.page === 3 ?
                 <div id="verify-form" className={"form" + (this.state.page === 3 ? "" : " hide")}>
                     <input id="code" placeholder="验证码" name="code" onChange={evt => this.setState({ code: evt.target.value })} />

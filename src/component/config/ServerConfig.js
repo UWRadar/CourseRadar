@@ -17,6 +17,9 @@ switch (window.location.hostname) {
 	case "test.uwclassmate.com":
 		serverConfig.SERVER_URL = "https://test-api.uwclassmate.com";
 		break;
+	case "127.0.0.1":
+		window.location.hostname = "localhost";
+		break;
 	default:
 		break;
 }
