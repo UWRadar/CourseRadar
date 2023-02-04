@@ -8,9 +8,6 @@ class SurveyPage extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-
-        // temporarily redirect to Google Form because this page has bugs
-        window.location.href = "https://forms.gle/4WqqnxwrxCk3QiCaA";
     }
 
     constructor(props) {
@@ -66,25 +63,27 @@ class SurveyPage extends Component {
             workload: this.state.workload,
             grading: this.state.grading,
             GPA: this.state.gpa
-        })
+        });
     }
     async handleSubmit(event) {
         // use to prevent default validation UI
-        let form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        }
+        const form = event.currentTarget;
         event.preventDefault();
-        this.setState({ validated: true });
-        if (!form.checkValidity()) {
+        if (parseFloat(this.state.gpa) > 4.0) {
+            window.alert("您太强了！如果您的 GPA 高于 4.0，您可以去申请奖学金。");
+            return;
+        } else if (!form.checkValidity()) {
             return;
         }
+        this.setState({ validated: true });
         const requestOptions = {
             method: "POST",
             body: this.convertStateToJSON(),
         };
-        console.log(ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT)
-        const response = await fetch(ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT, requestOptions);
+        const response = await fetch(
+            ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT,
+            requestOptions
+        );
         const data = await response.json();
         console.log(data);
         if (data.success === true) {
