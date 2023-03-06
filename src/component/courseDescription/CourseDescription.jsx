@@ -79,8 +79,8 @@ class CourseDescription extends Component {
     getInstaCommentsByCourseName() {
         fetch(ServerConfig.SERVER_URL + "/api/getInstaComments" +
             "?courseName=" + encodeURIComponent(this.state.courseName), {
-                credentials: "include"
-            })
+            credentials: "include"
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -107,8 +107,8 @@ class CourseDescription extends Component {
                         <p className="commentTitle">课程评价</p>
                         <Comments
                             className="comments"
-                            comments={this.state.allComments}
-                            instaComments={this.state.instaComments}
+                            comments={this.state.allComments || []}
+                            instaComments={this.state.instaComments || []}
                         />
                     </>}
                 </div>
