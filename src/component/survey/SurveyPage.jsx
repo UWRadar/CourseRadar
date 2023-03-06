@@ -3,11 +3,30 @@ import React, { Component } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "./SurveyPage.css";
 import ServerConfig from "../config/ServerConfig";
+import { Redirect } from "react-router-dom";
 
 class SurveyPage extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        fetch(ServerConfig.SERVER_URL + "/api/userinfo", {
+            credentials: "include"
+        }).then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else if (response.status === 403) {
+                window.alert("请先登录再填写课评。");
+                this.setState({
+                    redirectTo: "/login"
+                });
+            }
+        }).then((data) => {
+            if (data) {
+                this.setState({
+                    userId: data.id
+                });
+            }
+        });
     }
 
     constructor(props) {
@@ -25,10 +44,12 @@ class SurveyPage extends Component {
             comment: "",
             contact: "",
             gpa: "",
+            userId: "",
             language: "Chinese",
             // use to prevent default validation UI
             validated: false,
-        }
+            redirectTo: null
+        };
     }
 
     setYear = (e) => this.setState({ year: e.target.value });
@@ -62,41 +83,54 @@ class SurveyPage extends Component {
             comment: this.state.courseContent + " " + this.state.comment,
             workload: this.state.workload,
             grading: this.state.grading,
-            GPA: this.state.gpa
+            GPA: this.state.gpa,
+            userId: this.state.userId
         });
     }
     async handleSubmit(event) {
-        // use to prevent default validation UI
-        const form = event.currentTarget;
-        event.preventDefault();
-        if (parseFloat(this.state.gpa) > 4.0) {
-            window.alert("您太强了！如果您的 GPA 高于 4.0，您可以去申请奖学金。");
-            return;
-        } else if (!form.checkValidity()) {
-            return;
+        try {
+            const form = event.currentTarget;
+            event.preventDefault();
+            if (parseFloat(this.state.gpa) > 4.0) {
+                window.alert("您太强了！如果您的 GPA 高于 4.0，您可以去申请奖学金。");
+                return;
+            } else if (!form.checkValidity()) {
+                return;
+            }
+            this.setState({ validated: true });
+            const requestOptions = {
+                method: "POST",
+                body: this.convertStateToJSON(),
+                credentials: "include"
+            };
+            const response = await fetch(
+                ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT,
+                requestOptions
+            );
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            const data = await response.json();
+            console.log(data);
+            if (data.success === true) {
+                window.alert("课评提交成功，感谢你的付出");
+                this.setState({
+                    redirectTo: "/"
+                });
+            } else {
+                window.alert(data.result + ", please try again");
+            }
+        } catch (err) {
+            window.alert("课评提交失败：" + err.message);
         }
-        this.setState({ validated: true });
-        const requestOptions = {
-            method: "POST",
-            body: this.convertStateToJSON(),
-        };
-        const response = await fetch(
-            ServerConfig.SERVER_URL + ServerConfig.FILLCOMMENT,
-            requestOptions
-        );
-        const data = await response.json();
-        console.log(data);
-        if (data.success === true) {
-            alert("课评提交成功，感谢你的付出");
-            window.location.href = "/";
-        } else {
-            alert(data.result + ", please try again");
-        }
-        //console.log(requestOptions);
-        //console.log(JSON.parse(requestOptions.body))
     }
 
     render() {
+        if (this.state.redirectTo) {
+            return (
+                <Redirect to={this.state.redirectTo} />
+            );
+        }
         return (
             <div className="container-xxl" id="survey">
                 <Container id="form-header">

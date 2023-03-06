@@ -1,9 +1,17 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./Comments.css";
 import Comment from "./Comment";
 import ServerConfig from "../config/ServerConfig";
 
 export default class Comments extends Component {
+    static get propTypes() {
+        return {
+            comments: PropTypes.array,
+            instaComments: PropTypes.array
+        };
+    }
+
     constructor() {
         super();
         this.state = {
@@ -59,8 +67,19 @@ export default class Comments extends Component {
     render() {
         return (
             <div className='comments'>
+                {this.props.instaComments.map((comment, index) => {
+                    return (
+                        <Comment
+                            key={index}
+                            content={comment}
+                            isPrivate={true}
+                        />
+                    );
+                })}
                 {this.state.comments.map((comment, index) => {
-                    return <Comment content={comment} key={index} />
+                    return (
+                        <Comment key={index} content={comment} />
+                    );
                 })}
             </div>
         );

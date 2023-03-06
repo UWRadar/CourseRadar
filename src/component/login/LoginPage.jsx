@@ -37,7 +37,6 @@ class LoginPage extends Component {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        firebase.analytics();
     }
 
     render() {

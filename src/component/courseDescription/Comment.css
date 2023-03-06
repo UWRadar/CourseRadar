@@ -28,7 +28,7 @@
     flex-direction: row;
     border-radius: 10px;
     border-style: solid;
-    border-color:rgb(218, 218, 218);
+    border-color: rgb(218, 218, 218);
     justify-content: center;
     align-items: center;
     height: 3rem;
@@ -41,8 +41,8 @@
     height: 3vh;
     margin-left: auto;
     margin-right: auto;
-    color:#63469D;
-    fill:#63469D;
+    color: #63469D;
+    fill: #63469D;
     font-size: 11px;
 }
 
@@ -70,7 +70,7 @@ hr .rounded {
 }
 
 .commentLabel {
-    margin-top: 1%;
+    margin-top: 5px;
     color: gray;
     margin-bottom: 0;
 }
@@ -132,7 +132,7 @@ hr .rounded {
 }
 
 .heart:hover {
-    fill:red;
+    fill: red;
 }
 
 .heart-fill {
@@ -144,7 +144,7 @@ hr .rounded {
 }
 
 .heart-break:hover {
-    fill:black;
+    fill: black;
 }
 
 .studnetName {
@@ -164,18 +164,26 @@ hr .rounded {
     text-align: center;
 }
 
-@media (min-width: 480px)
-{
+.comment-warning {
+    background-color: rgb(188, 52, 51);
+    border-radius: 10px;
+    color: white;
+    margin: 10px 0;
+    padding: 5px 10px;
+    width: fit-content;
+}
+
+@media (min-width: 480px) {
     #workload {
         display: flex;
     }
 }
 
-@media (min-width: 768px)
-{
+@media (min-width: 768px) {
     .difficulty {
         font-size: 15px;
     }
+
     .logo {
         text-align: right;
         padding-right: 5%;
@@ -207,16 +215,16 @@ hr .rounded {
 }
 
 /* Media Control screen larger than 768px */
-@media (min-width: 1024px)
-{
-    .RatingContainer{
+@media (min-width: 1024px) {
+    .RatingContainer {
         margin-right: 15vw;
     }
+
     .info {
         padding-right: 18%;
     }
 
-    .comment{
+    .comment {
         margin-right: 15vw;
     }
 }

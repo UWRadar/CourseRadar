@@ -10,6 +10,7 @@ class CourseDescription extends Component {
         this.state = {
             filteredComment: [],
             allComments: [],
+            instaComments: [],
             courseName: props.match.params.courseName,
             courseInfo: {},
             receivedBackEndData: false
@@ -22,6 +23,7 @@ class CourseDescription extends Component {
             allComments: []
         });
         this.getAllCommentFromCoursename();
+        this.getInstaCommentsByCourseName();
         this.getCourseRatingByCoursename();
         if (this.captcha) {
             this.captcha.reset();
@@ -74,6 +76,25 @@ class CourseDescription extends Component {
             });
     }
 
+    getInstaCommentsByCourseName() {
+        fetch(ServerConfig.SERVER_URL + "/api/getInstaComments" +
+            "?courseName=" + encodeURIComponent(this.state.courseName), {
+                credentials: "include"
+            })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            })
+            .then((data) => {
+                this.setState({
+                    instaComments: data.result
+                });
+            });
+    }
+
     render() {
         return (
             <div className="container-fluid" id="outerCotainer">
@@ -87,6 +108,7 @@ class CourseDescription extends Component {
                         <Comments
                             className="comments"
                             comments={this.state.allComments}
+                            instaComments={this.state.instaComments}
                         />
                     </>}
                 </div>

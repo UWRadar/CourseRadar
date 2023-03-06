@@ -74,16 +74,19 @@ const Comment = (props) => {
 
 
                     </div>
-                    <div>
+                    {!props.isPrivate && <div>
                         {liked !== 1 && <Heart onClick={() => handleLike(1, props.content.commentId)} />}
                         {liked === 1 && <HeartActive onClick={() => handleLike(0, props.content.commentId)} />}
                         {liked !== -1 && <HeartBreak onClick={() => handleLike(-1, props.content.commentId)} />}
                         {liked === -1 && <HeartBreakActive onClick={() => handleLike(0, props.content.commentId)} />}
                         <p className="likeCount">{likeCount + liked}</p>
-                    </div>
+                    </div>}
 
 
                 </div>
+                {props.isPrivate && <div className="comment-warning">
+                    ⚠️ 审核中，这条课评暂时仅自己可见。
+                </div>}
                 <p className="commentLabel">评论</p>
                 <p className="comment">{props.content.comment}</p>
                 <CommentRating

@@ -41,13 +41,6 @@
 			"error",
 			"always"
 		],
-		"indent": [
-			"warn",
-			"tab",
-			{
-				"SwitchCase": 1
-			}
-		],
 		"linebreak-style": [
 			"error",
 			"unix"
