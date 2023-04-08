@@ -64,6 +64,11 @@ html {
 	display: none;
 }
 
+.extension .comments {
+	margin-top: 15px;
+	padding: 0;
+}
+
 .extension #description {
 	margin-top: 0;
 }
