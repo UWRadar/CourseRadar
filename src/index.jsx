@@ -25,6 +25,10 @@ setTimeout(() => { // make sure that it will not be removed by extensions
 	};
 }, 1000);
 
+if (window.self !== window.top) { // is loaded by Chrome extension
+	document.documentElement.classList.add("extension");
+}
+
 if (
 	navigator.userAgent.includes("MicroMessenger/") ||
 	navigator.userAgent.includes("QQ/")
