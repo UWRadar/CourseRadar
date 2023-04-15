@@ -45,6 +45,7 @@ class SurveyPage extends Component {
             contact: "",
             gpa: "",
             userId: "",
+            mode: "",
             language: "Chinese",
             // use to prevent default validation UI
             validated: false,
@@ -74,6 +75,8 @@ class SurveyPage extends Component {
 
     setGrading = (e) => this.setState({ grading: e.target.value });
 
+    setMode = (e) => this.setState({ mode: e.target.value });
+
     convertStateToJSON() {
         return JSON.stringify({
             year: this.state.year,
@@ -84,7 +87,8 @@ class SurveyPage extends Component {
             workload: this.state.workload,
             grading: this.state.grading,
             GPA: this.state.gpa,
-            userId: this.state.userId
+            userId: this.state.userId,
+            mode: this.state.mode,
         });
     }
     async handleSubmit(event) {
@@ -186,6 +190,23 @@ class SurveyPage extends Component {
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         CourseName is a required field.
+                                    </Form.Control.Feedback>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} controlID="formMode">
+                                <Form.Label column sm={2} className="text-md-left">
+                                    课程模式:
+                                </Form.Label>
+                                <Col sm={3}>
+                                    <Form.Control required="true" as="select" value={this.state.mode} onChange={this.setMode} >
+                                        <option selected>Select your mode</option>
+                                        <option value="asynchronous">asynchronous</option>
+                                        <option value="synchronous">synchronous</option>
+                                        <option value="hybrid">hybrid</option>
+                                        <option value="in-person">in-person</option>
+                                    </Form.Control>
+                                    <Form.Control.Feedback type="invalid">
+                                        课程模式 is a required field.
                                     </Form.Control.Feedback>
                                 </Col>
                             </Form.Group>
