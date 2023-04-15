@@ -11,6 +11,7 @@ import commentLogo from "../../img/hdlogo.png";
 import quarter from "../../img/quarter.png";
 import selection from "../../img/Vector.png";
 import backToTop from "../../img/top.jpg";
+import download from "../../img/download.png";
 
 const imageStorage = {
 	logo: logo,
@@ -25,7 +26,8 @@ const imageStorage = {
 	commentLogo: commentLogo,
 	quarter: quarter,
 	selection: selection,
-	backToTop: backToTop
+	backToTop: backToTop,
+	download: download
 };
 
 export default imageStorage;

@@ -48,6 +48,7 @@ header .search-bar {
 
 .logo-with-characters {
     padding-top: 3vh;
+    margin-left: 10px;
     font-family: PingFang SC;
     font-style: normal;
     font-weight: 400;
