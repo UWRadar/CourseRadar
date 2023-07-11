@@ -36,10 +36,10 @@ export default class Routing extends Component {
                 level: -1
             },
             showPopupAd: (() => {
-                // temporary for Graduation Fair 2023
+                // temporary until 2023-07-23 12:00 PM (GMT+8)
                 return window.self === window.top &&
-                    new Date().getTime() < 1683043200000 && // 2023-05-03
-                    localStorage.getItem("popupClicked") < 1681584886;
+                    new Date().getTime() < 1690084800000 &&
+                    localStorage.getItem("popupClicked") < 1689116572484;
             })()
         };
     }

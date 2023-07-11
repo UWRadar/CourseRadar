@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import styles from "./PopupAd.module.css";
 
 function PopupAd({ dismiss }) {
-	// temporarily hard-coded for Graduation Fair 2023
+	// temporarily hard-coded
 
 	const detailsOnClick = () => {
-		window.open("https://mp.weixin.qq.com/s/MGgVtOQgnrHB5JV-QwlhDQ");
+		// window.open("https://mp.weixin.qq.com/s/MGgVtOQgnrHB5JV-QwlhDQ");
 		dismiss();
 		localStorage.setItem("popupClicked", Date.now());
 	};
@@ -14,13 +14,13 @@ function PopupAd({ dismiss }) {
 	return (
 		<div className={styles["very-important-message"]}>
 			<img
-				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/graduation_fair_popup.jpg"
-				alt="5月3日华大课友毕业分享会"
+				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/GRE2023.jpg"
+				alt="7月23日GRE线上分享会"
 			/>
 			<button
 				className={styles["major-button"]}
 				onClick={detailsOnClick}>
-				了解详情
+				好
 			</button>
 			<button
 				className={styles["minor-button"]}

@@ -11,6 +11,7 @@
 	text-align: center;
 	transform: translateY(-50%);
 	width: 500px;
+	z-index: 1102;
 }
 
 .very-important-message img {
