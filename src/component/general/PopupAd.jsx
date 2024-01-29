@@ -6,7 +6,7 @@ function PopupAd({ dismiss }) {
 	// temporarily hard-coded
 
 	const detailsOnClick = () => {
-		// window.open("https://mp.weixin.qq.com/s/MGgVtOQgnrHB5JV-QwlhDQ");
+		window.open("https://mp.weixin.qq.com/s/3IAT7eYmUe-wNj5LRGBIyw");
 		dismiss();
 		localStorage.setItem("popupClicked", Date.now());
 	};
@@ -14,7 +14,7 @@ function PopupAd({ dismiss }) {
 	return (
 		<div className={styles["very-important-message"]}>
 			<img
-				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/GRE2023.jpg"
+				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/Puzzle2024.jpg"
 				alt="7月23日GRE线上分享会"
 			/>
 			<button
