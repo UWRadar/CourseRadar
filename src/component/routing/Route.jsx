@@ -36,10 +36,14 @@ export default class Routing extends Component {
                 level: -1
             },
             showPopupAd: (() => {
-                // temporary until 2023-07-23 12:00 PM (GMT+8)
+                // temporary until 2024-02-25 15:30 (GMT+8)
+                const closeTime = new Date("Feb 25, 2024 15:30:00 GMT+08:00").getTime();
+                const storedTimeStamp = localStorage.getItem("popupClicked");
+                const timeDifference= storedTimeStamp ? new Date().getTime() - storedTimeStamp : 0;
+                const thirtyMinutes = 30 * 60 * 1000;
                 return window.self === window.top &&
-                    new Date().getTime() < 1690084800000 &&
-                    localStorage.getItem("popupClicked") < 1689116572484;
+                    new Date().getTime() < closeTime &&
+                    timeDifference > thirtyMinutes;
             })()
         };
     }
