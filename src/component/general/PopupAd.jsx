@@ -15,7 +15,7 @@ function PopupAd({ dismiss }) {
 		<div className={styles["very-important-message"]}>
 			<img
 				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/Puzzle2024.jpg"
-				alt="7月23日GRE线上分享会"
+				alt="2月15日校园寻宝活动"
 			/>
 			<button
 				className={styles["major-button"]}

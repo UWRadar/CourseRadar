@@ -43,7 +43,7 @@ export default class Routing extends Component {
                 const thirtyMinutes = 30 * 60 * 1000;
                 return window.self === window.top &&
                     new Date().getTime() < closeTime &&
-                    timeDifference > thirtyMinutes;
+                    (!timeDifference || timeDifference > thirtyMinutes);
             })()
         };
     }
