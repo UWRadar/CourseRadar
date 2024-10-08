@@ -6,7 +6,7 @@ function PopupAd({ dismiss }) {
 	// temporarily hard-coded
 
 	const detailsOnClick = () => {
-		window.open("https://mp.weixin.qq.com/s/C9jOj59gmsUtYVH4ueFojA");
+		// window.open("https://mp.weixin.qq.com/s/C9jOj59gmsUtYVH4ueFojA");
 		dismiss();
 		localStorage.setItem("popupClicked", Date.now());
 	};
