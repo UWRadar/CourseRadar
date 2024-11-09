@@ -60,7 +60,11 @@ class LargeHeader extends Component {
                 <div id="right-upper-icons">
                     <a
                         className="logo-with-characters"
-                        href="https://chrome.google.com/webstore/detail/u-plan-by-%E5%8D%8E%E5%A4%A7%E8%AF%BE%E5%8F%8B/peldbkaogppcbjjjhhnmcmgickkopohp"
+                        href={
+                            navigator.userAgent.includes("Firefox/")
+                                ? "https://github.com/UWRadar/u-plan/releases"
+                                : "https://chrome.google.com/webstore/detail/u-plan-by-%E5%8D%8E%E5%A4%A7%E8%AF%BE%E5%8F%8B/peldbkaogppcbjjjhhnmcmgickkopohp"
+                        }
                     >
                         <img src={ImageStorage.download} id="download" className="header-logo" alt="logo for extension install" />
                         <p className="survey">MyPlan扩展</p>
