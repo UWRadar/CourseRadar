@@ -14,8 +14,8 @@ function PopupAd({ dismiss }) {
 	return (
 		<div className={styles["very-important-message"]}>
 			<img
-				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/MajorFair2024.jpg"
-				alt="华大课友 2024 Major Fair 海报"
+				src="https://cdn.jsdelivr.net/gh/UWRadar/CourseRadar_AdImg/Img/OHCM%20Articles/AcademicAdvisingWorkshop2025.jpg"
+				alt="华大课友学业指导工作坊"
 			/>
 			<button
 				className={styles["major-button"]}
